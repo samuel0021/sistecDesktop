@@ -1,0 +1,21 @@
+﻿<Application x:Class="sistecDesktop.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:sistecDesktop"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Variáveis de cor -->
+        
+        <Color x:Key="color-bg">#EFEBFF</Color>
+        <Color x:Key="color-bg-grad">#E5E7EB</Color>
+        <Color x:Key="color-purple">#8564FF</Color>
+
+            <!-- Variáveis de gradiente -->
+        
+        <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{StaticResource color-bg}" Offset="0"/>
+            <GradientStop Color="{StaticResource color-bg-grad}" Offset="1"/>
+        </LinearGradientBrush>
+
+    </Application.Resources>
+</Application>
