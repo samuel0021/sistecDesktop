@@ -153,6 +153,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="README.md" />
     <Resource Include="fonts\Montserrat-Bold.ttf" />
     <Resource Include="fonts\Montserrat-Regular.ttf" />
     <Resource Include="fonts\HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf" />
