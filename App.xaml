@@ -2,20 +2,157 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:sistecDesktop"
-             StartupUri="MainWindow.xaml">
+             xmlns:views="clr-namespace:sistecDesktop.Views"
+             xmlns:viewmodels="clr-namespace:sistecDesktop.ViewModels"
+             StartupUri="MainWindow.xaml"
+             >
     <Application.Resources>
-        <!-- Variáveis de cor -->
-        
-        <Color x:Key="color-bg">#EFEBFF</Color>
-        <Color x:Key="color-bg-grad">#E5E7EB</Color>
-        <Color x:Key="color-purple">#8564FF</Color>
 
-            <!-- Variáveis de gradiente -->
-        
-        <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="{StaticResource color-bg}" Offset="0"/>
-            <GradientStop Color="{StaticResource color-bg-grad}" Offset="1"/>
-        </LinearGradientBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/sistecDesktop;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
 
+            <!--#region DataTemplates -->
+            <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
+                <local:MainWindow/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+                <views:LoginView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView/>
+            </DataTemplate>
+            <!--#endregion-->
+
+
+            <!--#region FONTS -->
+            <!-- Montserrat Regular/Bold -->
+            <FontFamily x:Key="MontserratRegular">pack://application:,,,/fonts/#Montserrat</FontFamily>
+            <FontFamily x:Key="MontserratBold">pack://application:,,,/fonts/#Montserrat Bold</FontFamily>
+
+            <!-- Brandon Grotesque Regular/Bold -->
+            <FontFamily x:Key="BrandonGrotesqueRegular">pack://application:,,,/fonts/#HvDTrial Brandon Grotesque Reg</FontFamily>
+            <FontFamily x:Key="BrandonGrotesqueBold">pack://application:,,,/fonts/#HvDTrial Brandon Grotesque Bold</FontFamily>
+            <!--#endregion-->
+
+
+            <!--#region COLORS-->
+            <Color x:Key="color-lavenderWeb">#EFEBFF</Color>
+            <Color x:Key="color-periwinkle">#DCD3FF</Color>
+            <Color x:Key="color-bg-grad">#E5E7EB</Color>
+            <Color x:Key="color-vibrantViolet">#8564FF</Color>
+            <Color x:Key="color-midnightNavy">#000033</Color>
+            <!--#endregion-->
+
+
+            <!--#region BRUSHES -->
+            <SolidColorBrush x:Key="brush-midnightNavy" Color="#000033"/>
+            <SolidColorBrush x:Key="brush-delftBlue" Color="#3E3D66"/>
+            <SolidColorBrush x:Key="brush-coolGray" Color="#7B7A99"/>
+            <SolidColorBrush x:Key="brush-frenchGray" Color="#B9B7CC"/>
+            <SolidColorBrush x:Key="brush-frenchGray-transparent" Color="#66808080"/>
+
+            <SolidColorBrush x:Key="brush-vibrantViolet" Color="#8564FF"/>
+            <SolidColorBrush x:Key="brush-tropicalIndigo" Color="#B09AFF"/>
+            <SolidColorBrush x:Key="brush-periwinkle" Color="#DCD3FF"/>
+            <SolidColorBrush x:Key="brush-lavenderWeb" Color="#EFEBFF"/>
+
+            <SolidColorBrush x:Key="brush-peachOrange" Color="#FF9966"/>
+            <SolidColorBrush x:Key="brush-atomicTangerine" Color="#FDB08D"/>
+            <SolidColorBrush x:Key="brush-apricot" Color="#FBC6B3"/>
+            <SolidColorBrush x:Key="brush-mistyRose" Color="#F9DDD9"/>
+            <SolidColorBrush x:Key="brush-peachOrange-transparent" Color="#66FF9966"/>
+
+            <SolidColorBrush x:Key="brush-lavenderMist" Color="#F6F3FF"/>
+            <SolidColorBrush x:Key="brush-White" Color="#FFFFF0"/>
+            <!--#endregion-->
+
+
+            <!--#region GRADIENTS-->
+            <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource color-lavenderWeb}" Offset="0"/>
+                <GradientStop Color="{StaticResource color-periwinkle}" Offset="1"/>
+            </LinearGradientBrush>
+            <!--#endregion-->
+
+
+            <!--#region STYLES -->
+            <!--#region Window -->
+            <Style TargetType="Window">
+                <Setter Property="FontFamily" Value="{StaticResource MontserratRegular}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Foreground" Value="{StaticResource brush-vibrantViolet}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region TextBox -->
+            <Style TargetType="TextBox">
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region PasswordBox -->
+            <Style TargetType="PasswordBox">
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Border -->
+            <Style x:Key="BorderShadow" TargetType="Border">
+                <Setter Property="Effect">
+                    <Setter.Value >
+                        <DropShadowEffect Color="{StaticResource color-midnightNavy}"
+                                      BlurRadius="10"
+                                      ShadowDepth="5"
+                                      Direction="315"
+                                      Opacity="0.5"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Efeito de botão -->
+            <Style x:Key="BotaoAnimado" TargetType="Border">
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1.025" Duration="0:0:0.1"/>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1.025" Duration="0:0:0.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1" Duration="0:0:0.1"/>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1" Duration="0:0:0.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!--#endregion-->
+            <!--#endregion-->
+            
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

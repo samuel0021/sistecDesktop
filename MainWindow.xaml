@@ -5,42 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sistecDesktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-
-    <Grid Background="{StaticResource gradient-background}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel
-            Grid.Column="0" Grid.Row="1" 
-            Grid.RowSpan="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            >
-
-            <Rectangle Width="200" Height="200">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource color-purple}"/>
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Image Source="images/logo-purple.png"
-                Width="150" Height="150" 
-                Stretch="Uniform"
-                />
-            
-        </StackPanel>
-
+        xmlns:viewmodels="clr-namespace:sistecDesktop.ViewModels"
+        Title="Sistec" Height="720" Width="1280" 
+        Loaded="Window_Loaded"
+        MaxHeight="1080" MaxWidth="1920"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen" 
         
+        ResizeMode="CanResizeWithGrip"
+        Icon="/images/logo-purple.ico"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel, IsDesignTimeCreatable=False}">
 
+    <Grid>
+        <!-- Apenas um ContentControl que mostra o SelectedViewModel -->
+        <ContentControl Content="{Binding SelectedViewModel}"/>
     </Grid>
+    
 </Window>

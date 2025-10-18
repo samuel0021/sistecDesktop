@@ -1,0 +1,315 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- #region CustomFocus -->
+    <!-- Foco de controles em geral -->
+    <Style x:Key="CustomFocusVisual" TargetType="Control">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Control">
+                    <Border CornerRadius="5" BorderBrush="{DynamicResource brush-tropicalIndigo}" BorderThickness="1"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
+
+    
+    <!-- #region Button -->
+    <!-- Botão padrão -->
+    <Style x:Key="MyButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource brush-vibrantViolet}"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-lavenderMist}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratBold}"/>
+        <Setter Property="Padding" Value="12 6 12 6"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+
+        <!-- Aplicando o CustomFocus no MyButton -->
+        <Setter Property="FocusVisualStyle" Value="{StaticResource CustomFocusVisual}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btnBorder" CornerRadius="2"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="btnBorder" Property="Background" Value="{DynamicResource brush-tropicalIndigo}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!-- Efeito de hover no MyButton -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                         To="1.025" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                         To="1.025" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                         To="1" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                         To="1" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!--Botões Chamados-->
+
+    <Style x:Key="HomeButtons" TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratBold}"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="brdHomeBtn"
+                            CornerRadius="3"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource brush-frenchGray}">
+                        
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                     To="1.025" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                     To="1.025" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+
+                            <Setter TargetName="brdHomeBtn" Property="BorderBrush" Value="{DynamicResource brush-peachOrange}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource brush-peachOrange}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <!-- Botão com imagem e texto -->
+
+    <Style x:Key="ImageButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-lavenderMist}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratRegular}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="MaxHeight" Value="40"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="btnBorderImage" CornerRadius="2"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0" 
+                            BorderBrush="{TemplateBinding Foreground}">
+                        
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"/>
+                        
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="btnBorderImage" Property="Background" Value="{DynamicResource brush-frenchGray-transparent}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+
+                        <Trigger Property="Tag" Value="Selected">
+                            <Setter TargetName="btnBorderImage" Property="Background" 
+                                Value="{DynamicResource brush-peachOrange}"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--#endregion-->
+
+
+    <!--#region TextBox / PasswordBox-->
+    <!-- Estilo base pra usar nos dois -->
+    <Style x:Key="BaseInputStyle" TargetType="Control">
+        <Setter Property="Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+        <Setter Property="MaxHeight" Value="40"/>
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="5 0 5 0"/>
+        <Setter Property="Padding" Value="8,0"/>
+    </Style>
+
+    <!-- TextBox -->
+    <Style x:Key="MyTextBox" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="txtBorder" 
+                            CornerRadius="5" 
+                            Background="{DynamicResource brush-White}" 
+                            BorderBrush="{DynamicResource brush-frenchGray}" 
+                            BorderThickness="1" 
+                            SnapsToDevicePixels="True">
+
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                      Margin="2" 
+                                      VerticalScrollBarVisibility="Hidden" 
+                                      HorizontalScrollBarVisibility="Hidden" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+
+                            <Setter TargetName="txtBorder" Property="BorderBrush" 
+                                Value="{DynamicResource brush-coolGray}"/>
+
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- PasswordBox -->
+    <Style x:Key="MyPasswordBox" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="txtBorder" 
+                        CornerRadius="5" 
+                        Background="{DynamicResource brush-White}" 
+                        BorderBrush="{DynamicResource brush-frenchGray}" 
+                        BorderThickness="1" 
+                        SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                  Margin="2" 
+                                  VerticalScrollBarVisibility="Hidden" 
+                                  HorizontalScrollBarVisibility="Hidden" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="txtBorder" Property="BorderBrush" 
+                                Value="{DynamicResource brush-coolGray}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion TextBox-->
+
+    <!--#region TextBlock ForgotPass -->
+    <Style x:Key="ForgotPassText" TargetType="TextBlock">
+        <Setter Property="Text" Value="Por favor, entre em contato com o gestor do seu setor para que ele possa solicitar a redefinição de senha ao suporte técnico."/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-coolGray}"/>
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Padding" Value="10"/>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region Border ForgotPass -->
+    <Style x:Key="ForgotPass" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource brush-lavenderMist}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource brush-lavenderMist}"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="3"/>
+    </Style>
+    <!--#endregion-->
+
+    <!-- #region Hyperlink ForgotPass-->
+    <Style x:Key="MyHyperlink" TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource brush-vibrantViolet}"/>
+        <Setter Property="TextDecorations" Value="None"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="TextDecorations" Value="Underline"/>
+            </Trigger>
+            <!--<Trigger Property="IsMouseCaptured" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource brush-tropicalIndigo}"/>
+            </Trigger>-->
+        </Style.Triggers>
+    </Style>
+    <!--#endregion-->
+    
+    <!--#region Viewbox -->
+
+    <!--<Style x:Key="MyViewbox" TargetType="Viewbox">
+        <Setter Property="Width" Value="">
+
+        </Setter>
+    </Style>-->
+    
+    <!--#endregion-->
+    
+
+</ResourceDictionary>

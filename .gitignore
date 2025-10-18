@@ -1,8 +1,31 @@
-# Visual Studio
+﻿# Visual Studio cache
 .vs/
+
+# Build
+[Bb]in/
+[Oo]bj/
+out/
+
+# Usuário e IDE
 *.user
 *.suo
+.vscode/
+.idea/
+
+# Logs e cache
+*.log
 *.cache
-*.db
-bin/
-obj/
+*.tmp
+
+# Publicação e testes
+publish/
+TestResults/
+
+# Pacotes
+packages/
+*.nupkg
+*.snupkg
+
+# Configurações locais
+appsettings.Development.json
+Properties/launchSettings.json

@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="sistecDesktop.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sistecDesktop.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="768" d:DesignWidth="1366">
+
+    <Grid Background="{StaticResource gradient-background}">
+        
+        <!--#region Definições do Grid-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <!--#endregion-->
+
+        <!--#region Logo Sistec-->
+        <Grid Grid.Column="0">
+
+            <Border Background="{StaticResource brush-midnightNavy}"
+                    BorderBrush="{StaticResource brush-frenchGray}"
+                    BorderThickness="0 0 0 1" Padding="15"
+                    Height="85">
+
+                <Image Source="/images/sistec-white.png"
+                       Margin="10 10 10 10"
+                       HorizontalAlignment="Left"/>
+            </Border>
+        </Grid>
+        <!--#endregion-->
+
+        <!--#region Cabeçalho-->
+        <Grid Grid.Column="1" Grid.ColumnSpan="5">
+
+            <Border Background="{StaticResource brush-lavenderMist}"
+                    BorderBrush="{StaticResource brush-frenchGray}"
+                    BorderThickness="0 0 0 1"
+                    Width="auto" Padding="0 0 15 0">
+
+                <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                    <Button x:Name="btnLogout" Height="40"
+                            Style="{StaticResource ImageButton}"
+                            Command="{Binding LogoutCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/images/log-out.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                            <TextBlock Text="Sair" VerticalAlignment="Center" 
+                                   Foreground="{StaticResource brush-peachOrange}"
+                                   FontFamily="{StaticResource MontserratRegular}"/>
+                        </StackPanel>
+
+                    </Button>
+
+                </StackPanel>
+
+            </Border>
+        </Grid>
+        <!--#endregion-->
+        
+        <!--#region Menu Lateral-->
+        <Border Grid.Row="1" Grid.RowSpan="4" Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                Margin="0 0 0 0" Padding="15"
+                Height="auto"
+                Background="{StaticResource brush-midnightNavy}">
+
+            <StackPanel HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+
+                <Button x:Name="btnHome" 
+                        Style="{StaticResource ImageButton}"
+                        Height="40"
+                        Command="{Binding SelecionarPaginaCommand}"
+                        CommandParameter="Home"
+                        Tag="{Binding TagHome}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/images/house.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                        <TextBlock Text="Home" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnDashboard" 
+                        Style="{StaticResource ImageButton}"
+                        Height="40"
+                        Command="{Binding SelecionarPaginaCommand}"
+                        CommandParameter="Dashboard"
+                        Tag="{Binding TagDashboard}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/images/layout-grid.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                        <TextBlock Text="Dashboard" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Button>
+
+                <Button x:Name="btnChamados" 
+                        Style="{StaticResource ImageButton}"
+                        Height="40"
+                        Command="{Binding SelecionarPaginaCommand}"
+                        CommandParameter="Chamados"
+                        Tag="{Binding TagChamados}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/images/circle-question-mark.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                        <TextBlock Text="Chamados" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </Button>
+
+                <Button x:Name="btnUsuarios" 
+                        Style="{StaticResource ImageButton}"
+                        Height="40"
+                        Command="{Binding SelecionarPaginaCommand}"
+                        CommandParameter="Usuarios"
+                        Tag="{Binding TagUsuarios}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/images/user.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                        <TextBlock Text="Gerenciar Usuários" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+        <!--#endregion-->
+
+        <!--#region Conteúdo -->
+        <ContentControl Grid.Row="1" Grid.RowSpan="3"
+                        Grid.Column="1" Grid.ColumnSpan="5"
+                        Content="{Binding CurrentContent}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+        <!--#endregion-->
+        
+    </Grid>
+</UserControl>
