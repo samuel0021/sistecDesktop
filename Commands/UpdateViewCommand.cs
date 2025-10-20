@@ -28,11 +28,11 @@ namespace sistecDesktop.Commands
         {
             if (parameter.ToString() == "Login")
             {
-                viewModel.SelectedViewModel = new LoginViewModel(viewModel);
+                viewModel.SelectedViewModel = new LoginViewModel(viewModel, viewModel.ApiClient);
             }
             else if (parameter.ToString() == "Home")
             {
-                viewModel.SelectedViewModel = new HomeViewModel(viewModel);
+                viewModel.SelectedViewModel = new HomeViewModel(viewModel, viewModel.ApiClient);
             }
         }
     }

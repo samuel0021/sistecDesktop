@@ -1,5 +1,6 @@
 ﻿using sistecDesktop.Commands;
 using sistecDesktop.Views.Pages;
+using sistecDesktop.Services;  // ← ADICIONAR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,27 +14,26 @@ namespace sistecDesktop.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private readonly MainViewModel _mainViewModel;
+        private readonly ApiClient _apiClient;  // ← ADICIONAR
         private string _paginaSelecionada;
         private UserControl _currentContent;
 
         public ICommand LogoutCommand { get; }
-        public ICommand SelecionarPaginaCommand { get; } // ✅ NOVO
-
+        public ICommand SelecionarPaginaCommand { get; }
 
         public UserControl CurrentContent
         {
             get { return _currentContent; }
-            set 
+            set
             {
-                if (_currentContent != value) 
-                { 
+                if (_currentContent != value)
+                {
                     _currentContent = value;
                     OnPropertyChanged(nameof(CurrentContent));
                 }
             }
         }
 
-        // ✅ ADICIONE esta propriedade
         public string PaginaSelecionada
         {
             get => _paginaSelecionada;
@@ -47,30 +47,27 @@ namespace sistecDesktop.ViewModels
                     OnPropertyChanged(nameof(TagDashboard));
                     OnPropertyChanged(nameof(TagChamados));
                     OnPropertyChanged(nameof(TagUsuarios));
-
                     LoadContent(value);
                 }
             }
         }
 
-        // ✅ ADICIONE estas propriedades (Tag para cada botão)
         public string TagHome => PaginaSelecionada == "Home" ? "Selected" : null;
         public string TagDashboard => PaginaSelecionada == "Dashboard" ? "Selected" : null;
         public string TagChamados => PaginaSelecionada == "Chamados" ? "Selected" : null;
         public string TagUsuarios => PaginaSelecionada == "Usuarios" ? "Selected" : null;
 
-        public HomeViewModel(MainViewModel mainViewModel)
+        public HomeViewModel(MainViewModel mainViewModel, ApiClient apiClient)  // ← MODIFICAR
         {
             _mainViewModel = mainViewModel;
+            _apiClient = apiClient;  // ← ADICIONAR
+
             LogoutCommand = new LogoutCommand(this);
 
-            // ✅ ADICIONE esta linha
             SelecionarPaginaCommand = new RelayCommandWithParameter(
                 parameter => PaginaSelecionada = parameter?.ToString()
             );
 
-            // Opcional: inicia sem seleção
-            // Se quiser iniciar com Home selecionado, descomente a linha abaixo:
             PaginaSelecionada = "Home";
         }
 
@@ -85,9 +82,11 @@ namespace sistecDesktop.ViewModels
                     CurrentContent = new Dashboard();
                     break;
                 case "Chamados":
+                    // Aqui você pode passar o ApiClient para a página se precisar
                     CurrentContent = new Chamados();
                     break;
                 case "Usuarios":
+                    // Aqui você pode passar o ApiClient para a página se precisar
                     CurrentContent = new Usuarios();
                     break;
                 default:
@@ -96,9 +95,27 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        public void ExecutarLogout()
+        public async void ExecutarLogout()  // ← MODIFICAR para async
         {
-            _mainViewModel.SelectedViewModel = new LoginViewModel(_mainViewModel);
+            try
+            {
+                // Fazer logout na API
+                await _apiClient.LogoutAsync();  // ← ADICIONAR
+
+                // Limpar cookies locais
+                _apiClient.Logout();  // ← ADICIONAR
+
+                // Voltar para tela de login
+                _mainViewModel.SelectedViewModel = new LoginViewModel(_mainViewModel, _apiClient);  // ← MODIFICAR
+            }
+            catch (Exception ex)
+            {
+                // Log do erro (opcional)
+                System.Diagnostics.Debug.WriteLine($"Erro no logout: {ex.Message}");
+
+                // Mesmo com erro, volta pra tela de login
+                _mainViewModel.SelectedViewModel = new LoginViewModel(_mainViewModel, _apiClient);
+            }
         }
     }
 }

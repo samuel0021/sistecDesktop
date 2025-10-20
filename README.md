@@ -2,8 +2,6 @@
 
 ## 10 Comandos Essenciais
 
-Estes são os comandos que você vai usar no dia a dia:
-
 1. `git status`  
    Ver o status do projeto (alterações, commits pendentes)
 

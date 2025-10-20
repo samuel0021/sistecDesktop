@@ -25,5 +25,13 @@ namespace sistecDesktop.Views
         {
             InitializeComponent();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.Senha = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }

@@ -8,36 +8,139 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using sistecDesktop.Services;
+using sistecDesktop.Models; 
 
 namespace sistecDesktop.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
         private readonly MainViewModel _mainViewModel;
+        private readonly ApiClient _apiClient;
+
+        // Propriedades para binding com a View
+        private string _email;
+        private string _senha;
+        private string _mensagemErro;
+        private bool _isLoading;
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        public string Senha
+        {
+            get => _senha;
+            set
+            {
+                _senha = value;
+                OnPropertyChanged(nameof(Senha));
+            }
+        }
+
+        public string MensagemErro
+        {
+            get => _mensagemErro;
+            set
+            {
+                _mensagemErro = value;
+                OnPropertyChanged(nameof(MensagemErro));
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
 
         public ICommand EsqueciSenhaCommand { get; }
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(MainViewModel mainViewModel)
+        public LoginViewModel(MainViewModel mainViewModel, ApiClient apiClient)  // ← MODIFICAR
         {
             _mainViewModel = mainViewModel;
+            _apiClient = apiClient;  // ← ADICIONAR
 
             EsqueciSenhaCommand = new RelayCommand(() => ForgotPassWindow.Mostrar());
-            LoginCommand = new LoginCommand(this);
+            LoginCommand = new RelayCommand(async () => await ExecutarLoginAsync());  // ← MODIFICAR para async
         }
 
-        // Método público para ser chamado pelo LoginCommand
+        // Método atualizado com chamada à API
+        public async Task ExecutarLoginAsync()  // ← MODIFICAR para async Task
+        {
+            // Limpar mensagem de erro anterior
+            MensagemErro = string.Empty;
+
+            // Validações básicas
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                MensagemErro = "Por favor, informe o email.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Senha))
+            {
+                MensagemErro = "Por favor, informe a senha.";
+                return;
+            }
+
+            IsLoading = true;  // Mostrar loading na tela
+
+            try
+            {
+                // Criar requisição de login
+                var loginRequest = new LoginRequest
+                {
+                    Email = Email,
+                    Password = Senha
+                };
+
+                // Chamar a API
+                var resultado = await _apiClient.LoginAsync(loginRequest);
+
+                if (resultado.Success)
+                {
+                    // Login bem-sucedido!
+
+                    // Você pode salvar os dados do usuário na MainViewModel se precisar
+                    // _mainViewModel.UsuarioLogado = resultado.Data.User;
+
+                    // Limpar os campos
+                    Email = string.Empty;
+                    Senha = string.Empty;
+
+                    // Navegar para a Home
+                    _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
+                }              
+            }
+            catch (Exception ex)
+            {
+                // Erro de conexão ou outro erro
+                MensagemErro = $"Erro ao conectar com o servidor: {ex.Message}";
+            }
+            finally
+            {
+                IsLoading = false;  // Esconder loading
+            }
+        }
+
+        
+        // Manter método antigo por compatibilidade (se precisar)
         public void ExecutarLogin()
         {
-            // Aqui você pode adicionar validações depois
-            // Por enquanto, apenas navega para a Home
-            _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            // Chamar a versão async
+            _ = ExecutarLoginAsync();
         }
     }
 }

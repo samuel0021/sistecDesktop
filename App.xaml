@@ -4,15 +4,15 @@
              xmlns:local="clr-namespace:sistecDesktop"
              xmlns:views="clr-namespace:sistecDesktop.Views"
              xmlns:viewmodels="clr-namespace:sistecDesktop.ViewModels"
-             StartupUri="MainWindow.xaml"
-             >
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
 
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
+            
+            <ResourceDictionary.MergedDictionaries> <!--Sincroniza os dicionário da Controsl.xaml e App.xaml-->
                 <ResourceDictionary Source="pack://application:,,,/sistecDesktop;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
 
             <!--#region DataTemplates -->
             <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
@@ -101,7 +101,7 @@
             </Style>
             <!--#endregion-->
 
-            <!--#region Border -->
+            <!--#region BorderShadow -->
             <Style x:Key="BorderShadow" TargetType="Border">
                 <Setter Property="Effect">
                     <Setter.Value >
@@ -152,7 +152,7 @@
             </Style>
             <!--#endregion-->
             <!--#endregion-->
-            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -39,6 +39,9 @@
     <ApplicationIcon>images\logo-purple.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -67,6 +70,8 @@
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Services\ApiClient.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ForgotPassViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -153,6 +158,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="README.md" />
     <Resource Include="fonts\Montserrat-Bold.ttf" />
     <Resource Include="fonts\Montserrat-Regular.ttf" />
@@ -182,9 +188,7 @@
     <Resource Include="images\sistec-purple.png" />
     <Resource Include="images\sistec-white.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="images\circle-question-mark.png" />
     <Resource Include="images\house.png" />

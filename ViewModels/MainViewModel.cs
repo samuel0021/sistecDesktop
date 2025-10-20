@@ -1,5 +1,6 @@
 ﻿using sistecDesktop.Commands;
 using sistecDesktop.Views;
+using sistecDesktop.Services;  // ← ADICIONAR
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,6 +11,10 @@ namespace sistecDesktop.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private BaseViewModel _selectedViewModel;
+        
+        // Tornar público para facilitar acesso
+        public ApiClient ApiClient { get; private set; }  // ← MODIFICAR
+
 
         public BaseViewModel SelectedViewModel
         {
@@ -25,10 +30,19 @@ namespace sistecDesktop.ViewModels
 
         public MainViewModel()
         {
+            // Criar o ApiClient UMA VEZ aqui
+            ApiClient = new ApiClient();  // ← ADICIONAR
+
             UpdateViewCommand = new UpdateViewCommand(this);
 
-            // Inicia com a tela de Login passando a referência
-            SelectedViewModel = new LoginViewModel(this);
+            // Inicia com a tela de Login passando a referência E o apiClient
+            SelectedViewModel = new LoginViewModel(this, ApiClient);  // ← MODIFICAR
+        }
+
+        // Método auxiliar para quando outras ViewModels precisarem do ApiClient
+        public ApiClient GetApiClient()  // ← ADICIONAR (opcional mas útil)
+        {
+            return ApiClient;
         }
     }
 }
