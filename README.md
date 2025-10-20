@@ -1,12 +1,13 @@
-# Git - Guia de Referência para Projetos WPF
+# Git - Guia de ReferÃªncia para Projetos WPF
 
 ## 10 Comandos Essenciais
 
+
 1. `git status`  
-   Ver o status do projeto (alterações, commits pendentes)
+   Ver o status do projeto (alteraÃ§Ãµes, commits pendentes)
 
 2. `git add .`  
-   Adicionar todas as mudanças ao staging
+   Adicionar todas as mudanÃ§as ao staging
 
 3. `git commit -m "Mensagem"`  
    Criar commit com mensagem
@@ -15,7 +16,7 @@
    Enviar commits locais para o GitHub
 
 5. `git pull`  
-   Trazer alterações do GitHub para o projeto local
+   Trazer alteraÃ§Ãµes do GitHub para o projeto local
 
 6. `git branch`  
    Listar branches locais
@@ -27,12 +28,11 @@
    Criar e mudar para um novo branch
 
 9. `git log --oneline`  
-   Ver histórico resumido de commits
+   Ver histÃ³rico resumido de commits
 
 10. `git fetch`  
-    Buscar alterações do remoto sem alterar o projeto local
+    Buscar alteraÃ§Ãµes do remoto sem alterar o projeto local
 
-**Fluxo diário sugerido:**
 ```bash
 git pull
 git add .
