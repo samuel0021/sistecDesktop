@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace sistecDesktop.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for Chamados.xaml
+    /// Interaction logic for Tickets.xaml
     /// </summary>
-    public partial class Chamados : UserControl
+    public partial class Tickets : UserControl
     {
-        public Chamados()
+        public Tickets()
         {
             InitializeComponent();
         }

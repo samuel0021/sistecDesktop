@@ -18,9 +18,9 @@ namespace sistecDesktop.Views.Pages
     /// <summary>
     /// Interaction logic for Usuarios.xaml
     /// </summary>
-    public partial class Usuarios : UserControl
+    public partial class Users : UserControl
     {
-        public Usuarios()
+        public Users()
         {
             InitializeComponent();
         }

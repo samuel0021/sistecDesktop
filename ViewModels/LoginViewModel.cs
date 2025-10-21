@@ -24,6 +24,7 @@ namespace sistecDesktop.ViewModels
         private string _mensagemErro;
         private bool _isLoading;
 
+        #region Encapsulamentos
         public string Email
         {
             get => _email;
@@ -63,17 +64,20 @@ namespace sistecDesktop.ViewModels
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
+        #endregion
 
         public ICommand EsqueciSenhaCommand { get; }
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(MainViewModel mainViewModel, ApiClient apiClient)  // ← MODIFICAR
+        public LoginViewModel(MainViewModel mainViewModel, ApiClient apiClient)
         {
             _mainViewModel = mainViewModel;
-            _apiClient = apiClient;  // ← ADICIONAR
+            _apiClient = apiClient;
 
             EsqueciSenhaCommand = new RelayCommand(() => ForgotPassWindow.Mostrar());
-            LoginCommand = new RelayCommand(async () => await ExecutarLoginAsync());  // ← MODIFICAR para async
+
+            // ✅ Usar AsyncRelayCommand ao invés de RelayCommand com lambda async
+            LoginCommand = new AsyncRelayCommand(ExecutarLoginAsync);
         }
 
         // Método atualizado com chamada à API
@@ -129,7 +133,7 @@ namespace sistecDesktop.ViewModels
                 // Erro de conexão ou outro erro
                 MensagemErro = $"Erro ao conectar com o servidor: {ex.Message}";
             }
-            finally
+            finally 
             {
                 IsLoading = false;  // Esconder loading
             }

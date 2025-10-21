@@ -1,6 +1,6 @@
 ﻿using sistecDesktop.Commands;
 using sistecDesktop.Views.Pages;
-using sistecDesktop.Services;  // ← ADICIONAR
+using sistecDesktop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace sistecDesktop.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private readonly MainViewModel _mainViewModel;
-        private readonly ApiClient _apiClient;  // ← ADICIONAR
+        private readonly ApiClient _apiClient;
         private string _paginaSelecionada;
         private UserControl _currentContent;
 
@@ -60,7 +60,7 @@ namespace sistecDesktop.ViewModels
         public HomeViewModel(MainViewModel mainViewModel, ApiClient apiClient)  // ← MODIFICAR
         {
             _mainViewModel = mainViewModel;
-            _apiClient = apiClient;  // ← ADICIONAR
+            _apiClient = apiClient;
 
             LogoutCommand = new LogoutCommand(this);
 
@@ -81,13 +81,15 @@ namespace sistecDesktop.ViewModels
                 case "Dashboard":
                     CurrentContent = new Dashboard();
                     break;
-                case "Chamados":
-                    // Aqui você pode passar o ApiClient para a página se precisar
-                    CurrentContent = new Chamados();
-                    break;
+                /*case "Chamados":
+                    var ticketsViewModel = new TicketsViewModel(_apiClient);
+                    var ticketsPage = new Tickets { DataContext = ticketsViewModel };
+                    CurrentContent = ticketsPage;
+                    break;*/
                 case "Usuarios":
-                    // Aqui você pode passar o ApiClient para a página se precisar
-                    CurrentContent = new Usuarios();
+                    var usersViewModel = new UsersViewModel(_apiClient);
+                    var usersPage = new Users { DataContext = usersViewModel };
+                    CurrentContent = usersPage;
                     break;
                 default:
                     CurrentContent = new Home();
