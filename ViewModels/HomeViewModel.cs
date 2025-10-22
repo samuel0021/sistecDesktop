@@ -57,7 +57,7 @@ namespace sistecDesktop.ViewModels
         public string TagChamados => PaginaSelecionada == "Chamados" ? "Selected" : null;
         public string TagUsuarios => PaginaSelecionada == "Usuarios" ? "Selected" : null;
 
-        public HomeViewModel(MainViewModel mainViewModel, ApiClient apiClient)  // ← MODIFICAR
+        public HomeViewModel(MainViewModel mainViewModel, ApiClient apiClient)
         {
             _mainViewModel = mainViewModel;
             _apiClient = apiClient;
@@ -76,7 +76,9 @@ namespace sistecDesktop.ViewModels
             switch (nomePagina)
             {
                 case "Home":
-                    CurrentContent = new Home();
+                    var homePageViewModel = new HomePageViewModel(_apiClient);
+                    var homePage = new Home { DataContext = homePageViewModel };
+                    CurrentContent = homePage;
                     break;
                 case "Dashboard":
                     CurrentContent = new Dashboard();
@@ -97,18 +99,18 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        public async void ExecutarLogout()  // ← MODIFICAR para async
+        public async void ExecutarLogout()
         {
             try
             {
                 // Fazer logout na API
-                await _apiClient.LogoutAsync();  // ← ADICIONAR
+                await _apiClient.LogoutAsync();
 
                 // Limpar cookies locais
-                _apiClient.Logout();  // ← ADICIONAR
+                _apiClient.Logout();
 
                 // Voltar para tela de login
-                _mainViewModel.SelectedViewModel = new LoginViewModel(_mainViewModel, _apiClient);  // ← MODIFICAR
+                _mainViewModel.SelectedViewModel = new LoginViewModel(_mainViewModel, _apiClient);
             }
             catch (Exception ex)
             {

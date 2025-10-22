@@ -145,29 +145,50 @@ namespace sistecDesktop.Models
         [JsonProperty("id_chamado")]
         public int Id { get; set; }
 
-        [JsonProperty("title")]
+        [JsonProperty("titulo_chamado")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonProperty("descricao_detalhada")]
         public string Description { get; set; }
 
-        [JsonProperty("status_chamado")]
+        [JsonProperty("descricao_status_chamado")]
         public string Status { get; set; }
+
+        [JsonProperty("prioridade_chamado")]
+        public int Prioridade { get; set; }
+
+        [JsonProperty("descricao_categoria_chamado")]
+        public string Categoria { get; set; }
+
+        [JsonProperty("descricao_problema_chamado")]
+        public string Problema { get; set; }
+
+        [JsonProperty("usuario_abertura")]
+        public string UsuarioAbertura { get; set; }
+
+        [JsonProperty("email_usuario")]
+        public string EmailUsuario { get; set; }
+
+        [JsonProperty("usuario_resolucao")]
+        public string UsuarioResolucao { get; set; }
 
         [JsonProperty("id_usuario_abertura")]
         public int UserId { get; set; }
 
-        [JsonProperty("user_id")]
-        public int? UserIdAlternative { get; set; }
-
         [JsonProperty("data_abertura")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("data_ultima_atualizacao")]
-        public DateTime? UpdatedAt { get; set; }
+        [JsonProperty("data_resolucao")]
+        public DateTime? DataResolucao { get; set; }
 
-        // Para compatibilidade com o código existente
-        public int GetUserId() => UserIdAlternative ?? UserId;
+        [JsonProperty("data_aprovacao_recusa")]
+        public DateTime? DataAprovacao { get; set; }
+
+        [JsonProperty("data_encaminhamento")]
+        public DateTime? DataEncaminhamento { get; set; }
+
+        [JsonProperty("data_fechamento")]
+        public DateTime? DataFechamento { get; set; }
     }
 
     // Modelo unificado para exibição
@@ -177,22 +198,33 @@ namespace sistecDesktop.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
+        public int Prioridade { get; set; }
+        public string Categoria { get; set; }
+        public string Problema { get; set; }
+        public string UsuarioAbertura { get; set; }
+        public string EmailUsuario { get; set; }
+        public string UsuarioResolucao { get; set; }
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? DataResolucao { get; set; }
 
-        // Construtor para conversão
         public Chamado() { }
 
         public Chamado(ChamadoDatabase db)
         {
             Id = db.Id;
-            Title = db.Title ?? "";
+            Title = db.Title ?? "Sem título";
             Description = db.Description ?? "";
             Status = db.Status ?? "";
-            UserId = db.GetUserId();
+            Prioridade = db.Prioridade;
+            Categoria = db.Categoria ?? "";
+            Problema = db.Problema ?? "";
+            UsuarioAbertura = db.UsuarioAbertura ?? "";
+            EmailUsuario = db.EmailUsuario ?? "";
+            UsuarioResolucao = db.UsuarioResolucao ?? "";
+            UserId = db.UserId;
             CreatedAt = db.CreatedAt;
-            UpdatedAt = db.UpdatedAt;
+            DataResolucao = db.DataResolucao;
         }
     }
 

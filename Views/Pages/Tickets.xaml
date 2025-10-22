@@ -88,34 +88,36 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" 
-                                Binding="{Binding Id}" 
-                                Width="60"/>
+                        Binding="{Binding Id}" 
+                        Width="50"/>
 
                     <DataGridTextColumn Header="Título" 
-                                Binding="{Binding Title}" 
-                                Width="100"/>
-
-                    <DataGridTextColumn Header="Descrição" 
-                                Binding="{Binding Description}" 
-                                Width="*"
-                                MinWidth="200"/>
+                        Binding="{Binding Title}" 
+                        Width="250"/>
 
                     <DataGridTextColumn Header="Status" 
-                                Binding="{Binding Status}" 
-                                Width="*"
-                                MinWidth="200"/>
+                        Binding="{Binding Status}" 
+                        Width="120"/>
 
-                    <DataGridTextColumn Header="ID Usuário" 
-                                Binding="{Binding UserId}" 
-                                Width="120"/>
-                    
+                    <DataGridTextColumn Header="Prioridade" 
+                        Binding="{Binding Prioridade}" 
+                        Width="80"/>
+
+                    <DataGridTextColumn Header="Categoria" 
+                        Binding="{Binding Categoria}" 
+                        Width="100"/>
+
+                    <DataGridTextColumn Header="Usuário" 
+                        Binding="{Binding UsuarioAbertura}" 
+                        Width="150"/>
+
                     <DataGridTextColumn Header="Abertura" 
-                                Binding="{Binding CreatedAt}" 
-                                Width="120"/>
-                    
-                    <DataGridTextColumn Header="Atualização" 
-                                Binding="{Binding UpdatedAt}" 
-                                Width="120"/>
+                        Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy HH:mm'}" 
+                        Width="130"/>
+
+                    <DataGridTextColumn Header="Resolução" 
+                        Binding="{Binding DataResolucao, StringFormat='dd/MM/yyyy HH:mm'}" 
+                        Width="130"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
