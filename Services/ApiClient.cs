@@ -354,6 +354,15 @@ namespace sistecDesktop.Services
         {
             try
             {
+                /*var chamadosUrl = $"{_baseUrl}/api/chamados";
+                Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
+
+                var response = await _httpClient.GetAsync(chamadosUrl);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Chamados Status: {response.StatusCode}");
+                Console.WriteLine($"DEBUG: Resposta chamados (primeiros 300 chars): {responseBody.Substring(0, Math.Min(responseBody.Length, 300))}...");*/
+
                 var chamadosUrl = $"{_baseUrl}/api/chamados";
                 Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
 
@@ -361,7 +370,11 @@ namespace sistecDesktop.Services
                 var responseBody = await response.Content.ReadAsStringAsync();
 
                 Console.WriteLine($"Chamados Status: {response.StatusCode}");
-                Console.WriteLine($"DEBUG: Resposta chamados (primeiros 300 chars): {responseBody.Substring(0, Math.Min(responseBody.Length, 300))}...");
+
+                // ✅ MUDAR ESTA LINHA - Ver JSON COMPLETO
+                Console.WriteLine($"=== JSON COMPLETO DOS CHAMADOS ===");
+                Console.WriteLine(responseBody);
+                Console.WriteLine($"==================================");
 
                 if (response.IsSuccessStatusCode)
                 {

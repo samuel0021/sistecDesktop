@@ -9,19 +9,117 @@
     <Grid>
         <!--#region Definições do Grid-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <!--#endregion-->
-        
-        
-        
+
+        <!-- Cabeçalho -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Chamados" 
+               FontSize="24" 
+               FontWeight="Bold"
+               VerticalAlignment="Center"/>
+
+            <Button Content="🔄 Atualizar" 
+            Command="{Binding LoadTicketsCommand}"
+            Margin="20,0,0,0"
+            Padding="10,5"
+            Cursor="Hand"/>
+        </StackPanel>
+
+        <!-- Mensagem de erro -->
+        <TextBlock Grid.Row="1" 
+           Text="{Binding ErrorMessage}"
+           Foreground="Red"
+           TextWrapping="Wrap"
+           Margin="0,0,0,10"
+           FontSize="12"/>
+
+        <!-- Loading ou DataGrid -->
+        <Grid Grid.Row="2">
+            <!-- Loading Indicator -->
+            <StackPanel HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <TextBlock Text="⏳" FontSize="48" HorizontalAlignment="Center"/>
+                <TextBlock Text="Carregando chamados..." 
+                   Margin="0,10,0,0"
+                   FontSize="14"
+                   Foreground="Gray"
+                   HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- DataGrid com os usuários -->
+            <DataGrid ItemsSource="{Binding Tickets}"
+              SelectedItem="{Binding SelectedTicket}"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              CanUserSortColumns="True"
+              CanUserResizeColumns="True"
+              GridLinesVisibility="Horizontal"
+              HeadersVisibility="Column"
+              SelectionMode="Single"
+              AlternatingRowBackground="#F5F5F5"
+              RowHeight="35"
+              FontSize="12">
+
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" 
+                                Binding="{Binding Id}" 
+                                Width="60"/>
+
+                    <DataGridTextColumn Header="Título" 
+                                Binding="{Binding Title}" 
+                                Width="100"/>
+
+                    <DataGridTextColumn Header="Descrição" 
+                                Binding="{Binding Description}" 
+                                Width="*"
+                                MinWidth="200"/>
+
+                    <DataGridTextColumn Header="Status" 
+                                Binding="{Binding Status}" 
+                                Width="*"
+                                MinWidth="200"/>
+
+                    <DataGridTextColumn Header="ID Usuário" 
+                                Binding="{Binding UserId}" 
+                                Width="120"/>
+                    
+                    <DataGridTextColumn Header="Abertura" 
+                                Binding="{Binding CreatedAt}" 
+                                Width="120"/>
+                    
+                    <DataGridTextColumn Header="Atualização" 
+                                Binding="{Binding UpdatedAt}" 
+                                Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+
     </Grid>
 </UserControl>

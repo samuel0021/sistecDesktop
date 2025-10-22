@@ -81,11 +81,11 @@ namespace sistecDesktop.ViewModels
                 case "Dashboard":
                     CurrentContent = new Dashboard();
                     break;
-                /*case "Chamados":
+                case "Chamados":
                     var ticketsViewModel = new TicketsViewModel(_apiClient);
                     var ticketsPage = new Tickets { DataContext = ticketsViewModel };
                     CurrentContent = ticketsPage;
-                    break;*/
+                    break;
                 case "Usuarios":
                     var usersViewModel = new UsersViewModel(_apiClient);
                     var usersPage = new Users { DataContext = usersViewModel };
