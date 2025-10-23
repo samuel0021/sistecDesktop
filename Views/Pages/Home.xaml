@@ -11,13 +11,11 @@
         <!--#region Definições do Grid-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--#endregion-->
 
-        <!--Grid dos botões-->
+        <!--#region Grid dos botões-->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -96,36 +94,32 @@
                 </DockPanel>
             </Button>
             <!--#endregion-->
-        </Grid>
 
-        <!--Cabeçalho-->
-        <Grid Grid.Row="1">
+        </Grid>
+        <!--#endregion-->
+
+
+        <!--#region Grid do DataGrid-->
+        <Grid Grid.Row="2">
+            <!--#region Definições do Grid-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Chamados Recentes" 
-                       FontSize="24" 
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"
-                       Margin="20"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
 
-            <Button Content="🔄 Atualizar" Grid.Column="1" 
-                    HorizontalAlignment="Right"
-                    Command="{Binding LoadTicketsCommand}"
-                    Margin="20"
-                    Padding="10,5"/>
+
+            <!--#region DataGrid-->
+
+            <components:TicketsDataGrid Grid.Row="2" Grid.ColumnSpan="2"/>
+
+            <!--#endregion-->
         </Grid>
-
-        <!--Mensagem de erro-->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding ErrorMessage}"
-                   Foreground="Red"
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,10"
-                   FontSize="12"/>
-
-        <!--DataGrid-->
-        <components:TicketsDataGrid Grid.Row="3"/>
+        <!--#endregion-->
     </Grid>
 </UserControl>

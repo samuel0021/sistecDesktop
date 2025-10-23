@@ -54,7 +54,7 @@
             <SolidColorBrush x:Key="brush-delftBlue" Color="#3E3D66"/>
             <SolidColorBrush x:Key="brush-coolGray" Color="#7B7A99"/>
             <SolidColorBrush x:Key="brush-frenchGray" Color="#B9B7CC"/>
-            <SolidColorBrush x:Key="brush-frenchGray-transparent" Color="#66808080"/>
+            <SolidColorBrush x:Key="brush-frenchGray-transparent" Color="#33808080"/>
 
             <SolidColorBrush x:Key="brush-vibrantViolet" Color="#8564FF"/>
             <SolidColorBrush x:Key="brush-tropicalIndigo" Color="#B09AFF"/>

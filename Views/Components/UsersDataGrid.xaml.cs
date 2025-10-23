@@ -1,6 +1,4 @@
-﻿using sistecDesktop.Services;
-using sistecDesktop.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +16,11 @@ using System.Windows.Shapes;
 namespace sistecDesktop.Views.Components
 {
     /// <summary>
-    /// Interaction logic for TicketsDataGrid.xaml
+    /// Interaction logic for UsersDataGrid.xaml
     /// </summary>
-    public partial class TicketsDataGrid : UserControl
+    public partial class UsersDataGrid : UserControl
     {
-        public TicketsDataGrid()
+        public UsersDataGrid()
         {
             InitializeComponent();
         }

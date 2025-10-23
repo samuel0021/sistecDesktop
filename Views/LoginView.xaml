@@ -99,6 +99,7 @@
                                 FontFamily="{StaticResource MontserratBold}"
                                 Content="Entrar" FontSize="12" 
                                 Height="25" Margin="20, 5, 20, 0"
+                                IsDefault="True"
                                 Command="{Binding LoginCommand}"/>
                         
                         

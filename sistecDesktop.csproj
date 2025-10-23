@@ -84,6 +84,9 @@
     <Compile Include="Views\Components\TicketsDataGrid.xaml.cs">
       <DependentUpon>TicketsDataGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Components\UsersDataGrid.xaml.cs">
+      <DependentUpon>UsersDataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Components\TicketsDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\UsersDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

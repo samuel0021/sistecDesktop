@@ -75,18 +75,17 @@ namespace sistecDesktop.ViewModels
             _apiClient = apiClient;
 
             EsqueciSenhaCommand = new RelayCommand(() => ForgotPassWindow.Mostrar());
-
-            // ✅ Usar AsyncRelayCommand ao invés de RelayCommand com lambda async
+ 
             LoginCommand = new AsyncRelayCommand(ExecutarLoginAsync);
         }
 
         // Método atualizado com chamada à API
-        public async Task ExecutarLoginAsync()  // ← MODIFICAR para async Task
+        public async Task ExecutarLoginAsync()
         {
             // Limpar mensagem de erro anterior
             MensagemErro = string.Empty;
 
-            // Validações básicas
+            // Validações básicas -- ARRUMAR DEPOIS
             if (string.IsNullOrWhiteSpace(Email))
             {
                 MensagemErro = "Por favor, informe o email.";

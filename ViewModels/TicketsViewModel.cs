@@ -64,12 +64,15 @@ namespace sistecDesktop.ViewModels
         #endregion
 
         public ICommand LoadTicketsCommand { get; }
+        public ICommand ViewTicketCommand { get; }
 
         public TicketsViewModel(ApiClient apiClient)
         {
             _apiClient = apiClient;
-            Tickets = new ObservableCollection<Chamado>();  // ← MUDAR
+            Tickets = new ObservableCollection<Chamado>(); 
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
+            ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
+
             _ = LoadTickets();
         }
 
@@ -81,11 +84,11 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var list = await _apiClient.GetChamadosAsync();
-                Tickets.Clear();  // ← MUDAR
+                Tickets.Clear();
 
                 foreach (var ticket in list)
                 {
-                    Tickets.Add(ticket);  // ← MUDAR
+                    Tickets.Add(ticket);
                 }
             }
             catch (UnauthorizedAccessException)
@@ -101,6 +104,23 @@ namespace sistecDesktop.ViewModels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private void ViewTicket(object parameter)
+        {
+            if (parameter is Chamado ticket) 
+            {
+                MessageBox.Show(
+                    $"ID: {ticket.Id}\n" +
+                    $"Título: {ticket.Title}\n" +
+                    $"Descrição: {ticket.Description}\n" +
+                    $"Status: {ticket.Status}\n" +
+                    $"Usuário: {ticket.UsuarioAbertura}\n" +
+                    $"Abertura: {ticket.CreatedAt:dd/MM/yyyy HH:mm}",
+                    "Detalhes do Chamado",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
         }
     }

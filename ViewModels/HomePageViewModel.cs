@@ -18,6 +18,7 @@ namespace sistecDesktop.ViewModels
         private bool _isLoading;
         private string _errorMessage;
 
+        #region Encapsulamentos
         public ObservableCollection<Chamado> Tickets
         {
             get => _tickets;
@@ -47,6 +48,7 @@ namespace sistecDesktop.ViewModels
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
+#endregion
 
         public ICommand LoadTicketsCommand { get; }
 
@@ -55,8 +57,7 @@ namespace sistecDesktop.ViewModels
             _apiClient = apiClient;
             Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
-
-            // Carregar automaticamente os últimos chamados
+  
             _ = LoadTickets();
         }
 
@@ -69,7 +70,7 @@ namespace sistecDesktop.ViewModels
             {
                 var list = await _apiClient.GetChamadosAsync();
 
-                // Pegar apenas os últimos 10 chamados
+                // Pega apenas os últimos 10 chamados
                 var ultimosChamados = list.OrderByDescending(c => c.CreatedAt).Take(10);
 
                 Tickets.Clear();
