@@ -64,6 +64,7 @@ namespace sistecDesktop.ViewModels
         #endregion
 
         public ICommand LoadUsersCommand { get; }
+        public ICommand ViewUserCommand { get; }
 
         public UsersViewModel(ApiClient apiClient)
         {
@@ -71,6 +72,7 @@ namespace sistecDesktop.ViewModels
             Users = new ObservableCollection<User>();
 
             LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
+            ViewUserCommand = new RelayCommandWithParameter(ViewUser);
 
             _ = LoadUsers();
         }
@@ -103,6 +105,24 @@ namespace sistecDesktop.ViewModels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private void ViewUser(object parameter)
+        {
+            if (parameter is User user)
+            {
+                MessageBox.Show(
+                    $"ID: {user.Id}\n" +
+                    $"Nome: {user.Name}\n" +
+                    $"Email: {user.Email}\n" +
+                    $"Telefone: {user.Telefone}\n" +
+                    $"Cargo: {user.Cargo}\n" +
+                    $"Setor: {user.Setor}\n" +
+                    $"Matrícula: {user.Matricula}\n",
+                    "Detalhes do Chamado",
+                    MessageBoxButton.OK ,
+                    MessageBoxImage.Information);
             }
         }
     }

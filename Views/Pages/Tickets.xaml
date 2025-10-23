@@ -10,18 +10,18 @@
     <Grid>
         
         <Border Grid.Row="1" Margin="10 10 10 10" Padding="10"
-        BorderBrush="{DynamicResource brush-frenchGray}"
-        BorderThickness="1"
-        CornerRadius="8"
-        HorizontalAlignment="Stretch"
-        Background="{DynamicResource brush-lavenderMist}">
+            BorderBrush="{DynamicResource brush-frenchGray}"
+            BorderThickness="1"
+            CornerRadius="8"
+            HorizontalAlignment="Stretch"
+            Background="{DynamicResource brush-lavenderMist}">
 
             <Grid>
 
                 <!--#region Definições do Grid-->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -36,15 +36,15 @@
                    FontFamily="{StaticResource MontserratBold}"/>
 
                 <Button Content="Atualizar" Grid.Column="1" 
-                Style="{StaticResource HomeButtons}" 
-                Foreground="{StaticResource brush-peachOrange}"
-                FontSize="14"
-                Width="100"
-                Background="Transparent"
-                HorizontalAlignment="Right"
-                Height="50"
-                Command="{Binding LoadTicketsCommand}"
-                Margin="20"/>
+                    Style="{StaticResource HomeButtons}" 
+                    Foreground="{StaticResource brush-peachOrange}"
+                    FontSize="14"
+                    Width="100"
+                    Background="Transparent"
+                    HorizontalAlignment="Right"
+                    Height="50"
+                    Command="{Binding LoadTicketsCommand}"
+                    Margin="20"/>
 
                 <!--#region Mensagem de erro-->
                 <TextBlock Grid.Row="1" Margin="0,0,0,10" FontSize="12" 
@@ -53,11 +53,14 @@
                    TextWrapping="Wrap"/>
                 <!--#endregion-->
 
+                
                 <!-- DataGrid -->
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="2"
-          ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
-          SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
-          Style="{StaticResource MyDataGrid}">
+                    <DataGrid Grid.Row="1" Grid.ColumnSpan="2" Margin="0 0 0 10"
+                        MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
+                        SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
+                        Style="{StaticResource MyDataGrid}">
+
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" 
@@ -89,12 +92,10 @@
                                 <DataTemplate>
 
 
-                                    <Button Style="{StaticResource ViewTicketButton}"                                    
+                                    <Button Style="{StaticResource ViewButton}"                                    
                                             Command="{Binding ViewModel.ViewTicketCommand, 
                                                      ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"/>
-
-
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -103,6 +104,7 @@
 
                     </DataGrid.Columns>
                 </DataGrid>
+          
             </Grid>
         </Border>
     </Grid>

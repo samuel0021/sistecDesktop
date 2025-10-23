@@ -16,7 +16,7 @@ namespace sistecDesktop.ViewModels
     public class TicketsViewModel : BaseViewModel
     {
         private readonly ApiClient _apiClient;
-        private ObservableCollection<Chamado> _tickets;  // ← Inglês
+        private ObservableCollection<Chamado> _tickets;
         private bool _isLoading;
         private string _errorMessage;
         private Chamado _selectedTicket;

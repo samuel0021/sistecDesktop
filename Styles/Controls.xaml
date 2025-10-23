@@ -193,7 +193,7 @@
 
     <!--ViewTicketButton-->
     
-    <Style x:Key="ViewTicketButton" TargetType="Button">
+    <Style x:Key="ViewButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource brush-peachOrange}"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -202,7 +202,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="borderTicketButton" CornerRadius="2" Background="{TemplateBinding Background}"
                             BorderThickness="1" BorderBrush="{DynamicResource brush-frenchGray}"
-                            Width="30" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            Width="30" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <TextBlock Text="👁" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>

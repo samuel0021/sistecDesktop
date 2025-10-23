@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:sistecDesktop.ViewModels"
         Title="Sistec" Height="720" Width="1280" 
         Loaded="Window_Loaded"
-        MaxHeight="1080" MaxWidth="1920"
+        
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
         
