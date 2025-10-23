@@ -55,7 +55,8 @@
 
                 
                 <!-- DataGrid -->
-                    <DataGrid Grid.Row="1" Grid.ColumnSpan="2" Margin="0 0 0 10"
+                
+                    <DataGrid Grid.Row="1" Grid.ColumnSpan="2" 
                         MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
                         ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
