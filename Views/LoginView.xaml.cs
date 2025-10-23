@@ -33,5 +33,14 @@ namespace sistecDesktop.Views
                 viewModel.Senha = ((PasswordBox)sender).Password;
             }
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //txtEmail.Focus();
+
+            //APAGAR DEPOIS E DEIXAR SÓ O FOCUS
+            txtEmail.Text = "admin@sistec.com"; 
+            passwordBox.Password = "admin123";
+        }
     }
 }

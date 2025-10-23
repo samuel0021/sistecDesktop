@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sistecDesktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,20 @@ namespace sistecDesktop.Views.Pages
         public Tickets()
         {
             InitializeComponent();
+
+            
         }
+        public TicketsViewModel ViewModel
+        {
+            get => (TicketsViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register(
+                nameof(ViewModel),
+                typeof(TicketsViewModel),
+                typeof(Tickets),
+                new PropertyMetadata(null));
     }
 }

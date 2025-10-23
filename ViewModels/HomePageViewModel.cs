@@ -14,6 +14,8 @@ namespace sistecDesktop.ViewModels
     public class HomePageViewModel : BaseViewModel
     {
         private readonly ApiClient _apiClient;
+        public TicketsViewModel TicketsViewModel { get; }
+
         private ObservableCollection<Chamado> _tickets;
         private bool _isLoading;
         private string _errorMessage;
@@ -52,9 +54,11 @@ namespace sistecDesktop.ViewModels
 
         public ICommand LoadTicketsCommand { get; }
 
-        public HomePageViewModel(ApiClient apiClient)
+        public HomePageViewModel(ApiClient apiClient, TicketsViewModel ticketsViewModel)
         {
             _apiClient = apiClient;
+            TicketsViewModel = ticketsViewModel;
+
             Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
   

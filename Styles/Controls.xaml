@@ -190,6 +190,33 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--ViewTicketButton-->
+    
+    <Style x:Key="ViewTicketButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-peachOrange}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="borderTicketButton" CornerRadius="2" Background="{TemplateBinding Background}"
+                            BorderThickness="1" BorderBrush="{DynamicResource brush-frenchGray}"
+                            Width="30" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="👁" FontSize="20"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="borderTicketButton" Property="Background" Value="{DynamicResource brush-frenchGray-transparent}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
     
     <!--#endregion-->
 

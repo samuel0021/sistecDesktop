@@ -14,6 +14,7 @@ namespace sistecDesktop.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         private readonly MainViewModel _mainViewModel;
+        private readonly TicketsViewModel _ticketsViewModel;
         private readonly ApiClient _apiClient;
         private string _paginaSelecionada;
         private UserControl _currentContent;
@@ -62,6 +63,8 @@ namespace sistecDesktop.ViewModels
             _mainViewModel = mainViewModel;
             _apiClient = apiClient;
 
+            _ticketsViewModel = new TicketsViewModel(_apiClient);
+
             LogoutCommand = new LogoutCommand(this);
 
             SelecionarPaginaCommand = new RelayCommandWithParameter(
@@ -76,7 +79,7 @@ namespace sistecDesktop.ViewModels
             switch (nomePagina)
             {
                 case "Home":
-                    var homePageViewModel = new HomePageViewModel(_apiClient);
+                    var homePageViewModel = new HomePageViewModel(_apiClient, _ticketsViewModel);
                     var homePage = new Home { DataContext = homePageViewModel };
                     CurrentContent = homePage;
                     break;
@@ -84,8 +87,7 @@ namespace sistecDesktop.ViewModels
                     CurrentContent = new Dashboard();
                     break;
                 case "Chamados":
-                    var ticketsViewModel = new TicketsViewModel(_apiClient);
-                    var ticketsPage = new Tickets { DataContext = ticketsViewModel };
+                    var ticketsPage = new Tickets { ViewModel = _ticketsViewModel };
                     CurrentContent = ticketsPage;
                     break;
                 case "Usuarios":

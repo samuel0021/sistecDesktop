@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views.Pages"
-             xmlns:components="clr-namespace:sistecDesktop.Views.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -116,8 +115,8 @@
 
             <!--#region DataGrid-->
 
-            <components:TicketsDataGrid Grid.Row="2" Grid.ColumnSpan="2"/>
-
+            <local:Tickets ViewModel="{Binding TicketsViewModel}" Grid.Row="2" Grid.ColumnSpan="2"/>
+            
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
