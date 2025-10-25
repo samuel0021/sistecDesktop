@@ -6,13 +6,19 @@
         xmlns:local="clr-namespace:sistecDesktop"
         mc:Ignorable="d"
         xmlns:viewmodels="clr-namespace:sistecDesktop.ViewModels"
-        Title="Sistec" Height="720" Width="1280" 
         Loaded="Window_Loaded"
+        Title="Sistec" 
         
+        MinWidth="1024"
+        MinHeight="600"
+        MaxWidth="1920"
+        MaxHeight="1080"
+        SizeToContent="Manual"
+        ResizeMode="CanResizeWithGrip"
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
         
-        ResizeMode="CanResizeWithGrip"
+      
         Icon="/images/logo-purple.ico"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel, IsDesignTimeCreatable=False}">
 
