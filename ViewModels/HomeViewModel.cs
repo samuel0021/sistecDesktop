@@ -18,6 +18,8 @@ namespace sistecDesktop.ViewModels
         private readonly ApiClient _apiClient;
         private string _paginaSelecionada;
         private UserControl _currentContent;
+        private readonly IDialogService _dialogService;
+
 
         public ICommand LogoutCommand { get; }
         public ICommand SelecionarPaginaCommand { get; }
@@ -64,6 +66,7 @@ namespace sistecDesktop.ViewModels
             _apiClient = apiClient;
 
             _ticketsViewModel = new TicketsViewModel(_apiClient);
+            _dialogService = new DialogService();
 
             LogoutCommand = new LogoutCommand(this);
 
@@ -73,6 +76,7 @@ namespace sistecDesktop.ViewModels
 
             PaginaSelecionada = "Home";
         }
+        
 
         private void LoadContent(string nomePagina)
         {

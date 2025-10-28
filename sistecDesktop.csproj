@@ -72,13 +72,19 @@
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="PopupWindow.xaml.cs">
+      <DependentUpon>PopupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ApiClient.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="ViewModels\BasePopupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ForgotPassViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\OpenTicketViewModel.cs" />
     <Compile Include="ViewModels\TicketsViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
     <Compile Include="Views\Components\UsersDataGrid.xaml.cs">
@@ -102,6 +108,9 @@
     <Compile Include="Views\Pages\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Popups\OpenTicketView.xaml.cs">
+      <DependentUpon>OpenTicketView.xaml</DependentUpon>
+    </Compile>
     <Page Include="ForgotPassWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +127,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Controls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\OpenTicketView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

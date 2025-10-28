@@ -14,6 +14,8 @@ namespace sistecDesktop.ViewModels
     public class HomePageViewModel : BaseViewModel
     {
         private readonly ApiClient _apiClient;
+        private readonly IDialogService _dialogService;
+
         public TicketsViewModel TicketsViewModel { get; }
 
         private ObservableCollection<Chamado> _tickets;
@@ -53,14 +55,17 @@ namespace sistecDesktop.ViewModels
 #endregion
 
         public ICommand LoadTicketsCommand { get; }
+        public ICommand OpenTicketCommand { get; }
 
         public HomePageViewModel(ApiClient apiClient, TicketsViewModel ticketsViewModel)
         {
             _apiClient = apiClient;
             TicketsViewModel = ticketsViewModel;
+            _dialogService = new DialogService();
 
             Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
+            OpenTicketCommand = new RelayCommand(OpenTicket);
   
             _ = LoadTickets();
         }
@@ -95,6 +100,13 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = false;
             }
+        }
+
+        private void OpenTicket()
+        {
+            var vm = new OpenTicketViewModel(_apiClient);
+            _dialogService.ShowDialog(vm);
+
         }
     }
 }

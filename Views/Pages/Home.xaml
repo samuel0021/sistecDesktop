@@ -26,6 +26,7 @@
             <Button x:Name="btnAbrirChamado" Grid.Column="0"
                     Style="{StaticResource HomeButtons}"
                     Background="{StaticResource brush-mistyRose}"
+                    Command="{Binding OpenTicketCommand}"
                     HorizontalContentAlignment="Stretch">
 
                 <DockPanel>
