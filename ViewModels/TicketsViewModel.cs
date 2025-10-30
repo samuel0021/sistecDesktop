@@ -22,13 +22,13 @@ namespace sistecDesktop.ViewModels
         private Chamado _selectedTicket;
 
         #region Encapsulamentos
-        public ObservableCollection<Chamado> Tickets  // ← MUDAR para inglês
+        public ObservableCollection<Chamado> Tickets
         {
             get { return _tickets; }
             set
             {
                 _tickets = value;
-                OnPropertyChanged(nameof(Tickets));  // ← MUDAR
+                OnPropertyChanged(nameof(Tickets));
             }
         }
 
@@ -107,21 +107,36 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        private void ViewTicket(object parameter)
+        private async void ViewTicket(object parameter)
         {
-            if (parameter is Chamado ticket) 
+            if (parameter is Chamado ticket)
             {
-                MessageBox.Show(
-                    $"ID: {ticket.Id}\n" +
-                    $"Título: {ticket.Title}\n" +
-                    $"Descrição: {ticket.Description}\n" +
-                    $"Status: {ticket.Status}\n" +
-                    $"Usuário: {ticket.UsuarioAbertura}\n" +
-                    $"Abertura: {ticket.CreatedAt:dd/MM/yyyy HH:mm}",
-                    "Detalhes do Chamado",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                try
+                {
+                    // Busca o chamado atualizado pelo ID
+                    var updatedTicket = await _apiClient.GetChamadoByIdAsync(ticket.Id);
+
+                    MessageBox.Show(
+                        $"ID: {updatedTicket.Id}\n" +
+                        $"Título: {updatedTicket.Title}\n" +
+                        $"Descrição: {updatedTicket.Description}\n" +
+                        $"Status: {updatedTicket.Status}\n" +
+                        $"Usuário: {updatedTicket.UsuarioAbertura}\n" +
+                        $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",
+                        "Detalhes do Chamado",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Sessão expirada. Faça login novamente.", "Erro de Autenticação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao carregar detalhes do chamado: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
+
     }
 }

@@ -72,6 +72,7 @@
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\TicketModels.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

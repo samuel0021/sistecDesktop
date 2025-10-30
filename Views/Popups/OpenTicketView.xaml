@@ -6,25 +6,111 @@
              xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Margin="30" MinWidth="400">
-        <TextBlock Text="Abrir Novo Chamado" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" />
 
-        <TextBlock Text="Título" Margin="0,0,0,5" />
-        <TextBox Text="{Binding Titulo, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15" Padding="8" />
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock Text="Descrição" Margin="0,0,0,5" />
-        <TextBox Text="{Binding Descricao, UpdateSourceTrigger=PropertyChanged}" 
-                 Height="100" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,0,15" Padding="8" />
+        <!-- Título do Popup -->
+        <TextBlock Grid.Row="0" 
+                   Text="Novo Chamado" 
+                   FontSize="24" 
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
 
-        <TextBlock Text="Categoria" Margin="0,0,0,5" />
-        <ComboBox SelectedItem="{Binding Categoria}" Margin="0,0,0,20" Padding="8">
-            <ComboBoxItem>Suporte</ComboBoxItem>
-            <ComboBoxItem>Dúvida</ComboBoxItem>
-        </ComboBox>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding OkCommand}" Content="Abrir" Width="80" Margin="0,0,5,0" />
-            <Button Command="{Binding CancelCommand}" Content="Cancelar" Width="80" />
+        <!-- Campo Título -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Título:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                     Height="30"/>
         </StackPanel>
-    </StackPanel>
+
+        <!-- Grid com Prioridade e Categoria lado a lado -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Prioridade -->
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Prioridade:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox SelectedValue="{Binding Priority}"
+                          SelectedValuePath="Tag"
+                          Height="30">
+                    <ComboBoxItem Content="Baixa" Tag="1"/>
+                    <ComboBoxItem Content="Média" Tag="2"/>
+                    <ComboBoxItem Content="Alta" Tag="3"/>
+                    <ComboBoxItem Content="Urgente" Tag="4"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Categoria -->
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Categoria:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox SelectedValue="{Binding CategoriaSelecionada, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+           SelectedValuePath="Tag"
+           IsSynchronizedWithCurrentItem="True"
+           Height="30">
+                    <ComboBoxItem Content="Hardware" Tag="hardware"/>
+                    <ComboBoxItem Content="Software" Tag="software"/>
+                    <ComboBoxItem Content="Rede" Tag="rede"/>
+                    <ComboBoxItem Content="Acesso" Tag="acesso"/>
+                    <ComboBoxItem Content="Email" Tag="email"/>
+                    <ComboBoxItem Content="Outros" Tag="outros"/>
+                </ComboBox>
+            </StackPanel>
+
+        </Grid>
+        <!-- Problema - atualiza automaticamente -->
+        <StackPanel Grid.Row="3">
+                <TextBlock Text="Problema:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding ProblemasDisponiveis}"
+              SelectedValue="{Binding ProblemaSelecionado}"
+              DisplayMemberPath="Label"
+              SelectedValuePath="Value"
+              Height="30">
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Campo Descrição -->
+            <StackPanel Grid.Row="4" Margin="0,0,0,10">
+                <TextBlock Text="Descrição:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+
+            <!-- Mensagem de erro -->
+            <TextBlock Grid.Row="4"
+                   Text="{Binding ErrorMessage}"
+                   Foreground="Red"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,10"/>
+
+            <!-- Botões -->
+            <StackPanel Grid.Row="5" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+                <Button Content="Cancelar" 
+                    Width="100" 
+                    Height="35"
+                    Margin="0,0,10,0"
+                    Command="{Binding CancelCommand}"/>
+                <Button Content="Criar Chamado" 
+                    Width="120" 
+                    Height="35"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    Command="{Binding CreateTicketCommand}"/>
+            </StackPanel>
+        </Grid>
 </UserControl>

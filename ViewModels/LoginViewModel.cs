@@ -123,6 +123,9 @@ namespace sistecDesktop.ViewModels
                     Email = string.Empty;
                     Senha = string.Empty;
 
+                    // Armazenar usuário
+                    App.LoggedUser = resultado.Data.User;
+
                     // Navegar para a Home
                     _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
                 }              

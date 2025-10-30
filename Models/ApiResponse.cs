@@ -44,6 +44,9 @@ namespace sistecDesktop.Models
         public ChamadoDatabase Data { get; set; }
     }
 
+
+
+
     // Modelo para login (campos limpos)
     public class User
     {
@@ -145,15 +148,19 @@ namespace sistecDesktop.Models
         [JsonProperty("id_chamado")]
         public int Id { get; set; }
 
+        // Ajustado para os nomes que o backend retornou
         [JsonProperty("titulo_chamado")]
         public string Title { get; set; }
 
         [JsonProperty("descricao_detalhada")]
         public string Description { get; set; }
 
+        // Se o backend retornar "status" ou "descricao_status_chamado", você pode mapear ambos:
         [JsonProperty("descricao_status_chamado")]
         public string Status { get; set; }
 
+        // Backend retornou "priority" e também "prioridade_chamado" em alguns pontos.
+        // Para garantir compatibilidade, crie propriedades auxiliares e um mapeamento.
         [JsonProperty("prioridade_chamado")]
         public int Prioridade { get; set; }
 
@@ -172,7 +179,7 @@ namespace sistecDesktop.Models
         [JsonProperty("usuario_resolucao")]
         public string UsuarioResolucao { get; set; }
 
-        [JsonProperty("id_usuario_abertura")]
+        [JsonProperty("user_id")]
         public int UserId { get; set; }
 
         [JsonProperty("data_abertura")]
@@ -181,15 +188,9 @@ namespace sistecDesktop.Models
         [JsonProperty("data_resolucao")]
         public DateTime? DataResolucao { get; set; }
 
-        [JsonProperty("data_aprovacao_recusa")]
-        public DateTime? DataAprovacao { get; set; }
-
-        [JsonProperty("data_encaminhamento")]
-        public DateTime? DataEncaminhamento { get; set; }
-
-        [JsonProperty("data_fechamento")]
-        public DateTime? DataFechamento { get; set; }
+        // Caso o backend retorne outros campos em português, você pode mantê-los e mapear similarmente.
     }
+
 
     // Modelo unificado para exibição
     public class Chamado
@@ -228,6 +229,21 @@ namespace sistecDesktop.Models
         }
     }
 
+    // carregar listas de categorias e problemas
+
+    public class CategoriaProblema
+    {
+        public string Categoria { get; set; }
+        public string Label { get; set; }
+        public List<ProblemaItem> Problemas { get; set; }
+    }
+
+    public class ProblemaItem
+    {
+        public string Value { get; set; }
+        public string Label { get; set; }
+    }
+
     public class CreateChamadoRequest
     {
         [JsonProperty("title")]
@@ -238,6 +254,27 @@ namespace sistecDesktop.Models
 
         [JsonProperty("user_id")]
         public int UserId { get; set; }
+
+        [JsonProperty("priority")]
+        public int Priority { get; set; }
+
+        // Categoria: enviamos vários nomes esperados
+        [JsonProperty("category")]
+        public string Category { get; set; }
+
+        [JsonProperty("descricao_categoria")]
+        public string DescricaoCategoria { get; set; }
+
+        [JsonProperty("descricao_categoria_chamado")]
+        public string DescricaoCategoriaChamado { get; set; }
+
+
+        // Descrição rica (o site usa descricao_detalhada)
+        [JsonProperty("descricao_detalhada")]
+        public string DescricaoDetalhada { get; set; }
+
+        [JsonProperty("descricao_problema")]
+        public string Problem { get; set; }  // Adicionar
     }
 
     public class LoginRequest

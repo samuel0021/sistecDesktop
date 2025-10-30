@@ -7,7 +7,10 @@
         xmlns:viewsPopups="clr-namespace:sistecDesktop.Views.Popups"
         xmlns:viewModels="clr-namespace:sistecDesktop.ViewModels"
         mc:Ignorable="d"
-        Title="PopupWindow" Height="450" Width="800">
+        Title="PopupWindow" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Height="450" Width="800">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:OpenTicketViewModel}">
@@ -18,7 +21,4 @@
     <Grid Background="White">
         <ContentPresenter Content="{Binding}" />
     </Grid>
-
-
-    
 </Window>

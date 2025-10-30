@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sistecDesktop.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,7 @@ namespace sistecDesktop
     /// </summary>
     public partial class App : Application
     {
+        public static User LoggedUser { get; set; }
+
     }
 }

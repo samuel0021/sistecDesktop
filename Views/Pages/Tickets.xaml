@@ -58,7 +58,7 @@
                 
                     <DataGrid Grid.Row="1" Grid.ColumnSpan="2" 
                         MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
+                        ItemsSource="{Binding Tickets}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
                         Style="{StaticResource MyDataGrid}">
 
