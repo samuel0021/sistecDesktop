@@ -258,7 +258,7 @@ namespace sistecDesktop.Models
         [JsonProperty("priority")]
         public int Priority { get; set; }
 
-        // Categoria: enviamos vários nomes esperados
+        // não tava conseguindo achar a propriedade certa então coloquei várias
         [JsonProperty("category")]
         public string Category { get; set; }
 
@@ -268,13 +268,11 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_categoria_chamado")]
         public string DescricaoCategoriaChamado { get; set; }
 
-
-        // Descrição rica (o site usa descricao_detalhada)
         [JsonProperty("descricao_detalhada")]
         public string DescricaoDetalhada { get; set; }
 
         [JsonProperty("descricao_problema")]
-        public string Problem { get; set; }  // Adicionar
+        public string Problem { get; set; } 
     }
 
     public class LoginRequest

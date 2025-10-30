@@ -111,15 +111,24 @@ namespace sistecDesktop.ViewModels
         {
             if (parameter is Chamado ticket)
             {
+
                 try
                 {
                     // Busca o chamado atualizado pelo ID
                     var updatedTicket = await _apiClient.GetChamadoByIdAsync(ticket.Id);
 
+                    string descricaoSomente = updatedTicket.Description ?? updatedTicket.Description ?? "";
+                    var marker = "Descrição:";
+                    int index = descricaoSomente.IndexOf(marker);
+                    if (index >= 0)
+                    {
+                        descricaoSomente = descricaoSomente.Substring(index + marker.Length).Trim();
+                    }
+
                     MessageBox.Show(
                         $"ID: {updatedTicket.Id}\n" +
                         $"Título: {updatedTicket.Title}\n" +
-                        $"Descrição: {updatedTicket.Description}\n" +
+                        $"Descrição: {descricaoSomente}\n" +  // <- aqui usamos a descrição limpa
                         $"Status: {updatedTicket.Status}\n" +
                         $"Usuário: {updatedTicket.UsuarioAbertura}\n" +
                         $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",
