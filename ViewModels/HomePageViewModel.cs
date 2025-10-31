@@ -56,6 +56,7 @@ namespace sistecDesktop.ViewModels
 
         public ICommand LoadTicketsCommand { get; }
         public ICommand OpenTicketCommand { get; }
+        public ICommand MyTicketsCommand { get; }
 
         public HomePageViewModel(ApiClient apiClient, TicketsViewModel ticketsViewModel)
         {
@@ -66,8 +67,10 @@ namespace sistecDesktop.ViewModels
             Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             OpenTicketCommand = new RelayCommand(OpenTicket);
+            MyTicketsCommand = new RelayCommand(MyTickets);
   
             _ = LoadTickets();
+
         }
 
         private async Task LoadTickets()
@@ -78,15 +81,19 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var list = await _apiClient.GetChamadosAsync();
+                Tickets.Clear();
 
                 // Pega apenas os últimos 10 chamados
-                var ultimosChamados = list.OrderByDescending(c => c.CreatedAt).Take(10);
+                // var ultimosChamados = list.OrderByDescending(c => c.CreatedAt).Take(10);
 
-                Tickets.Clear();
-                foreach (var ticket in ultimosChamados)
+                foreach (var ticket in list)
                 {
                     Tickets.Add(ticket);
                 }
+
+                // Força o refresh da view, se necessário
+                // CollectionViewSource.GetDefaultView(Tickets).Refresh();
+
             }
             catch (UnauthorizedAccessException)
             {
@@ -105,8 +112,19 @@ namespace sistecDesktop.ViewModels
         private void OpenTicket()
         {
             var vm = new OpenTicketViewModel(_apiClient);
+
+            //callback para atualizar a lista
+            vm.OnChamadoCriado = () => TicketsViewModel.LoadTicketsCommand.Execute(null);
+
             _dialogService.ShowDialog(vm);
 
+        }
+
+        private void MyTickets()
+        {
+            var vm = new MyTicketsViewModel(_apiClient);
+
+            _dialogService.ShowDialog(vm);
         }
     }
 }

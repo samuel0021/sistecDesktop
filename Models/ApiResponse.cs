@@ -179,7 +179,7 @@ namespace sistecDesktop.Models
         [JsonProperty("usuario_resolucao")]
         public string UsuarioResolucao { get; set; }
 
-        [JsonProperty("user_id")]
+        [JsonProperty("id_usuario_abertura")]
         public int UserId { get; set; }
 
         [JsonProperty("data_abertura")]

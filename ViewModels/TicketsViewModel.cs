@@ -13,9 +13,9 @@ using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
 {
-    public class TicketsViewModel : BaseViewModel
+    public class TicketsViewModel : BasePopupViewModel
     {
-        private readonly ApiClient _apiClient;
+        protected readonly ApiClient _apiClient;
         private ObservableCollection<Chamado> _tickets;
         private bool _isLoading;
         private string _errorMessage;
@@ -76,7 +76,8 @@ namespace sistecDesktop.ViewModels
             _ = LoadTickets();
         }
 
-        private async Task LoadTickets()
+        //virtual pra poder alterar na MyTickets
+        public virtual async Task LoadTickets()
         {
             IsLoading = true;
             ErrorMessage = string.Empty;

@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MyTicketsViewModel.cs" />
     <Compile Include="ViewModels\OpenTicketViewModel.cs" />
     <Compile Include="ViewModels\TicketsViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
@@ -108,6 +109,9 @@
     </Compile>
     <Compile Include="Views\Pages\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Popups\MyTicketsView.xaml.cs">
+      <DependentUpon>MyTicketsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Popups\OpenTicketView.xaml.cs">
       <DependentUpon>OpenTicketView.xaml</DependentUpon>
@@ -161,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\MyTicketsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

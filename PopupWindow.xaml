@@ -16,6 +16,10 @@
         <DataTemplate DataType="{x:Type viewModels:OpenTicketViewModel}">
             <viewsPopups:OpenTicketView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:MyTicketsViewModel}">
+            <viewsPopups:MyTicketsView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid Background="White">

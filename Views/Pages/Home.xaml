@@ -51,6 +51,7 @@
             <Button x:Name="btnMeusChamados" Grid.Column="1"
                     Style="{StaticResource HomeButtons}"
                     Background="{StaticResource brush-lavenderMist}"
+                    Command="{Binding MyTicketsCommand}"
                     HorizontalContentAlignment="Stretch">
 
                 <DockPanel>

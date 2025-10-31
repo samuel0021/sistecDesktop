@@ -203,6 +203,7 @@ namespace sistecDesktop.ViewModels
 
         // Mapa de categorias e problemas
 
+        public Action OnChamadoCriado { get; set; }
 
         private async Task CreateTicket()
         {
@@ -266,6 +267,9 @@ namespace sistecDesktop.ViewModels
                     "Sucesso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
+
+                OnChamadoCriado?.Invoke();
+
 
                 OnDialogClose?.Invoke(true);
             }

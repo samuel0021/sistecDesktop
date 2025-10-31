@@ -138,6 +138,7 @@ namespace sistecDesktop.ViewModels
             finally 
             {
                 IsLoading = false;  // Esconder loading
+                Console.WriteLine($"Usuário logado após login: {App.LoggedUser.Id}");
             }
         }
 
