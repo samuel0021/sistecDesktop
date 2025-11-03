@@ -508,6 +508,113 @@ namespace sistecDesktop.Services
             }
         }
 
+        #region Aprovação e rejeição de chamados
+
+        // Buscar chamados pendentes de aprovação
+        public async Task<List<Chamado>> GetPendingTickets()
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/chamados/aprovacao";
+                Console.WriteLine($"DEBUG: Buscando chamados para aprovação: {url}");
+
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonConvert.DeserializeObject<ChamadosResponse>(responseBody);
+                    if (apiResponse?.Data != null)
+                    {
+                        var chamados = apiResponse.Data.Select(c => new Chamado(c)).ToList();
+                        return chamados;
+                    }
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                throw new Exception($"Erro ao buscar chamados: {response.StatusCode}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        // Aprovar chamado
+        public async Task<bool> AprovarChamadoAsync(int idChamado)
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/chamados/{idChamado}/aprovar";
+                Console.WriteLine($"DEBUG: Aprovando chamado: {url}");
+
+                var response = await _httpClient.PostAsync(url, null);
+
+                Console.WriteLine($"Status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        // Rejeitar chamado
+        public async Task<bool> RejeitarChamadoAsync(int idChamado, string motivo)
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/chamados/{idChamado}/rejeitar";
+                Console.WriteLine($"DEBUG: Rejeitando chamado: {url}");
+
+                var body = new { motivo = motivo };
+                var json = JsonConvert.SerializeObject(body);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(url, content);
+
+                Console.WriteLine($"Status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+
         public async Task<bool> UpdateChamadoAsync(int id, Chamado chamado)
         {
             try

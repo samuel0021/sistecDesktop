@@ -76,6 +76,7 @@
             <Button x:Name="btnAprovarChamados" Grid.Column="2"
                     Style="{StaticResource HomeButtons}"
                     Background="{StaticResource brush-lavenderMist}"
+                    Command="{Binding ApproveTicketsCommand}"
                     HorizontalContentAlignment="Stretch">
 
                 <DockPanel>

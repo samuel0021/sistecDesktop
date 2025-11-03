@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
@@ -57,6 +58,7 @@ namespace sistecDesktop.ViewModels
         public ICommand LoadTicketsCommand { get; }
         public ICommand OpenTicketCommand { get; }
         public ICommand MyTicketsCommand { get; }
+        public ICommand ApproveTicketsCommand { get; }
 
         public HomePageViewModel(ApiClient apiClient, TicketsViewModel ticketsViewModel)
         {
@@ -68,6 +70,7 @@ namespace sistecDesktop.ViewModels
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             OpenTicketCommand = new RelayCommand(OpenTicket);
             MyTicketsCommand = new RelayCommand(MyTickets);
+            ApproveTicketsCommand = new RelayCommand(OpenApproveTickets);
   
             _ = LoadTickets();
 
@@ -124,6 +127,23 @@ namespace sistecDesktop.ViewModels
         {
             var vm = new MyTicketsViewModel(_apiClient);
 
+            _dialogService.ShowDialog(vm);
+        }
+
+        private void OpenApproveTickets()
+        {
+            // verifica o nível de acesso
+            if (App.LoggedUser?.Perfil?.NivelAcesso < 3)
+            {
+                MessageBox.Show(
+                    "Apenas gestores e administradores podem aprovar chamados.",
+                    "Acesso Negado",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            var vm = new ApproveTicketsViewModel(_apiClient);
             _dialogService.ShowDialog(vm);
         }
     }
