@@ -350,6 +350,123 @@ namespace sistecDesktop.Services
             }
         }
 
+        public async Task<bool> DeleteUserAsync(int idUsuario, string motivo)
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/users/{idUsuario}";
+                Console.WriteLine($"DEBUG: Deletando usuário: {url}");
+
+                var body = new
+                {
+                    motivo = motivo
+                };
+                var json = JsonConvert.SerializeObject(body);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // O HttpClient padrão do .NET não possui DeleteAsync(url, content), então é necessário criar o request manual:
+                var request = new HttpRequestMessage(HttpMethod.Delete, url)
+                {
+                    Content = content
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                Console.WriteLine($"DeleteUserAsync Status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição (deletar usuário): {ex.Message}");
+            }
+        }
+
+
+        public class DeletedUsersResponse : ApiResponse
+        {
+            public List<DeletedUserBackup> Data { get; set; }
+        }
+
+        public async Task<List<DeletedUserBackup>> GetDeletedUsersAsync()
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/users/deleted";
+                Console.WriteLine($"DEBUG: Buscando usuários deletados: {url}");
+
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"GetDeletedUsersAsync Status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {                    
+                    var apiResponse = JsonConvert.DeserializeObject<DeletedUsersResponse>(responseBody);
+                    // Para compatibilidade com seu pattern de resposta:
+                    // Caso use o padrão ApiResponse { bool Success, string Message, List<Data> }
+                    // else, ajuste conforme ChamadosResponse, etc.
+                    if (apiResponse?.Data != null)
+                        return apiResponse.Data;
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                throw new Exception($"Erro ao buscar usuários deletados: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição (obter usuários deletados): {ex.Message}");
+            }
+        }
+
+
+        public async Task<bool> RestoreUserAsync(int backupId)
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/users/restore/{backupId}";
+                Console.WriteLine($"DEBUG: Restaurando usuário do backup: {url}");
+
+                var response = await _httpClient.PostAsync(url, null); // Sem body necessário nesse caso
+
+                Console.WriteLine($"RestoreUserAsync Status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição (restaurar usuário): {ex.Message}");
+            }
+        }
+
+
+
         public async Task<List<Chamado>> GetChamadosAsync()
         {
             try

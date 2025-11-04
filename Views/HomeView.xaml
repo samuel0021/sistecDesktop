@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views"
+             xmlns:converters="clr-namespace:sistecDesktop.Converters"
              mc:Ignorable="d"
              d:DesignHeight="768" d:DesignWidth="1366">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
 
     <Grid Background="{StaticResource gradient-background}">
         
@@ -125,15 +130,30 @@
                 <Button x:Name="btnUsuarios" 
                         Style="{StaticResource ImageButton}"
                         Height="40"
-                        Command="{Binding SelecionarPaginaCommand}"
-                        CommandParameter="Usuarios"
-                        Tag="{Binding TagUsuarios}">
+                        Command="{Binding UsersMenuCommand}">
 
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/images/user.png" Width="20" Height="20" Margin="0 0 10 0"/>
                         <TextBlock Text="Gerenciar Usuários" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+
+                <StackPanel Margin="20 0 0 0" Visibility="{Binding MenuUsuariosExpandido, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Button Style="{StaticResource ImageButton}"
+                            Height="35"
+                            Content="Usuários Ativos"
+                            Command="{Binding SelecionarPaginaCommand}"
+                            CommandParameter="UsuariosAtivos"
+                            Tag="{Binding TagUsuariosAtivos}"/>
+                    
+                    <Button Style="{StaticResource ImageButton}"
+                            Height="35"
+                            Content="Usuários Deletados"
+                            Command="{Binding SelecionarPaginaCommand}"
+                            CommandParameter="UsuariosDeletados"
+                            Tag="{Binding TagUsuariosDeletados}"/>
+                </StackPanel>
+
             </StackPanel>
         </Border>
         <!--#endregion-->

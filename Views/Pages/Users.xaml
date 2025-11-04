@@ -122,15 +122,15 @@
                         <DataGridTemplateColumn Header="Ações" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-
-                                    
-                                    <Button Content="👁"
-        Style="{StaticResource ViewButton}"
-        Command="{Binding DataContext.ViewUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-        CommandParameter="{Binding}" />
-
-
-
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Content="👁"
+                                                Style="{StaticResource ViewButton}"
+                                                Command="{Binding DataContext.ViewUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                        <Button Content="Excluir"
+                                                Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
 

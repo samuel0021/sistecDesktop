@@ -81,14 +81,14 @@ namespace sistecDesktop.ViewModels
         {
             IsLoading = true;
             ErrorMessage = string.Empty;
-
             try
             {
                 var list = await _apiClient.GetChamadosAsync();
                 Tickets.Clear();
-
                 foreach (var ticket in list)
                 {
+                    // LOG para depuração:
+                    Console.WriteLine($"Chamado: {ticket.Id} Status: {ticket.Status}");
                     Tickets.Add(ticket);
                 }
             }

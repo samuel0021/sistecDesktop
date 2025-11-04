@@ -65,6 +65,8 @@ namespace sistecDesktop.ViewModels
 
         public ICommand LoadUsersCommand { get; }
         public ICommand ViewUserCommand { get; }
+        public ICommand DeleteUserCommand { get; }
+
 
         public UsersViewModel(ApiClient apiClient)
         {
@@ -73,6 +75,8 @@ namespace sistecDesktop.ViewModels
 
             LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
             ViewUserCommand = new RelayCommandWithParameter(ViewUser);
+            DeleteUserCommand = new AsyncRelayCommandWithParameter<User>(DeleteUserAsync);
+
 
             _ = LoadUsers();
         }
@@ -106,6 +110,57 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = false;
             }
+        }
+
+        private async Task DeleteUserAsync(User user)
+        {
+            if (user == null) return;
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja deletar o usuário \"{user.Name}\"?",
+                "Confirmar Deleção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            // Sugestão de InputBox para motivo
+            string motivo = PromptForMotivo();
+            if (string.IsNullOrWhiteSpace(motivo))
+            {
+                MessageBox.Show("Motivo obrigatório para deletar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                IsLoading = true;
+                string quemDeletou = App.LoggedUser?.Name ?? "admin";
+                var sucesso = await _apiClient.DeleteUserAsync(user.Id, motivo);
+
+                if (sucesso)
+                {
+                    MessageBox.Show($"Usuário \"{user.Name}\" deletado com sucesso!");
+                    await LoadUsers();
+                }
+                else
+                {
+                    MessageBox.Show("Erro ao deletar usuário.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao deletar usuário: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private string PromptForMotivo()
+        {
+            var window = new MotivoInputWindow();
+            bool? result = window.ShowDialog();
+            return result == true ? window.Motivo : null;
         }
 
         private void ViewUser(object parameter)

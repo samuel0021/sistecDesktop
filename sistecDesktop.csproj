@@ -63,17 +63,23 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\AsyncRelayCommand.cs" />
+    <Compile Include="Commands\AsyncRelayCommandWithParameter.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\LogoutCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandWithParameter.cs" />
     <Compile Include="Commands\UpdateViewCommand.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\EnableRestoreConverter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\TicketModels.cs" />
+    <Compile Include="MotivoInputWindow.xaml.cs">
+      <DependentUpon>MotivoInputWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
@@ -89,6 +95,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MyTicketsViewModel.cs" />
     <Compile Include="ViewModels\OpenTicketViewModel.cs" />
+    <Compile Include="ViewModels\RestoreUsersViewModel.cs" />
     <Compile Include="ViewModels\TicketsViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
     <Compile Include="Views\Components\UsersDataGrid.xaml.cs">
@@ -99,6 +106,9 @@
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\RestoreUsersView.xaml.cs">
+      <DependentUpon>RestoreUsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\Tickets.xaml.cs">
       <DependentUpon>Tickets.xaml</DependentUpon>
@@ -137,6 +147,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MotivoInputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PopupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pages\RestoreUsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,12 +17,21 @@ namespace sistecDesktop.ViewModels
         private readonly TicketsViewModel _ticketsViewModel;
         private readonly ApiClient _apiClient;
         private string _paginaSelecionada;
+        private bool _menuUsuariosExpandido;
         private UserControl _currentContent;
         private readonly IDialogService _dialogService;
 
 
+        public ICommand UsersMenuCommand { get; }
+
         public ICommand LogoutCommand { get; }
         public ICommand SelecionarPaginaCommand { get; }
+
+        public bool MenuUsuariosExpandido
+        {
+            get => _menuUsuariosExpandido;
+            set { _menuUsuariosExpandido = value; OnPropertyChanged(nameof(MenuUsuariosExpandido)); }
+        }
 
         public UserControl CurrentContent
         {
@@ -49,7 +58,8 @@ namespace sistecDesktop.ViewModels
                     OnPropertyChanged(nameof(TagHome));
                     OnPropertyChanged(nameof(TagDashboard));
                     OnPropertyChanged(nameof(TagChamados));
-                    OnPropertyChanged(nameof(TagUsuarios));
+                    OnPropertyChanged(nameof(TagUsuariosAtivos));
+                    OnPropertyChanged(nameof(TagUsuariosDeletados));
                     LoadContent(value);
                 }
             }
@@ -58,7 +68,8 @@ namespace sistecDesktop.ViewModels
         public string TagHome => PaginaSelecionada == "Home" ? "Selected" : null;
         public string TagDashboard => PaginaSelecionada == "Dashboard" ? "Selected" : null;
         public string TagChamados => PaginaSelecionada == "Chamados" ? "Selected" : null;
-        public string TagUsuarios => PaginaSelecionada == "Usuarios" ? "Selected" : null;
+        public string TagUsuariosAtivos => PaginaSelecionada == "UsuariosAtivos" ? "Selected" : null;
+        public string TagUsuariosDeletados => PaginaSelecionada == "UsuariosDeletados" ? "Selected" : null;
 
         public HomeViewModel(MainViewModel mainViewModel, ApiClient apiClient)
         {
@@ -69,6 +80,7 @@ namespace sistecDesktop.ViewModels
             _dialogService = new DialogService();
 
             LogoutCommand = new LogoutCommand(this);
+            UsersMenuCommand = new RelayCommand(UsersMenu);
 
             SelecionarPaginaCommand = new RelayCommandWithParameter(
                 parameter => PaginaSelecionada = parameter?.ToString()
@@ -76,7 +88,12 @@ namespace sistecDesktop.ViewModels
 
             PaginaSelecionada = "Home";
         }
-        
+
+        private void UsersMenu()
+        {
+            MenuUsuariosExpandido = !MenuUsuariosExpandido;
+        }
+
 
         private void LoadContent(string nomePagina)
         {
@@ -94,10 +111,15 @@ namespace sistecDesktop.ViewModels
                     var ticketsPage = new Tickets { ViewModel = _ticketsViewModel };
                     CurrentContent = ticketsPage;
                     break;
-                case "Usuarios":
+                case "UsuariosAtivos":
                     var usersViewModel = new UsersViewModel(_apiClient);
-                    var usersPage = new Users { DataContext = usersViewModel };
-                    CurrentContent = usersPage;
+                    var activeUsersPage = new Users { DataContext = usersViewModel };
+                    CurrentContent = activeUsersPage;
+                    break;
+                case "UsuariosDeletados":
+                    var restoreViewModel = new RestoreUsersViewModel(_apiClient);
+                    var restoreUsersPage = new RestoreUsersView { DataContext = restoreViewModel };
+                    CurrentContent = restoreUsersPage;
                     break;
                 default:
                     CurrentContent = new Home();
