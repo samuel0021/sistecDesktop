@@ -7,12 +7,14 @@
              xmlns:converters="clr-namespace:sistecDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
+    
+    <!--#region Converters-->
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:EnableRestoreConverter x:Key="EnableRestoreConverter"/>
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
     </UserControl.Resources>
+    <!--#endregion-->
 
     <Grid Margin="8">
         <!-- Barra superior com título, busca e atualizar -->
@@ -43,6 +45,7 @@
         <!-- DataGrid -->
         <DataGrid ItemsSource="{Binding UsuariosDeletados}" AutoGenerateColumns="False"
                   Margin="0,50,0,0"
+                  Style="{StaticResource MyDataGrid}"
                   SelectedItem="{Binding SelectedBackup}"
                   CanUserAddRows="False"
                   IsReadOnly="True"
