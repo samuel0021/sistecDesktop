@@ -1,40 +1,20 @@
-# Git - Guia de Referência para Projetos WPF
+# SISTEC - Sistema de Chamados (Versão Desktop)
 
-## 10 Comandos Essenciais
+## O que precisa para rodar?
 
 
-1. `git status`  
-   Ver o status do projeto (alterações, commits pendentes)
+1. `Servidor Aberto`  
+   Abrir o servidor em [sistecPrograms](https://github.com/lucasleandro08/sistecPrograms) com o comando:
+   ```bash
+   npm run dev
+   ```
 
-2. `git add .`  
-   Adicionar todas as mudanças ao staging
+2. `Visual Studio`  
+   Ter o Visual Studio instalado
 
-3. `git commit -m "Mensagem"`  
-   Criar commit com mensagem
+3. `C#`  
+   Ter o C# 7.8 ou superior instalado
 
-4. `git push`  
-   Enviar commits locais para o GitHub
+4. `.NET Framework`  
+   Ter o .NET Framework 4.8 ou superior instalado
 
-5. `git pull`  
-   Trazer alterações do GitHub para o projeto local
-
-6. `git branch`  
-   Listar branches locais
-
-7. `git checkout nome-do-branch`  
-   Mudar para outro branch
-
-8. `git checkout -b nome-do-branch`  
-   Criar e mudar para um novo branch
-
-9. `git log --oneline`  
-   Ver histórico resumido de commits
-
-10. `git fetch`  
-    Buscar alterações do remoto sem alterar o projeto local
-
-```bash
-git pull
-git add .
-git commit -m "Mensagem"
-git push
