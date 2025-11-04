@@ -4,7 +4,7 @@
 
 
 1. `Servidor Aberto`  
-   Abrir o servidor em [sistecPrograms](https://github.com/lucasleandro08/sistecPrograms){target="_blank"} com o comando:
+   Abrir o servidor em [sistecPrograms](https://github.com/lucasleandro08/sistecPrograms) com o comando:
    ```bash
    npm run dev
    ```
