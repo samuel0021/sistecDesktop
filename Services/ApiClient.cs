@@ -90,9 +90,9 @@ namespace sistecDesktop.Services
                 {
                     var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseBody, _jsonSettings);
 
-                    Console.WriteLine($"DEBUG: User ID deserializado: {loginResponse.Data?.User?.Id}");
-                    Console.WriteLine($"DEBUG: User Name deserializado: {loginResponse.Data?.User?.Name}");
-                    Console.WriteLine($"DEBUG: Perfil Nivel deserializado: {loginResponse.Data?.User?.Perfil?.NivelAcesso}");
+                    Console.WriteLine($"DEBUG: User ID deserializado: {loginResponse.Data?.User?.IdPerfilUsuario}");
+                    Console.WriteLine($"DEBUG: User Name deserializado: {loginResponse.Data?.User?.NomeUsuario}");
+                    Console.WriteLine($"DEBUG: Perfil Nivel deserializado: {loginResponse.Data?.User?.MatriculaAprovador}");
 
                     if (loginResponse.Success)
                     {
@@ -197,18 +197,16 @@ namespace sistecDesktop.Services
 
                             var users = apiResponse.Data.Select(userDb => new User
                             {
-                                Id = userDb.Id,
-                                Matricula = userDb.Matricula,
-                                Name = userDb.Name,
+                                IdPerfilUsuario = userDb.Id,
+                                MatriculaAprovador = userDb.Matricula,
+                                NomeUsuario = userDb.Name,
                                 Email = userDb.Email,
                                 Telefone = userDb.Telefone,
                                 Setor = userDb.Setor,
-                                Cargo = userDb.Cargo,
-                                IdAprovador = userDb.IdAprovador,
-                                Perfil = userDb.Perfil
+                                Cargo = userDb.Cargo
                             }).ToList();
 
-                            Console.WriteLine($"DEBUG: Primeiro usuário - ID: {users.FirstOrDefault()?.Id}, Nome: {users.FirstOrDefault()?.Name}");
+                            Console.WriteLine($"DEBUG: Primeiro usuário - ID: {users.FirstOrDefault()?.IdPerfilUsuario}, Nome: {users.FirstOrDefault()?.NomeUsuario}");
 
                             return users;
                         }
@@ -257,15 +255,13 @@ namespace sistecDesktop.Services
                         {
                             return new User
                             {
-                                Id = apiResponse.Data.Id,
-                                Matricula = apiResponse.Data.Matricula,
-                                Name = apiResponse.Data.Name,
+                                IdPerfilUsuario = apiResponse.Data.Id,
+                                MatriculaAprovador = apiResponse.Data.Matricula,
+                                NomeUsuario = apiResponse.Data.Name,
                                 Email = apiResponse.Data.Email,
                                 Telefone = apiResponse.Data.Telefone,
                                 Setor = apiResponse.Data.Setor,
-                                Cargo = apiResponse.Data.Cargo,
-                                IdAprovador = apiResponse.Data.IdAprovador,
-                                Perfil = apiResponse.Data.Perfil
+                                Cargo = apiResponse.Data.Cargo
                             };
                         }
                     }
@@ -315,15 +311,13 @@ namespace sistecDesktop.Services
                         {
                             return new User
                             {
-                                Id = apiResponse.Data.Id,
-                                Matricula = apiResponse.Data.Matricula,
-                                Name = apiResponse.Data.Name,
+                                IdPerfilUsuario = apiResponse.Data.Id,
+                                MatriculaAprovador = apiResponse.Data.Matricula,
+                                NomeUsuario = apiResponse.Data.Name,
                                 Email = apiResponse.Data.Email,
                                 Telefone = apiResponse.Data.Telefone,
                                 Setor = apiResponse.Data.Setor,
-                                Cargo = apiResponse.Data.Cargo,
-                                IdAprovador = apiResponse.Data.IdAprovador,
-                                Perfil = apiResponse.Data.Perfil
+                                Cargo = apiResponse.Data.Cargo
                             };
                         }
                     }

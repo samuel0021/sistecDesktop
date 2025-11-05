@@ -170,7 +170,7 @@ namespace sistecDesktop.ViewModels
         //        {
         //            Title = Title,
         //            Description = Description,
-        //            UserId = App.LoggedUser?.Id ?? 1,
+        //            UserId = App.LoggedUser?.IdPerfilUsuario ?? 1,
         //            Priority = Priority,
         //            Category = Category
         //        };
@@ -179,7 +179,7 @@ namespace sistecDesktop.ViewModels
         //        var chamado = await _apiClient.CreateChamadoAsync(request);
 
         //        MessageBox.Show(
-        //            $"Chamado #{chamado.Id} criado com sucesso!",
+        //            $"Chamado #{chamado.IdPerfilUsuario} criado com sucesso!",
         //            "Sucesso",
         //            MessageBoxButton.OK,
         //            MessageBoxImage.Information);
@@ -250,7 +250,7 @@ namespace sistecDesktop.ViewModels
                 {
                     Title = Title,
                     Description = Description,
-                    UserId = App.LoggedUser?.Id ?? 1,
+                    UserId = App.LoggedUser?.IdPerfilUsuario ?? 1,
                     Priority = Priority,
                     Category = categoria, // campo original que você vinha usando
                     DescricaoCategoria = categoria, // compatibilidade com site (descricao_categoria)

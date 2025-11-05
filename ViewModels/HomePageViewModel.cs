@@ -133,7 +133,7 @@ namespace sistecDesktop.ViewModels
         private void OpenApproveTickets()
         {
             // verifica o nível de acesso
-            if (App.LoggedUser?.Perfil?.NivelAcesso < 3)
+            if (App.LoggedUser?.MatriculaAprovador < 3)
             {
                 MessageBox.Show(
                     "Apenas gestores e administradores podem aprovar chamados.",

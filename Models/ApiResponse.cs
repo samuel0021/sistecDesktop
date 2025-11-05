@@ -50,32 +50,55 @@ namespace sistecDesktop.Models
     // Modelo para login (campos limpos)
     public class User
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        [JsonProperty("nome_usuario")]
+        public string NomeUsuario { get; set; }
 
-        [JsonProperty("matricula")]
-        public string Matricula { get; set; }
+        [JsonProperty("setor_usuario")]
+        public string Setor { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("cargo_usuario")]
+        public string Cargo { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("telefone")]
+        [JsonProperty("senha")]
+        public string Senha { get; set; }
+
+        [JsonProperty("tel_usuarios")]
         public string Telefone { get; set; }
 
-        [JsonProperty("setor")]
-        public string Setor { get; set; }
 
-        [JsonProperty("cargo")]
-        public string Cargo { get; set; }
+        [JsonProperty("id_perfil_usuario")]
+        public int IdPerfilUsuario { get; set; }
 
-        [JsonProperty("id_aprovador")]
-        public int? IdAprovador { get; set; }
+        [JsonProperty("matricula_aprovador")]
+        public int MatriculaAprovador { get; set; }
 
-        [JsonProperty("perfil")]
-        public Perfil Perfil { get; set; }
+        [JsonProperty("ramal")]
+        public string Ramal { get; set; }
+
+        [JsonIgnore]
+        public string Nome
+        {
+            get => NomeUsuario?.Split(' ').FirstOrDefault() ?? "";
+            set
+            {
+                var sobrenomeAtual = Sobrenome ?? "";
+                NomeUsuario = $"{value} {sobrenomeAtual}".Trim();
+            }
+        }
+
+        [JsonIgnore]
+        public string Sobrenome
+        {
+            get => string.Join(" ", (NomeUsuario?.Split(' ').Skip(1) ?? Array.Empty<string>()));
+            set
+            {
+                var nomeAtual = Nome ?? "";
+                NomeUsuario = $"{nomeAtual} {value}".Trim();
+            }
+        }
     }
 
     // Modelo para lista de usuários (campos do banco)
@@ -84,7 +107,8 @@ namespace sistecDesktop.Models
         [JsonProperty("id_usuario")]
         public int Id { get; set; }
         [JsonProperty("matricula")]
-        public string Matricula { get; set; }
+        public int Matricula { get; set; }
+
         [JsonProperty("nome_usuario")]
         public string Name { get; set; }
         [JsonProperty("setor_usuario")]

@@ -27,7 +27,7 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var all = await _apiClient.GetChamadosAsync();
-                var myTickets = all.Where(c => c.UserId == App.LoggedUser.Id).ToList();
+                var myTickets = all.Where(c => c.UserId == App.LoggedUser.IdPerfilUsuario).ToList();
                 Tickets.Clear();
                 foreach (var ticket in myTickets)
                     Tickets.Add(ticket);

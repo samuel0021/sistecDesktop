@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="sistecDesktop.Views.Popups.UserCreateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
+             xmlns:converters="clr-namespace:sistecDesktop.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <!--#region Converters-->
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:EnableRestoreConverter x:Key="EnableRestoreConverter"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <converters:InverseBoolToEnableConverter x:Key="InverseBoolToEnableConverter"/>
+    </UserControl.Resources>
+    <!--#endregion-->
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Título -->
+        <TextBlock Grid.Row="0"
+                   Text="Cadastrar Usuário"
+                   FontWeight="Bold"
+                   FontSize="22"
+                   Margin="0,0,0,18"/>
+
+        <!-- Formulário -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,8" VerticalAlignment="Top">
+            <TextBlock Text="Nome:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Nome, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+            <!-- Erro opcional: <TextBlock Foreground="Red" FontSize="12" Text="{Binding ErroNome}" /> -->
+
+            <TextBlock Text="Sobrenome:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Sobrenome, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+
+            <TextBlock Text="Email:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Email}" IsReadOnly="True" Height="32"/>
+            <TextBlock FontSize="11" Margin="0,2,0,0" Foreground="Gray" Text="Email gerado automaticamente"/>
+
+            <TextBlock Text="Telefone:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Telefone, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+
+            <TextBlock Text="Ramal (opcional):" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Ramal, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+
+            <TextBlock Text="Cargo:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+
+            <TextBlock Text="Setor:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Setor, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+
+            <TextBlock Text="Nível de acesso:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <ComboBox ItemsSource="{Binding PerfisAcesso}" 
+                      SelectedItem="{Binding PerfilSelecionado, Mode=TwoWay}"
+                      DisplayMemberPath="Nome" 
+                      Height="32"/>
+
+            <TextBlock Text="Senha inicial:" FontWeight="Bold" Margin="0,12,0,5"/>
+            <TextBox Text="{Binding Senha}" IsReadOnly="True" Height="32"/>
+            <TextBlock FontSize="11" Margin="0,2,0,0" Foreground="Gray"
+                       Text="Senha = primeiro nome + últimos 4 dígitos do telefone"/>
+        </StackPanel>
+
+        <!-- Mensagem de erro geral -->
+        <TextBlock Grid.Row="1" VerticalAlignment="Bottom"
+                   Margin="0,18,0,0"
+                   Foreground="Red" FontWeight="Bold" TextWrapping="Wrap"
+                   Text="{Binding ErrorMessage}"/>
+
+        <!-- Botões -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Cancelar"
+                    Width="100" Height="36"
+                    Margin="0,0,12,0"
+                    Command="{Binding CancelCommand}"/>
+            <Button Content="Cadastrar"
+                    Width="120" Height="36"
+                    Background="#4CAF50" Foreground="White"
+                    Command="{Binding CreateUserCommand}"
+                    IsDefault="True"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolToEnableConverter}, FallbackValue=true}"/>
+        </StackPanel>
+
+        <!-- Barra de carregamento (opcional) -->
+        <ProgressBar Grid.Row="2" Height="4" Margin="0,60,0,0"
+                     IsIndeterminate="True"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+    </Grid>
+</UserControl>

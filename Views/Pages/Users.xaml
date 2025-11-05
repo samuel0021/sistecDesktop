@@ -97,38 +97,52 @@
 
                 <!-- Estado de carregamento -->
                 <ProgressBar Height="4" IsIndeterminate="True" Grid.Row="2" Grid.ColumnSpan="2"
-         VerticalAlignment="Top" Margin="10 0 10 0"
+         VerticalAlignment="Top" Margin="10 5 10 0"
          Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                <Button Content="Atualizar" Grid.Column="1" 
+                <!--#region Botões-->
+                <StackPanel Orientation="Horizontal" Grid.Column="1"
+                            HorizontalAlignment="Right">
+                    
+                    <Button Content="Cadastrar Usuário"
+                        Command="{Binding OpenCreateUserCommand}"
+                        Style="{StaticResource HomeButtons}" 
+                        Foreground="{StaticResource brush-vibrantViolet}"
+                        Width="150" Height="50" 
+                        FontSize="14"
+                        Background="Transparent"
+                        HorizontalAlignment="Right"/>
+                    
+                    <Button Content="Atualizar" Grid.Column="1" 
+                        Command="{Binding LoadUsersCommand}"
                         Style="{StaticResource HomeButtons}" 
                         Foreground="{StaticResource brush-peachOrange}"
-                        FontSize="14"
-                        Width="100"
+                        FontSize="14" Width="100" Height="50"
                         Background="Transparent"
-                        HorizontalAlignment="Right"
-                        Height="50"
-                        Command="{Binding LoadUsersCommand}"
-                        Margin="20"/>
+                        HorizontalAlignment="Right"/>
+
+
+                </StackPanel>
+                <!--#endregion-->
 
 
                 <DataGrid Grid.Row="2" Grid.ColumnSpan="2"
-                          Margin="10,10,10,0"
+                          Margin="10,15,10,0"
                           ItemsSource="{Binding Users}"
                           SelectedItem="{Binding SelectedUser}"
                           Style="{StaticResource MyDataGrid}">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" 
-                                            Binding="{Binding Id}" 
+                                            Binding="{Binding IdPerfilUsuario}" 
                                             Width="60"/>
 
                         <DataGridTextColumn Header="Matrícula" 
-                                            Binding="{Binding Matricula}" 
+                                            Binding="{Binding MatriculaAprovador}" 
                                             Width="100"/>
 
                         <DataGridTextColumn Header="Nome" 
-                                            Binding="{Binding Name}" 
+                                            Binding="{Binding NomeUsuario}" 
                                             Width="*"
                                             MinWidth="200"/>
 

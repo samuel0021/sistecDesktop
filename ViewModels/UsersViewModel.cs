@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
@@ -22,8 +23,11 @@ namespace sistecDesktop.ViewModels
         private bool _isLoading;
         private string _errorMessage;
         private User _selectedUser;
+        private readonly IDialogService _dialogService;
+
 
         #region Encapsulamentos
+
         public ObservableCollection<User> Users
         {
             get { return _users; }
@@ -79,19 +83,32 @@ namespace sistecDesktop.ViewModels
         public ICommand LoadUsersCommand { get; }
         public ICommand ViewUserCommand { get; }
         public ICommand DeleteUserCommand { get; }
+        public ICommand OpenCreateUserCommand { get; }
 
 
         public UsersViewModel(ApiClient apiClient)
         {
             _apiClient = apiClient;
+            _dialogService = new DialogService();
             Users = new ObservableCollection<User>();
 
             LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
             ViewUserCommand = new RelayCommandWithParameter(ViewUser);
+            OpenCreateUserCommand = new RelayCommand(OpenCreateUserPopup);
             DeleteUserCommand = new AsyncRelayCommandWithParameter<User>(DeleteUserAsync);
 
-
             _ = LoadUsers();
+        }
+
+        private void OpenCreateUserPopup()
+        {
+            var vm = new UserCreateViewModel(_apiClient);
+            vm.OnDialogClose = result =>
+            {
+                if (result == true)
+                    _ = LoadUsers();
+            };
+            _dialogService.ShowDialog(vm);
         }
 
         private async Task LoadUsers()
@@ -127,7 +144,7 @@ namespace sistecDesktop.ViewModels
             if (user == null) return;
 
             var confirm = MessageBox.Show(
-                $"Tem certeza que deseja deletar o usuário \"{user.Name}\"?",
+                $"Tem certeza que deseja deletar o usuário \"{user.NomeUsuario}\"?",
                 "Confirmar Deleção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (confirm != MessageBoxResult.Yes) return;
@@ -143,12 +160,12 @@ namespace sistecDesktop.ViewModels
             try
             {
                 IsLoading = true;
-                string quemDeletou = App.LoggedUser?.Name ?? "admin";
-                var sucesso = await _apiClient.DeleteUserAsync(user.Id, motivo);
+                string quemDeletou = App.LoggedUser?.NomeUsuario ?? "admin";
+                var sucesso = await _apiClient.DeleteUserAsync(user.IdPerfilUsuario, motivo);
 
                 if (sucesso)
                 {
-                    MessageBox.Show($"Usuário \"{user.Name}\" deletado com sucesso!");
+                    MessageBox.Show($"Usuário \"{user.NomeUsuario}\" deletado com sucesso!");
                     await LoadUsers();
                 }
                 else
@@ -179,9 +196,9 @@ namespace sistecDesktop.ViewModels
                 var lower = termo.ToLowerInvariant();
                 var filtrados = _allUsers
                     .Where(u =>
-                        (u.Name?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.NomeUsuario?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.Email?.ToLowerInvariant().Contains(lower) ?? false) ||
-                        (u.Matricula?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.MatriculaAprovador.ToString().Contains(lower)) ||
                         (u.Setor?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.Cargo?.ToLowerInvariant().Contains(lower) ?? false)
                     );
@@ -201,13 +218,13 @@ namespace sistecDesktop.ViewModels
             if (parameter is User user)
             {
                 MessageBox.Show(
-                    $"ID: {user.Id}\n" +
-                    $"Nome: {user.Name}\n" +
+                    $"ID: {user.IdPerfilUsuario}\n" +
+                    $"Nome: {user.NomeUsuario}\n" +
                     $"Email: {user.Email}\n" +
                     $"Telefone: {user.Telefone}\n" +
                     $"Cargo: {user.Cargo}\n" +
                     $"Setor: {user.Setor}\n" +
-                    $"Matrícula: {user.Matricula}\n",
+                    $"Matrícula: {user.MatriculaAprovador}\n",
                     "Detalhes do Chamado",
                     MessageBoxButton.OK ,
                     MessageBoxImage.Information);
