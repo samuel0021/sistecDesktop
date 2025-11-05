@@ -17,6 +17,8 @@ namespace sistecDesktop.ViewModels
     {
         private readonly ApiClient _apiClient;
         private ObservableCollection<User> _users;
+        private List<User> _allUsers;
+        private string _searchTerm;
         private bool _isLoading;
         private string _errorMessage;
         private User _selectedUser;
@@ -29,6 +31,17 @@ namespace sistecDesktop.ViewModels
             {
                 _users = value;
                 OnPropertyChanged(nameof(Users));
+            }
+        }
+
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                _searchTerm = value;
+                OnPropertyChanged(nameof(SearchTerm));
+                FiltrarUsuarios(_searchTerm);
             }
         }
 
@@ -90,11 +103,8 @@ namespace sistecDesktop.ViewModels
             {
                 var list = await _apiClient.GetUsersAsync();
 
-                Users.Clear();
-                foreach (var user in list)
-                {
-                    Users.Add(user);
-                }
+                _allUsers = list.ToList();
+                Users = new ObservableCollection<User>(_allUsers);
             }
             catch (UnauthorizedAccessException)
             {
@@ -153,6 +163,29 @@ namespace sistecDesktop.ViewModels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        public void FiltrarUsuarios(string termo)
+        {
+            if (_allUsers == null) return;
+
+            if (string.IsNullOrWhiteSpace(termo))
+            {
+                Users = new ObservableCollection<User>(_allUsers);
+            }
+            else
+            {
+                var lower = termo.ToLowerInvariant();
+                var filtrados = _allUsers
+                    .Where(u =>
+                        (u.Name?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.Email?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.Matricula?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.Setor?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.Cargo?.ToLowerInvariant().Contains(lower) ?? false)
+                    );
+                Users = new ObservableCollection<User>(filtrados);
             }
         }
 

@@ -50,6 +50,7 @@
 
                     <!-- Mensagem de erro -->
                     <TextBlock Text="{Binding Error}"
+                               FontFamily="{StaticResource MontserratRegular}"
                                Foreground="Red"
                                FontWeight="Bold"
                                Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
