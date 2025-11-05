@@ -56,68 +56,68 @@
                 <!--#endregion-->
 
                 <TextBlock Text="Usuários" 
-               FontSize="24" 
-               FontWeight="Bold"
-               VerticalAlignment="Center"
-               FontFamily="{StaticResource MontserratBold}"
-               Margin="20"/>
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           FontFamily="{StaticResource MontserratBold}"
+                           Margin="20"/>
 
                 <Button Content="Atualizar" Grid.Column="1" 
-            Style="{StaticResource HomeButtons}" 
-            Foreground="{StaticResource brush-peachOrange}"
-            FontSize="14"
-            Width="100"
-            Background="Transparent"
-            HorizontalAlignment="Right"
-            Height="50"
-            Command="{Binding LoadUsersCommand}"
-            Margin="20"/>
+                        Style="{StaticResource HomeButtons}" 
+                        Foreground="{StaticResource brush-peachOrange}"
+                        FontSize="14"
+                        Width="100"
+                        Background="Transparent"
+                        HorizontalAlignment="Right"
+                        Height="50"
+                        Command="{Binding LoadUsersCommand}"
+                        Margin="20"/>
 
                 <!--#region Mensagem de erro-->
                 <TextBlock Grid.Row="1" 
-               Text="{Binding ErrorMessage}"
-               Foreground="Red"
-               TextWrapping="Wrap"
-               Margin="0,0,0,10"
-               FontSize="12"/>
+                           Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,10"
+                           FontSize="12"/>
                 <!--#endregion-->
 
 
                 <DataGrid Grid.Row="2" Grid.ColumnSpan="2"
-              ItemsSource="{Binding Users}"
-              SelectedItem="{Binding SelectedUser}"
-              Style="{StaticResource MyDataGrid}">
+                          ItemsSource="{Binding Users}"
+                          SelectedItem="{Binding SelectedUser}"
+                          Style="{StaticResource MyDataGrid}">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" 
-                            Binding="{Binding Id}" 
-                            Width="60"/>
+                                            Binding="{Binding Id}" 
+                                            Width="60"/>
 
                         <DataGridTextColumn Header="Matrícula" 
-                            Binding="{Binding Matricula}" 
-                            Width="100"/>
+                                            Binding="{Binding Matricula}" 
+                                            Width="100"/>
 
                         <DataGridTextColumn Header="Nome" 
-                            Binding="{Binding Name}" 
-                            Width="*"
-                            MinWidth="200"/>
+                                            Binding="{Binding Name}" 
+                                            Width="*"
+                                            MinWidth="200"/>
 
                         <DataGridTextColumn Header="Email" 
-                            Binding="{Binding Email}" 
-                            Width="*"
-                            MinWidth="200"/>
+                                            Binding="{Binding Email}" 
+                                            Width="*"
+                                            MinWidth="200"/>
 
                         <DataGridTextColumn Header="Telefone" 
-                            Binding="{Binding Telefone}" 
-                            Width="120"/>
+                                            Binding="{Binding Telefone}" 
+                                            Width="120"/>
 
                         <DataGridTextColumn Header="Setor" 
-                            Binding="{Binding Setor}" 
-                            Width="150"/>
+                                            Binding="{Binding Setor}" 
+                                            Width="150"/>
 
                         <DataGridTextColumn Header="Cargo" 
-                            Binding="{Binding Cargo}" 
-                            Width="150"/>
+                                            Binding="{Binding Cargo}" 
+                                            Width="150"/>
 
                         <DataGridTemplateColumn Header="Ações" Width="150">
                             <DataGridTemplateColumn.CellTemplate>

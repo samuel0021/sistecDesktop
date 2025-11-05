@@ -18,3 +18,9 @@
 4. `.NET Framework`  
    Ter o .NET Framework 4.8 ou superior instalado
 
+## Para iniciar o aplicativo
+
+Abrir a solução no Visual Studio e apertar F5 ou
+executar o arquivo "sistecDesktop.exe" localizado em \sistecDesktop\bin\Debug
+
+

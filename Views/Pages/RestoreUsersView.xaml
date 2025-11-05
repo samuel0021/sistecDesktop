@@ -7,7 +7,7 @@
              xmlns:converters="clr-namespace:sistecDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <!--#region Converters-->
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -16,59 +16,104 @@
     </UserControl.Resources>
     <!--#endregion-->
 
-    <Grid Margin="8">
-        <!-- Barra superior com título, busca e atualizar -->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
-            <TextBlock Text="Usuários Deletados" 
-                       FontSize="22" FontWeight="Bold" Margin="0,0,28,0" VerticalAlignment="Center"/>
-            <TextBox Width="220"
-                     Margin="0,0,12,0"
-                     VerticalAlignment="Center"
-                     Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Atualizar"
-                    Width="100"
-                    VerticalAlignment="Center"
-                    Command="{Binding ReloadCommand}"/>
-        </StackPanel>
+    <Grid>
+        <Border Grid.Row="1"
+                Margin="10 10 10 10"
+                Padding="10"
+                BorderBrush="{DynamicResource brush-frenchGray}"
+                BorderThickness="1"
+                CornerRadius="8"
+                HorizontalAlignment="Stretch"
+                Background="{DynamicResource brush-lavenderMist}">
 
-        <!-- Estado de carregamento -->
-        <ProgressBar Height="4" IsIndeterminate="True"
-                     VerticalAlignment="Top" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Grid>
 
-        <!-- Mensagem de erro -->
-        <TextBlock Text="{Binding Error}"
-                   Foreground="Red"
-                   Margin="5,34,5,7"
-                   FontWeight="Bold"
-                   Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
+                <!--#region Definições do Grid-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--#endregion-->
 
-        <!-- DataGrid -->
-        <DataGrid ItemsSource="{Binding UsuariosDeletados}" AutoGenerateColumns="False"
-                  Margin="0,50,0,0"
-                  Style="{StaticResource MyDataGrid}"
-                  SelectedItem="{Binding SelectedBackup}"
-                  CanUserAddRows="False"
-                  IsReadOnly="True"
-                  RowHeaderWidth="0">
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="1">
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="180"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="180"/>
-                <DataGridTextColumn Header="Motivo Deleção" Binding="{Binding MotivoDelecao}" Width="200"/>
-                <DataGridTextColumn Header="Deletado por" Binding="{Binding UsuarioQueDeletou}" Width="150"/>
-                <DataGridTextColumn Header="Data" Binding="{Binding DataDelecao, StringFormat=dd/MM/yyyy HH:mm}" Width="120"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding StatusBackup}" Width="90"/>
-                <DataGridTemplateColumn Header="Restauração" Width="120">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Restaurar"
+                    <TextBlock Text="Usuários Deletados"
+                           FontSize="24" Margin="10, 10, 0, 10"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           FontFamily="{StaticResource MontserratBold}"/>
+
+                    <!-- Mensagem de erro -->
+                    <TextBlock Text="{Binding Error}"
+                               Foreground="Red"
+                               FontWeight="Bold"
+                               Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                    <!--Bloco de pesquisa-->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+
+                        <TextBlock Text="Pesquisar: " Margin="10 0 0 0"
+                                   FontFamily="{StaticResource MontserratRegular}"/>
+
+                        <TextBox Width="300"
+                                 Margin="5,0,12,0"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- Estado de carregamento -->
+                <ProgressBar Height="4" IsIndeterminate="True" Grid.Row="2" Grid.ColumnSpan="2"
+                         VerticalAlignment="Top" Margin="10 0 10 0"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                <Button Content="Atualizar" Grid.Column="1"
+                        Style="{StaticResource HomeButtons}"
+                        Foreground="{StaticResource brush-peachOrange}"
+                        Background="Transparent"
+                        Height="50" Width="100"
+                        Margin="20"
+                        HorizontalAlignment="Right"
+                        Command="{Binding ReloadCommand}"/>
+                <!-- Barra superior com título, busca e atualizar -->
+
+                <!-- DataGrid -->
+                <DataGrid ItemsSource="{Binding UsuariosDeletados}" AutoGenerateColumns="False" 
+                          Grid.Row="2" Grid.ColumnSpan="2"
+                          Margin="10,10,10,0"
+                          Style="{StaticResource MyDataGrid}"
+                          SelectedItem="{Binding SelectedBackup}"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          RowHeaderWidth="0">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="180"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="180"/>
+                        <DataGridTextColumn Header="Motivo Deleção" Binding="{Binding MotivoDelecao}" Width="200"/>
+                        <DataGridTextColumn Header="Deletado por" Binding="{Binding UsuarioQueDeletou}" Width="150"/>
+                        <DataGridTextColumn Header="Data" Binding="{Binding DataDelecao, StringFormat=dd/MM/yyyy HH:mm}" Width="120"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusBackup}" Width="90"/>
+                        <DataGridTemplateColumn Header="Restauração" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Restaurar"
                                     Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
                                     IsEnabled="{Binding StatusBackup, Converter={StaticResource EnableRestoreConverter}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
