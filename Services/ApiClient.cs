@@ -234,6 +234,21 @@ namespace sistecDesktop.Services
             }
         }
 
+        public async Task<ApiResponse> UpdateUserAsync(int id, User user)
+        {
+            var url = $"{_baseUrl}/api/users/{id}";
+            var json = JsonConvert.SerializeObject(user, _jsonSettings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync(url, content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            return new ApiResponse
+            {
+                Success = response.IsSuccessStatusCode,
+                Message = responseBody
+            };
+        }
+
         public async Task<User> GetUserByIdAsync(int id)
         {
             try
