@@ -169,7 +169,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button Content="👁"
                                                 Style="{StaticResource ViewButton}"
-                                                Command="{Binding DataContext.ViewUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Command="{Binding DataContext.OpenEditUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}" />
                                         <Button Content="Excluir"
                                                 Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"

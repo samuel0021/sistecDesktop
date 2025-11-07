@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:sistecDesktop.ViewModels"
         xmlns:converters="clr-namespace:sistecDesktop.Converters"
         mc:Ignorable="d"
-        Title="PopupWindow" 
+        Title="PopupWindow" WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         Height="800" Width="800">
@@ -19,6 +19,7 @@
         <converters:EnableRestoreConverter x:Key="EnableRestoreConverter"/>
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <converters:InverseBoolToEnableConverter x:Key="InverseBoolToEnableConverter"/>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
 
 
         <DataTemplate DataType="{x:Type viewModels:OpenTicketViewModel}">
@@ -33,8 +34,12 @@
             <viewsPopups:ApproveTicketsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:UserCreateViewModel}">
-            <viewsPopups:UserCreateView/>
+        <DataTemplate DataType="{x:Type viewModels:UserProfileViewModel}">
+            <viewsPopups:UserProfileView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:UsersViewModel}">
+            <viewsPopups:UserProfileView/>
         </DataTemplate>
     </Window.Resources>
 

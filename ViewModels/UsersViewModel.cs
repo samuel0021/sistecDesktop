@@ -81,9 +81,11 @@ namespace sistecDesktop.ViewModels
         #endregion
 
         public ICommand LoadUsersCommand { get; }
-        public ICommand ViewUserCommand { get; }
+        
         public ICommand DeleteUserCommand { get; }
         public ICommand OpenCreateUserCommand { get; }
+        public ICommand OpenEditUserCommand { get; }
+
 
 
         public UsersViewModel(ApiClient apiClient)
@@ -93,16 +95,31 @@ namespace sistecDesktop.ViewModels
             Users = new ObservableCollection<User>();
 
             LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
-            ViewUserCommand = new RelayCommandWithParameter(ViewUser);
+            
+            OpenEditUserCommand = new RelayCommandWithParameter(EditUser);
             OpenCreateUserCommand = new RelayCommand(OpenCreateUserPopup);
             DeleteUserCommand = new AsyncRelayCommandWithParameter<User>(DeleteUserAsync);
 
             _ = LoadUsers();
         }
 
+        private void EditUser(object parameter)
+        {
+            if (parameter is User user)
+            {
+                var vm = new UserProfileViewModel(_apiClient, user);
+                vm.OnDialogClose = result =>
+                {
+                    if (result == true)
+                        _ = LoadUsers();
+                };
+                _dialogService.ShowDialog(vm);
+            }
+        }
+
         private void OpenCreateUserPopup()
         {
-            var vm = new UserCreateViewModel(_apiClient);
+            var vm = new UserProfileViewModel(_apiClient);
             vm.OnDialogClose = result =>
             {
                 if (result == true)
@@ -213,22 +230,5 @@ namespace sistecDesktop.ViewModels
             return result == true ? window.Motivo : null;
         }
 
-        private void ViewUser(object parameter)
-        {
-            if (parameter is User user)
-            {
-                MessageBox.Show(
-                    $"ID: {user.IdPerfilUsuario}\n" +
-                    $"Nome: {user.NomeUsuario}\n" +
-                    $"Email: {user.Email}\n" +
-                    $"Telefone: {user.Telefone}\n" +
-                    $"Cargo: {user.Cargo}\n" +
-                    $"Setor: {user.Setor}\n" +
-                    $"Matrícula: {user.MatriculaAprovador}\n",
-                    "Detalhes do Chamado",
-                    MessageBoxButton.OK ,
-                    MessageBoxImage.Information);
-            }
-        }
     }
 }

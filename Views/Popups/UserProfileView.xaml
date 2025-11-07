@@ -5,8 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
              xmlns:viewModels="clr-namespace:sistecDesktop.ViewModels"
-             mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:sistecDesktop.Converters"
+             mc:Ignorable="d"
              d:DesignHeight="550" d:DesignWidth="800">
+
+    <!--#region Converters-->
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:InverseBoolToEnableConverter x:Key="InverseBoolToEnableConverter"/>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <!--#endregion-->
+
     <Grid>
         <Border
             Background="{DynamicResource brush-lavenderMist}"
@@ -16,6 +26,7 @@
             Margin="10 10 10 10">
 
             <Grid>
+                <!--#region Definições-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -23,13 +34,15 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
+                <!--#endregion-->
 
                 <!--#region Título-->
                 <Border Grid.Row="0" CornerRadius="8 8 0 0" Padding="10"
                         Background="{StaticResource brush-midnightNavy}"
                         BorderThickness="0">
 
-                    <TextBlock Text="Gerenciar Usuário" FontSize="24" Margin="0 10 0 10"
+                    <TextBlock Text="{Binding TituloForm, FallbackValue='Gerenciar Usuário'}"
+                        FontSize="24" Margin="0 10 0 10"
                         FontFamily="{StaticResource MontserratBold}"
                         Foreground="{StaticResource brush-White}"/>
                 </Border>
@@ -37,6 +50,7 @@
 
                 <!--#region Dados Pessoais-->
                 <Grid Grid.Row="1">
+                    <!--#region Definições-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -47,28 +61,33 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <!--#endregion-->
 
-                    <TextBlock Text="Dados Pessoais" FontSize="16" Margin="10" Grid.Row="0"
+                    <TextBlock Text="Dados Pessoais" 
+                        FontSize="16" Margin="10" Grid.Row="0"
                         FontFamily="{StaticResource MontserratBold}"/>
 
                     <!--#region Nome-->
                     <TextBlock Text="Nome" Margin="10 0 0 0" Grid.Row="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtNome" Grid.Row="2" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Nome, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Margin="10 5 10 5"/>
                     <!--#endregion-->
 
                     <!--#region Sobrenome-->
                     <TextBlock Text="Sobrenome" Margin="10 0 0 0" Grid.Row="1" Grid.Column="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtSobrenome" Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Sobrenome, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
                     <!--#endregion-->
                 </Grid>
                 <!--#endregion-->
 
                 <!--#region Contato-->
                 <Grid Grid.Row="2">
+                    <!--#region Definições-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -80,6 +99,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <!--#endregion-->
 
                     <TextBlock Text="Contato" FontSize="16" Margin="10" Grid.Row="0"
                         FontFamily="{StaticResource MontserratBold}"/>
@@ -88,27 +108,31 @@
                     <TextBlock Text="Email" Margin="10 0 0 0" Grid.Row="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtEmail" Grid.Row="2" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Margin="10 5 10 5"/>
                     <!--#endregion-->
 
                     <!--#region Telefone-->
                     <TextBlock Text="Telefone" Margin="10 0 0 0" Grid.Row="1" Grid.Column="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtTelefone" Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Telefone, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
                     <!--#endregion-->
-                    
+
                     <!--#region Ramal-->
                     <TextBlock Text="Ramal(Opcional)" Margin="10 0 0 0" Grid.Row="1" Grid.Column="2"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtRamal" Grid.Row="2" Grid.Column="2" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Ramal, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Grid.Column="2" Margin="10 5 10 5"/>
                     <!--#endregion-->
                 </Grid>
                 <!--#endregion-->
 
                 <!--#region Informações Profissionais-->
                 <Grid Grid.Row="3">
+                    <!--#region Definições-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -121,6 +145,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <!--#endregion-->
 
                     <TextBlock Text="Informações Profissionais" FontSize="16" Margin="10" Grid.Row="0"
                         FontFamily="{StaticResource MontserratBold}"/>
@@ -129,45 +154,63 @@
                     <TextBlock Text="Cargo/ Função" Margin="10 0 0 0" Grid.Row="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtCargo" Grid.Row="2" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Margin="10 5 10 5"/>
                     <!--#endregion-->
 
                     <!--#region Setor-->
                     <TextBlock Text="Setor/ Departamento" Margin="10 0 0 0" Grid.Row="1" Grid.Column="1"
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtSetor" Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
+                    <TextBox Text="{Binding Setor, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Row="2" Grid.Column="1" Margin="10 5 10 5"/>
                     <!--#endregion-->
-                    
+
                     <!--#region Nível de Acesso-->
                     <TextBlock Text="Nível de Acesso" Margin="10 0 0 0" Grid.Row="3" 
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtNivelAcesso" Grid.Row="4" Margin="10 5 10 5"/>
+                    <ComboBox ItemsSource="{Binding PerfisAcesso}" 
+                              SelectedItem="{Binding PerfilSelecionado, Mode=TwoWay}"
+                              DisplayMemberPath="Nome"
+                              Grid.Row="4" Margin="10 5 10 5"/>
                     <!--#endregion-->
-                    
-                    <!--#region Senha-->
-                    <TextBlock Text="Senha" Margin="10 0 0 0" Grid.Row="3" Grid.Column="1"
-                        FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <TextBox x:Name="txtSenha" Grid.Row="4" Grid.Column="1" Margin="10 5 10 5"/>
+                    <!--#region Senha-->
+                    <!-- Só aparece se NÃO estiver em modo edição -->
+                    <StackPanel Grid.Row="4" Grid.Column="1"
+    Visibility="{Binding ModoEdicao, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <TextBlock Text="Senha inicial:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Senha}" IsReadOnly="True" Height="32"/>
+                        <TextBlock FontSize="11" Margin="0,2,0,0" Foreground="Gray"
+        Text="Senha = primeiro nome + últimos 4 dígitos do telefone"/>
+                    </StackPanel>
                     <!--#endregion-->
-                    
-                    
+
+
                 </Grid>
                 <!--#endregion-->
 
                 <!--#region Botões-->
                 <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="10"
                             HorizontalAlignment="Right">
-                    
-                    <Button x:Name="btnCancelar" Content="Cancelar"
+
+                    <!-- Mensagem de erro geral -->
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom"
+                        Margin="0,18,0,0"
+                        Foreground="Red" FontWeight="Bold" TextWrapping="Wrap"
+                        Text="{Binding ErrorMessage}"/>
+
+                    <Button Content="Cancelar"
                             Style="{StaticResource HomeButtons}"
-                            Width="100" Height="50"/>
-                    
-                    <Button x:Name="btnSalvar" Content="Salvar"
+                            Width="100" Height="50"
+                            Command="{Binding CancelCommand}"/>
+                    <Button Content="{Binding TextoBotaoSalvar, FallbackValue=Salvar}"
                             Style="{StaticResource HomeButtons}"
-                            Width="100" Height="50"/>
+                            Width="100" Height="50"
+                            Command="{Binding EditUserCommand}" 
+                            IsDefault="True"
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolToEnableConverter}, FallbackValue=true}"/>
                 </StackPanel>
                 <!--#endregion-->
             </Grid>
