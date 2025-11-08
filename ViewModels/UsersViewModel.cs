@@ -17,18 +17,18 @@ namespace sistecDesktop.ViewModels
     public class UsersViewModel : BaseViewModel
     {
         private readonly ApiClient _apiClient;
-        private ObservableCollection<User> _users;
-        private List<User> _allUsers;
+        private ObservableCollection<UserDatabase> _users;
+        private List<UserDatabase> _allUsers;
         private string _searchTerm;
         private bool _isLoading;
         private string _errorMessage;
-        private User _selectedUser;
+        private UserDatabase _selectedUser;
         private readonly IDialogService _dialogService;
 
 
         #region Encapsulamentos
 
-        public ObservableCollection<User> Users
+        public ObservableCollection<UserDatabase> Users
         {
             get { return _users; }
             set
@@ -36,6 +36,12 @@ namespace sistecDesktop.ViewModels
                 _users = value;
                 OnPropertyChanged(nameof(Users));
             }
+        }
+
+        public List<UserDatabase> AllUsers // Se quiser acessar do filtro, etc
+        {
+            get => _allUsers;
+            set { _allUsers = value; }
         }
 
         public string SearchTerm
@@ -49,7 +55,7 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        public User SelectedUser 
+        public UserDatabase SelectedUser 
         {
             get { return _selectedUser; }
             set
@@ -92,27 +98,34 @@ namespace sistecDesktop.ViewModels
         {
             _apiClient = apiClient;
             _dialogService = new DialogService();
-            Users = new ObservableCollection<User>();
+            Users = new ObservableCollection<UserDatabase>();
 
             LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
             
             OpenEditUserCommand = new RelayCommandWithParameter(EditUser);
             OpenCreateUserCommand = new RelayCommand(OpenCreateUserPopup);
-            DeleteUserCommand = new AsyncRelayCommandWithParameter<User>(DeleteUserAsync);
+            DeleteUserCommand = new AsyncRelayCommandWithParameter<UserDatabase>(DeleteUserAsync);
 
             _ = LoadUsers();
         }
 
         private void EditUser(object parameter)
         {
-            if (parameter is User user)
+            if (parameter is UserDatabase userDb)
             {
-                var vm = new UserProfileViewModel(_apiClient, user);
-                vm.OnDialogClose = result =>
+                // Converte UserDatabase em User para edição/cadastro
+                var user = new User
                 {
-                    if (result == true)
-                        _ = LoadUsers();
+                    NomeUsuario = userDb.Name,
+                    Setor = userDb.Setor,
+                    Cargo = userDb.Cargo,
+                    Email = userDb.Email,
+                    Telefone = userDb.Telefone,
+                    IdPerfilUsuario = userDb.PerfilId
+                    // outros campos conforme necessário
                 };
+                var vm = new UserProfileViewModel(_apiClient, user);
+                vm.OnDialogClose = result => { if (result == true) _ = LoadUsers(); };
                 _dialogService.ShowDialog(vm);
             }
         }
@@ -138,7 +151,7 @@ namespace sistecDesktop.ViewModels
                 var list = await _apiClient.GetUsersAsync();
 
                 _allUsers = list.ToList();
-                Users = new ObservableCollection<User>(_allUsers);
+                Users = new ObservableCollection<UserDatabase>(_allUsers);
             }
             catch (UnauthorizedAccessException)
             {
@@ -156,12 +169,12 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        private async Task DeleteUserAsync(User user)
+        private async Task DeleteUserAsync(UserDatabase userDB)
         {
-            if (user == null) return;
+            if (userDB == null) return;
 
             var confirm = MessageBox.Show(
-                $"Tem certeza que deseja deletar o usuário \"{user.NomeUsuario}\"?",
+                $"Tem certeza que deseja deletar o usuário \"{userDB.Name}\"?",
                 "Confirmar Deleção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (confirm != MessageBoxResult.Yes) return;
@@ -178,11 +191,11 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = true;
                 string quemDeletou = App.LoggedUser?.NomeUsuario ?? "admin";
-                var sucesso = await _apiClient.DeleteUserAsync(user.IdPerfilUsuario, motivo);
+                var sucesso = await _apiClient.DeleteUserAsync(userDB.PerfilId, motivo);
 
                 if (sucesso)
                 {
-                    MessageBox.Show($"Usuário \"{user.NomeUsuario}\" deletado com sucesso!");
+                    MessageBox.Show($"Usuário \"{userDB.Name}\" deletado com sucesso!");
                     await LoadUsers();
                 }
                 else
@@ -206,20 +219,20 @@ namespace sistecDesktop.ViewModels
 
             if (string.IsNullOrWhiteSpace(termo))
             {
-                Users = new ObservableCollection<User>(_allUsers);
+                Users = new ObservableCollection<UserDatabase>(_allUsers);
             }
             else
             {
                 var lower = termo.ToLowerInvariant();
                 var filtrados = _allUsers
                     .Where(u =>
-                        (u.NomeUsuario?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (u.Name?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.Email?.ToLowerInvariant().Contains(lower) ?? false) ||
-                        (u.MatriculaAprovador.ToString().Contains(lower)) ||
+                        (u.Matricula.ToString().Contains(lower)) ||
                         (u.Setor?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.Cargo?.ToLowerInvariant().Contains(lower) ?? false)
                     );
-                Users = new ObservableCollection<User>(filtrados);
+                Users = new ObservableCollection<UserDatabase>(filtrados);
             }
         }
 

@@ -126,6 +126,9 @@ namespace sistecDesktop.ViewModels
                     // Armazenar usuário
                     App.LoggedUser = resultado.Data.User;
 
+                    var perfis = await _apiClient.GetPerfisAcessoAsync();
+                    App.PerfisAcesso = perfis;
+
                     // Navegar para a Home
                     _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
                 }              
@@ -139,6 +142,7 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = false;  // Esconder loading
                 Console.WriteLine($"Usuário logado após login: {App.LoggedUser.IdPerfilUsuario}");
+                Console.WriteLine($"MatriculaAprovador: {App.LoggedUser.MatriculaAprovador}");
             }
         }
 

@@ -134,15 +134,15 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" 
-                                            Binding="{Binding IdPerfilUsuario}" 
+                                            Binding="{Binding Id}" 
                                             Width="60"/>
 
                         <DataGridTextColumn Header="Matrícula" 
-                                            Binding="{Binding MatriculaAprovador}" 
+                                            Binding="{Binding PerfilId}" 
                                             Width="100"/>
 
                         <DataGridTextColumn Header="Nome" 
-                                            Binding="{Binding NomeUsuario}" 
+                                            Binding="{Binding Name}" 
                                             Width="*"
                                             MinWidth="200"/>
 

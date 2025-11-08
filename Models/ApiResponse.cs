@@ -45,7 +45,7 @@ namespace sistecDesktop.Models
     }
 
 
-
+    #region User
 
     // Modelo para login (campos limpos)
     public class User
@@ -106,7 +106,8 @@ namespace sistecDesktop.Models
     {
         [JsonProperty("id_usuario")]
         public int Id { get; set; }
-        [JsonProperty("matricula")]
+        
+        [JsonProperty("matricula_aprovador")]
         public int Matricula { get; set; }
 
         [JsonProperty("nome_usuario")]
@@ -119,14 +120,22 @@ namespace sistecDesktop.Models
         public string Email { get; set; }
         [JsonProperty("tel_usuarios")]
         public string Telefone { get; set; }
-        [JsonProperty("id_aprovador_usuario")]
-        public int? IdAprovador { get; set; }
+
+        //[JsonProperty("id_aprovador_usuario")]
+        //public int? IdAprovador { get; set; }
+
+
         [JsonProperty("id_perfil_usuario")]
         public int PerfilId { get; set; }
-        [JsonProperty("nome_perfil")]
-        public string PerfilNome { get; set; }
+
+
+        //[JsonProperty("nome_perfil")]
+        //public string PerfilNome { get; set; }
+
+
         [JsonProperty("nivel_acesso")]
         public int NivelAcesso { get; set; }
+
         [JsonProperty("descricao_perfil_usuario")]
         public string PerfilDescricao { get; set; }
 
@@ -135,10 +144,32 @@ namespace sistecDesktop.Models
         public Perfil Perfil => new Perfil
         {
             Id = PerfilId,
-            Nome = PerfilNome,
-            NivelAcesso = NivelAcesso,
+            //Nome = PerfilNome,
+            NivelAcesso = Matricula,
             Descricao = PerfilDescricao
         };
+    }
+
+    public class PerfilUsuario
+    {
+        [JsonProperty("id_perfil_usuario")]
+        public int Id { get; set; }
+
+        [JsonProperty("descricao_perfil_usuario")]
+        public string Nome { get; set; }
+
+        [JsonProperty("nivel_acesso")]
+        public int NivelAcesso { get; set; }
+    }
+
+    public class PerfisApiResponse
+    {
+        [JsonProperty("status")]
+        public int Status { get; set; }
+        [JsonProperty("message")]
+        public string Message { get; set; }
+        [JsonProperty("data")]
+        public List<PerfilUsuario> Data { get; set; }
     }
 
     public class DeletedUserBackup
@@ -207,18 +238,22 @@ namespace sistecDesktop.Models
 
     public class Perfil
     {
-        [JsonProperty("id")]
+        [JsonProperty("id_perfil_usuario")]
         public int Id { get; set; }
 
-        [JsonProperty("nome")]
-        public string Nome { get; set; }
+
+        //[JsonProperty("nome")]
+        //public string Nome { get; set; }
+
 
         [JsonProperty("nivel_acesso")]
         public int NivelAcesso { get; set; }
 
-        [JsonProperty("descricao")]
+        [JsonProperty("descricao_perfil_usuario")]
         public string Descricao { get; set; }
     }
+
+    #endregion
 
     // Modelo para chamados do banco
     public class ChamadoDatabase
@@ -233,12 +268,12 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_detalhada")]
         public string Description { get; set; }
 
-        // Se o backend retornar "status" ou "descricao_status_chamado", você pode mapear ambos:
+        // Se o backend retornar "status" ou "descricao_status_chamado"
         [JsonProperty("descricao_status_chamado")]
         public string Status { get; set; }
 
-        // Backend retornou "priority" e também "prioridade_chamado" em alguns pontos.
-        // Para garantir compatibilidade, crie propriedades auxiliares e um mapeamento.
+        // Backend retornou "priority" e também "prioridade_chamado" em alguns pontos
+        // Para garantir compatibilidade
         [JsonProperty("prioridade_chamado")]
         public int Prioridade { get; set; }
 
@@ -266,7 +301,7 @@ namespace sistecDesktop.Models
         [JsonProperty("data_resolucao")]
         public DateTime? DataResolucao { get; set; }
 
-        // Caso o backend retorne outros campos em português, você pode mantê-los e mapear similarmente.
+        
     }
 
 

@@ -173,7 +173,74 @@ namespace sistecDesktop.Services
             Console.WriteLine("Cookies locais removidos");
         }
 
-        public async Task<List<User>> GetUsersAsync()
+        #region User
+        public async Task<User> CreateUserAsync(User user)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(user, _jsonSettings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var usersUrl = $"{_baseUrl}/api/users";
+                var response = await _httpClient.PostAsync(usersUrl, content);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Criando usuário: {json}");
+                Console.WriteLine($"Status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
+                        if (apiResponse?.Data != null)
+                        {
+                            return new User
+                            {
+                                IdPerfilUsuario = apiResponse.Data.Id,
+                                MatriculaAprovador = apiResponse.Data.Matricula,
+                                NomeUsuario = apiResponse.Data.Name,
+                                Email = apiResponse.Data.Email,
+                                Telefone = apiResponse.Data.Telefone,
+                                Setor = apiResponse.Data.Setor,
+                                Cargo = apiResponse.Data.Cargo
+                            };
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        Console.WriteLine($"DEBUG: Falha ao deserializar user criado: {ex.Message}");
+                    }
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                }
+
+                throw new Exception($"Erro ao criar usuário: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        public async Task<List<PerfilUsuario>> GetPerfisAcessoAsync()
+{
+    // Chame seu endpoint /api/perfis (ou similar)
+    var response = await _httpClient.GetAsync($"{_baseUrl}/api/perfis");
+    var json = await response.Content.ReadAsStringAsync();
+    var perfis = JsonConvert.DeserializeObject<PerfisApiResponse>(json);
+    return perfis.Data;
+}
+
+
+        public async Task<List<UserDatabase>> GetUsersAsync()
         {
             try
             {
@@ -194,21 +261,8 @@ namespace sistecDesktop.Services
                         if (apiResponse?.Data != null)
                         {
                             Console.WriteLine($"DEBUG: Deserializado {apiResponse.Data.Count} usuários do banco");
-
-                            var users = apiResponse.Data.Select(userDb => new User
-                            {
-                                IdPerfilUsuario = userDb.Id,
-                                MatriculaAprovador = userDb.Matricula,
-                                NomeUsuario = userDb.Name,
-                                Email = userDb.Email,
-                                Telefone = userDb.Telefone,
-                                Setor = userDb.Setor,
-                                Cargo = userDb.Cargo
-                            }).ToList();
-
-                            Console.WriteLine($"DEBUG: Primeiro usuário - ID: {users.FirstOrDefault()?.IdPerfilUsuario}, Nome: {users.FirstOrDefault()?.NomeUsuario}");
-
-                            return users;
+                            // Aqui retorna direto UserDatabase, sem mapear para User!
+                            return apiResponse.Data;
                         }
                     }
                     catch (JsonException ex)
@@ -303,61 +357,6 @@ namespace sistecDesktop.Services
             }
         }
 
-        public async Task<User> CreateUserAsync(User user)
-        {
-            try
-            {
-                var json = JsonConvert.SerializeObject(user, _jsonSettings);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var usersUrl = $"{_baseUrl}/api/users";
-                var response = await _httpClient.PostAsync(usersUrl, content);
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine($"Criando usuário: {json}");
-                Console.WriteLine($"Status: {response.StatusCode}");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            return new User
-                            {
-                                IdPerfilUsuario = apiResponse.Data.Id,
-                                MatriculaAprovador = apiResponse.Data.Matricula,
-                                NomeUsuario = apiResponse.Data.Name,
-                                Email = apiResponse.Data.Email,
-                                Telefone = apiResponse.Data.Telefone,
-                                Setor = apiResponse.Data.Setor,
-                                Cargo = apiResponse.Data.Cargo
-                            };
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar user criado: {ex.Message}");
-                    }
-                }
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
-
-                throw new Exception($"Erro ao criar usuário: {response.StatusCode} - {responseBody}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
-        }
 
         public async Task<bool> DeleteUserAsync(int idUsuario, string motivo)
         {
@@ -474,7 +473,7 @@ namespace sistecDesktop.Services
             }
         }
 
-
+        #endregion
 
         public async Task<List<Chamado>> GetChamadosAsync()
         {

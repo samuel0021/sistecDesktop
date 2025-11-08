@@ -11,12 +11,7 @@ using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
 {
-    public class PerfilUsuario
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public int Nivel { get; set; }
-    }
+   
 
     public class UserProfileViewModel : BasePopupViewModel
     {
@@ -38,7 +33,22 @@ namespace sistecDesktop.ViewModels
         public bool ModoEdicao { get; }
         private int? _idUsuario;
 
-        public ObservableCollection<PerfilUsuario> PerfisAcesso { get; }
+        private int _matriculaAprovador;
+        public int MatriculaAprovador
+        {
+            get => _matriculaAprovador;
+            set { _matriculaAprovador = value; OnPropertyChanged(nameof(MatriculaAprovador)); }
+        }
+
+        public ObservableCollection<PerfilUsuario> PerfisAcesso { get; set; } = new ObservableCollection<PerfilUsuario>();
+
+        private async Task CarregarPerfisAsync()
+        {
+            var perfis = await _apiClient.GetPerfisAcessoAsync();
+            PerfisAcesso.Clear();
+            foreach (var perfil in perfis)
+                PerfisAcesso.Add(perfil);
+        }
 
         public string Nome
         {
@@ -103,17 +113,17 @@ namespace sistecDesktop.ViewModels
         public ICommand EditUserCommand { get; }
         public ICommand CancelCommand { get; }
 
-        // Construtor já detecta modo (cadastro ou edição)
+        // Construtor já detecta modo
         public UserProfileViewModel(ApiClient apiClient, User usuarioExistente = null)
         {
             _apiClient = apiClient;
             PerfisAcesso = new ObservableCollection<PerfilUsuario>
             {
-                new PerfilUsuario { Id = 1, Nome = "Usuário", Nivel = 1 },
-                new PerfilUsuario { Id = 2, Nome = "Analista de Suporte", Nivel = 2 },
-                new PerfilUsuario { Id = 5, Nome = "Gestor de Chamados", Nivel = 3 },
-                new PerfilUsuario { Id = 3, Nome = "Gerente de Suporte", Nivel = 4 },
-                new PerfilUsuario { Id = 4, Nome = "Administrador", Nivel = 5 }
+                new PerfilUsuario { Id = 1, Nome = "Usuário", NivelAcesso = 1 },
+                new PerfilUsuario { Id = 2, Nome = "Analista de Suporte", NivelAcesso = 2 },
+                new PerfilUsuario { Id = 3, Nome = "Gestor de Chamados", NivelAcesso = 3 },
+                new PerfilUsuario { Id = 3, Nome = "Gerente de Suporte", NivelAcesso = 4 },
+                new PerfilUsuario { Id = 5, Nome = "Administrador", NivelAcesso = 5 }
             };
 
             if (usuarioExistente != null)
@@ -130,7 +140,7 @@ namespace sistecDesktop.ViewModels
                 Cargo = usuarioExistente.Cargo;
                 Setor = usuarioExistente.Setor;
                 PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario);
-                Senha = ""; // Não aparece na view se edição!
+                Senha = "";
             }
             else
             {
@@ -237,6 +247,7 @@ namespace sistecDesktop.ViewModels
                     Telefone = Telefone,
                     Ramal = Ramal,
                     IdPerfilUsuario = PerfilSelecionado.Id,
+                    MatriculaAprovador = MatriculaAprovador,
                     Senha = string.IsNullOrWhiteSpace(Senha) ? GerarSenhaPadrao(Nome, Telefone) : Senha
                 };
                 
