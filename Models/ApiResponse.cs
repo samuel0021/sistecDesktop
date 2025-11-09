@@ -16,11 +16,13 @@ namespace sistecDesktop.Models
 
     public class LoginResponse : ApiResponse
     {
+        [JsonProperty("data")]
         public LoginData Data { get; set; }
     }
 
     public class LoginData
     {
+        [JsonProperty("user")]
         public User User { get; set; }
     }
 
@@ -50,14 +52,14 @@ namespace sistecDesktop.Models
     // Modelo para login (campos limpos)
     public class User
     {
-        [JsonProperty("nome_usuario")]
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
+        [JsonProperty("matricula")]
+        public int Matricula { get; set; }
+
+        [JsonProperty("name")]
         public string NomeUsuario { get; set; }
-
-        [JsonProperty("setor_usuario")]
-        public string Setor { get; set; }
-
-        [JsonProperty("cargo_usuario")]
-        public string Cargo { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }
@@ -65,19 +67,34 @@ namespace sistecDesktop.Models
         [JsonProperty("senha")]
         public string Senha { get; set; }
 
-        [JsonProperty("tel_usuarios")]
+        [JsonProperty("telefone")]
         public string Telefone { get; set; }
 
+        [JsonProperty("setor")]
+        public string Setor { get; set; }
 
-        [JsonProperty("id_perfil_usuario")]
-        public int IdPerfilUsuario { get; set; }
+        [JsonProperty("cargo")]
+        public string Cargo { get; set; }
 
-        [JsonProperty("matricula_aprovador")]
-        public int MatriculaAprovador { get; set; }
+        [JsonProperty("id_aprovador")]
+        public int? IdAprovador { get; set; }
+
+        [JsonProperty("perfil")]
+        public PerfilUsuario IdPerfilUsuario { get; set; }
+
+        [JsonProperty("nome")]
+        public string PerfilNome { get; set; }
+
+        [JsonProperty("nivel_acesso")]
+        public int NivelAcesso { get; set; }
+
+        [JsonProperty("descricao")]
+        public string PerfilDescricao { get; set; }
 
         [JsonProperty("ramal")]
         public string Ramal { get; set; }
 
+        // Propriedades extras (não vêm do JSON direto, se quiser computed)
         [JsonIgnore]
         public string Nome
         {
@@ -112,12 +129,16 @@ namespace sistecDesktop.Models
 
         [JsonProperty("nome_usuario")]
         public string Name { get; set; }
+
         [JsonProperty("setor_usuario")]
         public string Setor { get; set; }
+
         [JsonProperty("cargo_usuario")]
         public string Cargo { get; set; }
+
         [JsonProperty("email")]
         public string Email { get; set; }
+
         [JsonProperty("tel_usuarios")]
         public string Telefone { get; set; }
 
@@ -129,8 +150,8 @@ namespace sistecDesktop.Models
         public int PerfilId { get; set; }
 
 
-        //[JsonProperty("nome_perfil")]
-        //public string PerfilNome { get; set; }
+        [JsonProperty("nome_perfil")]
+        public string PerfilNome { get; set; }
 
 
         [JsonProperty("nivel_acesso")]
@@ -139,12 +160,15 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_perfil_usuario")]
         public string PerfilDescricao { get; set; }
 
+        [JsonProperty("senha")]
+        public string Senha { get; set; }
+
 
         // Propriedade para compatibilidade
         public Perfil Perfil => new Perfil
         {
             Id = PerfilId,
-            //Nome = PerfilNome,
+            Nome = PerfilNome,
             NivelAcesso = Matricula,
             Descricao = PerfilDescricao
         };
@@ -152,14 +176,17 @@ namespace sistecDesktop.Models
 
     public class PerfilUsuario
     {
-        [JsonProperty("id_perfil_usuario")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonProperty("descricao_perfil_usuario")]
+        [JsonProperty("nome")]
         public string Nome { get; set; }
 
         [JsonProperty("nivel_acesso")]
         public int NivelAcesso { get; set; }
+
+        [JsonProperty("descricao")]
+        public string Descricao { get; set; }
     }
 
     public class PerfisApiResponse
@@ -242,8 +269,8 @@ namespace sistecDesktop.Models
         public int Id { get; set; }
 
 
-        //[JsonProperty("nome")]
-        //public string Nome { get; set; }
+        [JsonProperty("nome")]
+        public string Nome { get; set; }
 
 
         [JsonProperty("nivel_acesso")]
@@ -254,6 +281,8 @@ namespace sistecDesktop.Models
     }
 
     #endregion
+
+    #region Chamados
 
     // Modelo para chamados do banco
     public class ChamadoDatabase
@@ -387,6 +416,8 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_problema")]
         public string Problem { get; set; } 
     }
+
+    #endregion
 
     public class LoginRequest
     {

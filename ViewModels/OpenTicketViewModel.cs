@@ -250,7 +250,7 @@ namespace sistecDesktop.ViewModels
                 {
                     Title = Title,
                     Description = Description,
-                    UserId = App.LoggedUser?.IdPerfilUsuario ?? 1,
+                    UserId = App.LoggedUser.IdPerfilUsuario.Id,
                     Priority = Priority,
                     Category = categoria, // campo original que você vinha usando
                     DescricaoCategoria = categoria, // compatibilidade com site (descricao_categoria)

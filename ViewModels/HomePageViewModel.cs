@@ -69,11 +69,12 @@ namespace sistecDesktop.ViewModels
             Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             OpenTicketCommand = new RelayCommand(OpenTicket);
-            MyTicketsCommand = new RelayCommand(MyTickets);
+            MyTicketsCommand = new AsyncRelayCommand(MyTickets);
             ApproveTicketsCommand = new RelayCommand(OpenApproveTickets);
   
             _ = LoadTickets();
 
+            MessageBox.Show($"UserId: {App.LoggedUser?.Id}");
         }
 
         private async Task LoadTickets()
@@ -123,21 +124,21 @@ namespace sistecDesktop.ViewModels
 
         }
 
-        private void MyTickets()
+        private async Task MyTickets()
         {
             var vm = new MyTicketsViewModel(_apiClient);
-
+            await vm.LoadTickets();
             _dialogService.ShowDialog(vm);
         }
 
         private void OpenApproveTickets()
         {
             // verifica o nível de acesso
-            var perfil = App.PerfisAcesso.FirstOrDefault(p => p.Id == App.LoggedUser.IdPerfilUsuario);
+            //var perfil = App.PerfisAcesso.FirstOrDefault(p => p.Id == App.LoggedUser.IdPerfilUsuario);
 
-            if (App.LoggedUser?.IdPerfilUsuario < 3)
+            if (App.LoggedUser.IdPerfilUsuario != null && App.LoggedUser.IdPerfilUsuario.Id < 3)
             {
-                Console.WriteLine($"IdPerfilUsuario: {App.LoggedUser.MatriculaAprovador}");
+                Console.WriteLine($"IdPerfilUsuario: {App.LoggedUser.IdPerfilUsuario}");
                 MessageBox.Show(
                     "Apenas gestores e administradores podem aprovar chamados.",
                     "Acesso Negado",

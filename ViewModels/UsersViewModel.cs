@@ -116,13 +116,19 @@ namespace sistecDesktop.ViewModels
                 // Converte UserDatabase em User para edição/cadastro
                 var user = new User
                 {
+                    Id = userDb.Id,
                     NomeUsuario = userDb.Name,
                     Setor = userDb.Setor,
                     Cargo = userDb.Cargo,
                     Email = userDb.Email,
-                    Telefone = userDb.Telefone,
-                    IdPerfilUsuario = userDb.PerfilId
-                    // outros campos conforme necessário
+                    Telefone = userDb.Telefone, 
+                    IdPerfilUsuario = new PerfilUsuario
+                    {
+                        Id = userDb.PerfilId,
+                        NivelAcesso = userDb.NivelAcesso,
+                        Descricao = userDb.PerfilDescricao,
+                        Nome = userDb.PerfilNome
+                    }
                 };
                 var vm = new UserProfileViewModel(_apiClient, user);
                 vm.OnDialogClose = result => { if (result == true) _ = LoadUsers(); };
@@ -191,7 +197,7 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = true;
                 string quemDeletou = App.LoggedUser?.NomeUsuario ?? "admin";
-                var sucesso = await _apiClient.DeleteUserAsync(userDB.PerfilId, motivo);
+                var sucesso = await _apiClient.DeleteUserAsync(userDB.Id, motivo);
 
                 if (sucesso)
                 {

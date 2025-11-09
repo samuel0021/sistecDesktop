@@ -15,7 +15,9 @@ namespace sistecDesktop
     public partial class App : Application
     {
         public static User LoggedUser { get; set; }
-        public static List<PerfilUsuario> PerfisAcesso { get; set; }
+
+
+        //public static List<PerfilUsuario> PerfisAcesso { get; set; }
 
 
     }

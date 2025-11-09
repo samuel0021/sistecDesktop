@@ -39,7 +39,7 @@ namespace sistecDesktop.Views
             //txtEmail.Focus();
 
             //APAGAR DEPOIS E DEIXAR SÓ O FOCUS
-            txtEmail.Text = "admin@sistec.com"; 
+            txtEmail.Text = "samuel.vieira@sistec.com"; 
             passwordBox.Password = "admin123";
         }
     }

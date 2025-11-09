@@ -88,11 +88,14 @@ namespace sistecDesktop.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    Console.WriteLine("JSON recebido:");
+                    Console.WriteLine(responseBody);
+
                     var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseBody, _jsonSettings);
 
-                    Console.WriteLine($"DEBUG: User ID deserializado: {loginResponse.Data?.User?.IdPerfilUsuario}");
+                    Console.WriteLine($"DEBUG: User ID deserializado: {loginResponse.Data?.User?.IdPerfilUsuario.Id}");
                     Console.WriteLine($"DEBUG: User Name deserializado: {loginResponse.Data?.User?.NomeUsuario}");
-                    Console.WriteLine($"DEBUG: Perfil Nivel deserializado: {loginResponse.Data?.User?.MatriculaAprovador}");
+                    Console.WriteLine($"DEBUG: Perfil Nivel deserializado: {loginResponse.Data?.User?.IdPerfilUsuario.NivelAcesso}");
 
                     if (loginResponse.Success)
                     {
@@ -174,10 +177,11 @@ namespace sistecDesktop.Services
         }
 
         #region User
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<UserDatabase> CreateUserAsync(UserDatabase user)
         {
             try
             {
+                // Não envie o Id no cadastro!
                 var json = JsonConvert.SerializeObject(user, _jsonSettings);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -190,40 +194,16 @@ namespace sistecDesktop.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            return new User
-                            {
-                                IdPerfilUsuario = apiResponse.Data.Id,
-                                MatriculaAprovador = apiResponse.Data.Matricula,
-                                NomeUsuario = apiResponse.Data.Name,
-                                Email = apiResponse.Data.Email,
-                                Telefone = apiResponse.Data.Telefone,
-                                Setor = apiResponse.Data.Setor,
-                                Cargo = apiResponse.Data.Cargo
-                            };
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar user criado: {ex.Message}");
-                    }
+                    var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
+                    // Retorna UserDatabase já com o id_usuario preenchido (do backend)
+                    return apiResponse.Data;
                 }
-
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
                     throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
 
                 throw new Exception($"Erro ao criar usuário: {response.StatusCode} - {responseBody}");
             }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
+            catch (UnauthorizedAccessException) { throw; }
             catch (Exception ex)
             {
                 throw new Exception($"Erro na requisição: {ex.Message}");
@@ -288,7 +268,7 @@ namespace sistecDesktop.Services
             }
         }
 
-        public async Task<ApiResponse> UpdateUserAsync(int id, User user)
+        public async Task<ApiResponse> UpdateUserAsync(int id, UserDatabase user)
         {
             var url = $"{_baseUrl}/api/users/{id}";
             var json = JsonConvert.SerializeObject(user, _jsonSettings);
@@ -324,8 +304,8 @@ namespace sistecDesktop.Services
                         {
                             return new User
                             {
-                                IdPerfilUsuario = apiResponse.Data.Id,
-                                MatriculaAprovador = apiResponse.Data.Matricula,
+                                IdPerfilUsuario = new PerfilUsuario { Id = apiResponse.Data.PerfilId, Nome = apiResponse.Data.Name, NivelAcesso = apiResponse.Data.NivelAcesso, Descricao = apiResponse.Data.PerfilDescricao },
+                                Matricula = apiResponse.Data.Matricula,
                                 NomeUsuario = apiResponse.Data.Name,
                                 Email = apiResponse.Data.Email,
                                 Telefone = apiResponse.Data.Telefone,
@@ -496,7 +476,7 @@ namespace sistecDesktop.Services
 
                 Console.WriteLine($"Chamados Status: {response.StatusCode}");
 
-                // ✅ MUDAR ESTA LINHA - Ver JSON COMPLETO
+                // MUDAR ESTA LINHA - Ver JSON COMPLETO
                 Console.WriteLine($"=== JSON COMPLETO DOS CHAMADOS ===");
                 Console.WriteLine(responseBody);
                 Console.WriteLine($"==================================");

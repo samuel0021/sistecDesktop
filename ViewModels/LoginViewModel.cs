@@ -1,4 +1,7 @@
-﻿using sistecDesktop.Commands;
+﻿using Newtonsoft.Json;
+using sistecDesktop.Commands;
+using sistecDesktop.Models; 
+using sistecDesktop.Services;
 using sistecDesktop.Views;
 using System;
 using System.Collections.Generic;
@@ -8,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using sistecDesktop.Services;
-using sistecDesktop.Models; 
 
 namespace sistecDesktop.ViewModels
 {
@@ -125,9 +126,14 @@ namespace sistecDesktop.ViewModels
 
                     // Armazenar usuário
                     App.LoggedUser = resultado.Data.User;
+                    Console.WriteLine(JsonConvert.SerializeObject(App.LoggedUser, Formatting.Indented));
 
-                    var perfis = await _apiClient.GetPerfisAcessoAsync();
-                    App.PerfisAcesso = perfis;
+                    MessageBox.Show($"UserId: {App.LoggedUser?.Id}");
+
+
+
+                    //var perfis = await _apiClient.GetPerfisAcessoAsync();
+                    //App.PerfisAcesso = perfis;
 
                     // Navegar para a Home
                     _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
@@ -141,8 +147,12 @@ namespace sistecDesktop.ViewModels
             finally 
             {
                 IsLoading = false;  // Esconder loading
-                Console.WriteLine($"Usuário logado após login: {App.LoggedUser.IdPerfilUsuario}");
-                Console.WriteLine($"MatriculaAprovador: {App.LoggedUser.MatriculaAprovador}");
+
+                Console.WriteLine($"Usuário logado após login: {App.LoggedUser.NomeUsuario}");
+                Console.WriteLine($"Nome do Perfil: {App.LoggedUser.IdPerfilUsuario?.Nome}");
+                Console.WriteLine($"Nivel de acesso: {App.LoggedUser.IdPerfilUsuario?.NivelAcesso}");
+
+                Console.WriteLine(JsonConvert.SerializeObject(App.LoggedUser, Formatting.Indented));
             }
         }
 

@@ -129,7 +129,7 @@ namespace sistecDesktop.ViewModels
             if (usuarioExistente != null)
             {
                 ModoEdicao = true;
-                _idUsuario = usuarioExistente.IdPerfilUsuario;
+                _idUsuario = usuarioExistente.Id;
                 // Split nome/sobrenome do nome_usuario
                 var split = (usuarioExistente.NomeUsuario ?? "").Split(' ');
                 Nome = split.FirstOrDefault() ?? "";
@@ -139,7 +139,7 @@ namespace sistecDesktop.ViewModels
                 Ramal = usuarioExistente.Ramal;
                 Cargo = usuarioExistente.Cargo;
                 Setor = usuarioExistente.Setor;
-                PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario);
+                PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario.Id);
                 Senha = "";
             }
             else
@@ -238,17 +238,20 @@ namespace sistecDesktop.ViewModels
                     ErrorMessage = "Senha deve ter pelo menos 6 caracteres.";
                     return;
                 }
-                var user = new User
+                var user = new UserDatabase
                 {
-                    NomeUsuario = $"{Nome} {Sobrenome}".Trim(),
+                    Name = $"{Nome} {Sobrenome}".Trim(),
                     Setor = Setor,
                     Cargo = Cargo,
                     Email = Email,
                     Telefone = Telefone,
-                    Ramal = Ramal,
-                    IdPerfilUsuario = PerfilSelecionado.Id,
-                    MatriculaAprovador = MatriculaAprovador,
-                    Senha = string.IsNullOrWhiteSpace(Senha) ? GerarSenhaPadrao(Nome, Telefone) : Senha
+                    //Ramal = Ramal,
+                    //Perfil = PerfilSelecionado,
+                    Matricula = MatriculaAprovador,
+                    Senha = string.IsNullOrWhiteSpace(Senha) ? GerarSenhaPadrao(Nome, Telefone) : Senha,
+                    PerfilId = PerfilSelecionado.Id,
+                    NivelAcesso = PerfilSelecionado.NivelAcesso,
+                    PerfilDescricao = PerfilSelecionado.Descricao
                 };
                 
                 if (ModoEdicao && _idUsuario != null)
@@ -264,7 +267,7 @@ namespace sistecDesktop.ViewModels
                 {
                     // --- Cadastro (POST) ---
                     var createdUser = await _apiClient.CreateUserAsync(user);
-                    if (createdUser != null && createdUser.IdPerfilUsuario > 0)
+                    if (createdUser != null && createdUser.PerfilId > 0)
                         OnDialogClose?.Invoke(true);
                     else
                         ErrorMessage = "Erro ao cadastrar usuário";

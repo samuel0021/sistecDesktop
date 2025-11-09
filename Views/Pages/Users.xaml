@@ -137,7 +137,7 @@
                                             Binding="{Binding Id}" 
                                             Width="60"/>
 
-                        <DataGridTextColumn Header="Matrícula" 
+                        <DataGridTextColumn Header="Nível de Acesso" 
                                             Binding="{Binding PerfilId}" 
                                             Width="100"/>
 

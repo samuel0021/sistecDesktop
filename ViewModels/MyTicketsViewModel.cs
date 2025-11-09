@@ -15,7 +15,7 @@ namespace sistecDesktop.ViewModels
 
         public MyTicketsViewModel(ApiClient apiClient) : base(apiClient)
         {
-            _ = LoadTickets();
+            
         }
 
         //sobrescrita pra mostrar só os chamados do usuário logado
@@ -27,7 +27,12 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var all = await _apiClient.GetChamadosAsync();
-                var myTickets = all.Where(c => c.UserId == App.LoggedUser.IdPerfilUsuario).ToList();
+
+                Console.WriteLine($"App.LoggedUser.Id: {App.LoggedUser.Id}");
+                foreach (var chamado in all)
+                    Console.WriteLine($"Chamado: {chamado.Id}, UserId: {chamado.UserId}");
+
+                var myTickets = all.Where(c => c.UserId == App.LoggedUser.Id).ToList();
                 Tickets.Clear();
                 foreach (var ticket in myTickets)
                     Tickets.Add(ticket);
