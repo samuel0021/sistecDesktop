@@ -129,7 +129,7 @@ namespace sistecDesktop.ViewModels
                     MessageBox.Show(
                         $"ID: {updatedTicket.Id}\n" +
                         $"Título: {updatedTicket.Title}\n" +
-                        $"Descrição: {descricaoSomente}\n" +  // <- aqui usamos a descrição limpa
+                        $"Descrição: {descricaoSomente}\n" + 
                         $"Status: {updatedTicket.Status}\n" +
                         $"Usuário: {updatedTicket.UsuarioAbertura}\n" +
                         $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",

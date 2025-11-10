@@ -31,6 +31,7 @@ namespace sistecDesktop.ViewModels
         private string _senha;
 
         public bool ModoEdicao { get; }
+
         private int? _idUsuario;
 
         private int _matriculaAprovador;
@@ -122,9 +123,11 @@ namespace sistecDesktop.ViewModels
                 new PerfilUsuario { Id = 1, Nome = "Usuário", NivelAcesso = 1 },
                 new PerfilUsuario { Id = 2, Nome = "Analista de Suporte", NivelAcesso = 2 },
                 new PerfilUsuario { Id = 3, Nome = "Gestor de Chamados", NivelAcesso = 3 },
-                new PerfilUsuario { Id = 3, Nome = "Gerente de Suporte", NivelAcesso = 4 },
+                new PerfilUsuario { Id = 4, Nome = "Gerente de Suporte", NivelAcesso = 4 },
                 new PerfilUsuario { Id = 5, Nome = "Administrador", NivelAcesso = 5 }
             };
+
+            AtualizarPerfisVisiveis();
 
             if (usuarioExistente != null)
             {
@@ -139,7 +142,7 @@ namespace sistecDesktop.ViewModels
                 Ramal = usuarioExistente.Ramal;
                 Cargo = usuarioExistente.Cargo;
                 Setor = usuarioExistente.Setor;
-                PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario.Id);
+                PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario.NivelAcesso);
                 Senha = "";
             }
             else
@@ -281,6 +284,23 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = false;
             }
+        }
+
+        public ObservableCollection<PerfilUsuario> PerfisVisiveis { get; set; }
+
+        private void AtualizarPerfisVisiveis()
+        {
+            if (App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 5)
+            {
+                // Se logado é admin, mostra todos
+                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso);
+            }
+            else
+            {
+                // Senão, oculta o perfil de Administrador
+                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso.Where(p => p.NivelAcesso < 5));
+            }
+            OnPropertyChanged(nameof(PerfisVisiveis));
         }
 
         private void ExecutarCancelar()

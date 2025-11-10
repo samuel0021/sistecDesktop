@@ -101,6 +101,7 @@
 
                 <Button x:Name="btnDashboard" 
                         Style="{StaticResource ImageButton}"
+                        Visibility="{Binding canAccessDashboard, Converter={StaticResource BoolToVisibilityConverter}}"
                         Height="40"
                         Command="{Binding SelecionarPaginaCommand}"
                         CommandParameter="Dashboard"
@@ -127,9 +128,9 @@
 
                 </Button>
 
-                <Button x:Name="btnUsuarios" 
+                <Button x:Name="btnUsuarios" Height="40"
                         Style="{StaticResource ImageButton}"
-                        Height="40"
+                        Visibility="{Binding canAccessUsers, Converter={StaticResource BoolToVisibilityConverter}}"
                         Command="{Binding UsersMenuCommand}">
 
                     <StackPanel Orientation="Horizontal">

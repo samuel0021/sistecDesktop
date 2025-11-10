@@ -106,6 +106,7 @@
                     
                     <Button Content="Cadastrar Usuário"
                         Command="{Binding OpenCreateUserCommand}"
+                        Visibility="{Binding canEditOrDelete, Converter={StaticResource BoolToVisibilityConverter}}"
                         Style="{StaticResource HomeButtons}" 
                         Foreground="{StaticResource brush-vibrantViolet}"
                         Width="150" Height="50" 
@@ -136,11 +137,7 @@
                         <DataGridTextColumn Header="ID" 
                                             Binding="{Binding Id}" 
                                             Width="60"/>
-
-                        <DataGridTextColumn Header="Nível de Acesso" 
-                                            Binding="{Binding PerfilId}" 
-                                            Width="100"/>
-
+                        
                         <DataGridTextColumn Header="Nome" 
                                             Binding="{Binding Name}" 
                                             Width="*"
@@ -150,18 +147,23 @@
                                             Binding="{Binding Email}" 
                                             Width="*"
                                             MinWidth="200"/>
-
-                        <DataGridTextColumn Header="Telefone" 
-                                            Binding="{Binding Telefone}" 
-                                            Width="120"/>
+                        
+                        <DataGridTextColumn Header="Cargo" 
+                                            Binding="{Binding Cargo}" 
+                                            Width="150"/>
 
                         <DataGridTextColumn Header="Setor" 
                                             Binding="{Binding Setor}" 
                                             Width="150"/>
 
-                        <DataGridTextColumn Header="Cargo" 
-                                            Binding="{Binding Cargo}" 
-                                            Width="150"/>
+                        <DataGridTextColumn Header="Perfil" 
+                                            Binding="{Binding PerfilNome}" 
+                                            Width="100"/>
+
+                        <DataGridTextColumn Header="Telefone" 
+                                            Binding="{Binding Telefone}" 
+                                            Width="120"/>
+
 
                         <DataGridTemplateColumn Header="Ações" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
@@ -169,9 +171,12 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button Content="👁"
                                                 Style="{StaticResource ViewButton}"
+                                                Visibility="{Binding canEditOrDelete , Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding DataContext.OpenEditUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" />
-                                        <Button Content="Excluir"
+                                                CommandParameter="{Binding}"/>
+                                        
+                                        <Button Content="Excluir" 
+                                                Visibility="{Binding canEditOrDelete , Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}" />
                                     </StackPanel>

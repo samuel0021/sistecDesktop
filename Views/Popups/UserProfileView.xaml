@@ -170,11 +170,10 @@
                     <TextBlock Text="Nível de Acesso" Margin="10 0 0 0" Grid.Row="3" 
                         FontFamily="{StaticResource MontserratRegular}"/>
 
-                    <ComboBox 
-    ItemsSource="{Binding PerfisAcesso}" 
-    DisplayMemberPath="Nome"
-    SelectedItem="{Binding PerfilSelecionado, Mode=TwoWay}"
-    Grid.Row="4" Margin="10 5 10 5"/>
+                    <ComboBox ItemsSource="{Binding PerfisVisiveis}" 
+                        DisplayMemberPath="Nome"
+                        SelectedItem="{Binding PerfilSelecionado, Mode=TwoWay}"
+                        Grid.Row="4" Margin="10 5 10 5"/>
                     <!--#endregion-->
 
                     <!--#region Senha-->

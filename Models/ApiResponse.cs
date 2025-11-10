@@ -121,6 +121,9 @@ namespace sistecDesktop.Models
     // Modelo para lista de usuários (campos do banco)
     public class UserDatabase
     {
+        public bool canEditOrDelete => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4;
+
+
         [JsonProperty("id_usuario")]
         public int Id { get; set; }
         

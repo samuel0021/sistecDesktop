@@ -87,15 +87,9 @@ namespace sistecDesktop.ViewModels
             MensagemErro = string.Empty;
 
             // Validações básicas -- ARRUMAR DEPOIS
-            if (string.IsNullOrWhiteSpace(Email))
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Senha))
             {
-                MensagemErro = "Por favor, informe o email.";
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Senha))
-            {
-                MensagemErro = "Por favor, informe a senha.";
+                MensagemErro = "Email ou senha inválidos.";
                 return;
             }
 
@@ -110,34 +104,26 @@ namespace sistecDesktop.ViewModels
                     Password = Senha
                 };
 
-                // Chamar a API
+                // Chama a API
                 var resultado = await _apiClient.LoginAsync(loginRequest);
 
-                if (resultado.Success)
+                if (resultado != null && resultado.Success && resultado.Data != null && resultado.Data.User != null)
                 {
-                    // Login bem-sucedido!
-
-                    // Você pode salvar os dados do usuário na MainViewModel se precisar
-                    // _mainViewModel.UsuarioLogado = resultado.Data.User;
-
-                    // Limpar os campos
-                    Email = string.Empty;
-                    Senha = string.Empty;
-
-                    // Armazenar usuário
+                    // Login OK
                     App.LoggedUser = resultado.Data.User;
+                    Console.WriteLine($"Usuário logado após login: {App.LoggedUser.NomeUsuario}");
+                    Console.WriteLine($"Nome do Perfil: {App.LoggedUser.IdPerfilUsuario?.Nome}");
+                    Console.WriteLine($"Nivel de acesso: {App.LoggedUser.IdPerfilUsuario?.NivelAcesso}");
+
                     Console.WriteLine(JsonConvert.SerializeObject(App.LoggedUser, Formatting.Indented));
-
-                    MessageBox.Show($"UserId: {App.LoggedUser?.Id}");
-
-
-
-                    //var perfis = await _apiClient.GetPerfisAcessoAsync();
-                    //App.PerfisAcesso = perfis;
-
-                    // Navegar para a Home
                     _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
-                }              
+                }
+                else
+                {
+                    // Login inválido
+                    MensagemErro = "Email ou senha inválidos.";
+
+                }
             }
             catch (Exception ex)
             {
@@ -148,11 +134,7 @@ namespace sistecDesktop.ViewModels
             {
                 IsLoading = false;  // Esconder loading
 
-                Console.WriteLine($"Usuário logado após login: {App.LoggedUser.NomeUsuario}");
-                Console.WriteLine($"Nome do Perfil: {App.LoggedUser.IdPerfilUsuario?.Nome}");
-                Console.WriteLine($"Nivel de acesso: {App.LoggedUser.IdPerfilUsuario?.NivelAcesso}");
-
-                Console.WriteLine(JsonConvert.SerializeObject(App.LoggedUser, Formatting.Indented));
+                
             }
         }
 

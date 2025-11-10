@@ -36,11 +36,7 @@ namespace sistecDesktop.Views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //txtEmail.Focus();
-
-            //APAGAR DEPOIS E DEIXAR SÓ O FOCUS
-            txtEmail.Text = "samuel.vieira@sistec.com"; 
-            passwordBox.Password = "admin123";
+            txtEmail.Focus();
         }
     }
 }

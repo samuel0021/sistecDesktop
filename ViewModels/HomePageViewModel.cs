@@ -17,9 +17,13 @@ namespace sistecDesktop.ViewModels
         private readonly ApiClient _apiClient;
         private readonly IDialogService _dialogService;
 
+        public bool canApprove => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4;
+
         public TicketsViewModel TicketsViewModel { get; }
 
         private ObservableCollection<Chamado> _tickets;
+        public ObservableCollection<Chamado> HomeTickets { get; set; } = new ObservableCollection<Chamado>();
+
         private bool _isLoading;
         private string _errorMessage;
 
@@ -74,7 +78,7 @@ namespace sistecDesktop.ViewModels
   
             _ = LoadTickets();
 
-            MessageBox.Show($"UserId: {App.LoggedUser?.Id}");
+            Console.WriteLine($"UserId: {App.LoggedUser?.Id}");
         }
 
         private async Task LoadTickets()
@@ -87,17 +91,12 @@ namespace sistecDesktop.ViewModels
                 var list = await _apiClient.GetChamadosAsync();
                 Tickets.Clear();
 
-                // Pega apenas os últimos 10 chamados
-                // var ultimosChamados = list.OrderByDescending(c => c.CreatedAt).Take(10);
+               
 
                 foreach (var ticket in list)
                 {
                     Tickets.Add(ticket);
                 }
-
-                // Força o refresh da view, se necessário
-                // CollectionViewSource.GetDefaultView(Tickets).Refresh();
-
             }
             catch (UnauthorizedAccessException)
             {
@@ -133,8 +132,7 @@ namespace sistecDesktop.ViewModels
 
         private void OpenApproveTickets()
         {
-            // verifica o nível de acesso
-            //var perfil = App.PerfisAcesso.FirstOrDefault(p => p.Id == App.LoggedUser.IdPerfilUsuario);
+            // verifica o nível de acesso            
 
             if (App.LoggedUser.IdPerfilUsuario != null && App.LoggedUser.IdPerfilUsuario.Id < 3)
             {

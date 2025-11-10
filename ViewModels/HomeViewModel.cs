@@ -21,6 +21,9 @@ namespace sistecDesktop.ViewModels
         private UserControl _currentContent;
         private readonly IDialogService _dialogService;
 
+        public bool canAccessDashboard => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4; 
+        public bool canAccessUsers => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 3; 
+
 
         public ICommand UsersMenuCommand { get; }
 
