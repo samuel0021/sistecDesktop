@@ -111,12 +111,15 @@ namespace sistecDesktop.ViewModels
                 {
                     // Login OK
                     App.LoggedUser = resultado.Data.User;
+
                     Console.WriteLine($"Usuário logado após login: {App.LoggedUser.NomeUsuario}");
                     Console.WriteLine($"Nome do Perfil: {App.LoggedUser.IdPerfilUsuario?.Nome}");
                     Console.WriteLine($"Nivel de acesso: {App.LoggedUser.IdPerfilUsuario?.NivelAcesso}");
 
                     Console.WriteLine(JsonConvert.SerializeObject(App.LoggedUser, Formatting.Indented));
                     _mainViewModel.SelectedViewModel = new HomeViewModel(_mainViewModel, _apiClient);
+                    ((HomeViewModel)_mainViewModel.SelectedViewModel).NameCurrentUser = App.LoggedUser?.NomeUsuario ?? "";
+
                 }
                 else
                 {

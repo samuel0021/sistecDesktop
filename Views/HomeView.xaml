@@ -57,15 +57,27 @@
                 <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
 
+                    
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/images/user-orange.png" 
+                                   Width="20" Height="20" Margin="0 0 10 0"/>
+                            <TextBlock Text="{Binding NameCurrentUser}" VerticalAlignment="Center" 
+       Foreground="{StaticResource brush-peachOrange}"
+       FontFamily="{StaticResource MontserratRegular}"
+                                       Height="40"/>
+                        </StackPanel>
+                        
+                    
                     <Button x:Name="btnLogout" Height="40"
                             Style="{StaticResource ImageButton}"
                             Command="{Binding LogoutCommand}">
 
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/images/log-out.png" Width="20" Height="20" Margin="0 0 10 0"/>
+                            <Image Source="/images/log-out.png" 
+                                   Width="20" Height="20" Margin="0 0 10 0"/>
                             <TextBlock Text="Sair" VerticalAlignment="Center" 
-                                   Foreground="{StaticResource brush-peachOrange}"
-                                   FontFamily="{StaticResource MontserratRegular}"/>
+                                Foreground="{StaticResource brush-peachOrange}"
+                                FontFamily="{StaticResource MontserratRegular}"/>
                         </StackPanel>
 
                     </Button>

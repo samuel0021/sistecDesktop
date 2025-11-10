@@ -35,7 +35,7 @@ namespace sistecDesktop.ViewModels
 
             UpdateViewCommand = new UpdateViewCommand(this);
 
-            // Inicia com a tela de Login passando a referência E o apiClient
+            // Inicia com a tela de Login passando a referência e o apiClient
             SelectedViewModel = new LoginViewModel(this, ApiClient);  // ← MODIFICAR
         }
 

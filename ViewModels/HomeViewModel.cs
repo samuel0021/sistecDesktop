@@ -22,7 +22,14 @@ namespace sistecDesktop.ViewModels
         private readonly IDialogService _dialogService;
 
         public bool canAccessDashboard => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4; 
-        public bool canAccessUsers => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 3; 
+        public bool canAccessUsers => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 3;
+
+        private string _nameCurrentUser;
+        public string NameCurrentUser
+        {
+            get => _nameCurrentUser;
+            set { _nameCurrentUser = value; OnPropertyChanged(nameof(NameCurrentUser)); }
+        }
 
 
         public ICommand UsersMenuCommand { get; }
