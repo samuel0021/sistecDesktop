@@ -26,7 +26,8 @@ namespace sistecDesktop.ViewModels
         private readonly IDialogService _dialogService;
 
         // Verificador de acesso
-        public bool canEditOrDelete => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4;
+        
+
 
 
         #region Encapsulamentos
