@@ -74,6 +74,7 @@
     <Compile Include="Converters\InverseBoolToEnableConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
+    <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
