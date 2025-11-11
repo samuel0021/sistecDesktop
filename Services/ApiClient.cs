@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using sistecDesktop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using sistecDesktop.Models;
+using System.Windows;
 
 namespace sistecDesktop.Services
 {
@@ -67,6 +68,8 @@ namespace sistecDesktop.Services
                 };
             }
         }
+
+        #region Login e Logout
 
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
@@ -175,6 +178,8 @@ namespace sistecDesktop.Services
 
             Console.WriteLine("Cookies locais removidos");
         }
+
+        #endregion
 
         #region User
         public async Task<UserDatabase> CreateUserAsync(UserDatabase user)
@@ -454,7 +459,6 @@ namespace sistecDesktop.Services
         }
 
         #endregion
-
 
         #region Chamados
 
@@ -763,33 +767,122 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        #region Dashboard
 
-        public async Task<bool> DeleteChamadoAsync(int id)
+        public async Task<DashboardStats> GetDashboardStatsAsync()
         {
             try
             {
-                var chamadoUrl = $"{_baseUrl}/api/chamados/{id}";
-                var response = await _httpClient.DeleteAsync(chamadoUrl);
+                var url = $"{_baseUrl}/api/estatisticas/dashboard-stats";
+                Console.WriteLine($"DEBUG: Buscando dashboard stats: {url}");
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseBody);
 
-                Console.WriteLine($"Deletando chamado {id}");
                 Console.WriteLine($"Status: {response.StatusCode}");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                if (response.IsSuccessStatusCode)
                 {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                    var apiResponse = JsonConvert.DeserializeObject<DashboardStatsResponse>(responseBody, _jsonSettings);
+                    return apiResponse?.data ?? new DashboardStats();
                 }
-
-                return response.IsSuccessStatusCode;
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                throw new Exception($"Erro ao buscar stats: {response.StatusCode} - {responseBody}");
             }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            catch (UnauthorizedAccessException) { throw; }
+            catch (Exception ex) { throw new Exception($"Erro na requisição: {ex.Message}"); }
         }
+
+        public async Task<List<MonthlyDataItem>> GetMonthlyDataAsync()
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/estatisticas/chamados-mensais";
+                Console.WriteLine($"DEBUG: Buscando dados mensais: {url}");
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonConvert.DeserializeObject<MonthlyDataResponse>(responseBody, _jsonSettings);
+                    return apiResponse?.data ?? new List<MonthlyDataItem>();
+                }
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                throw new Exception($"Erro ao buscar dados mensais: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException) { throw; }
+            catch (Exception ex) { throw new Exception($"Erro na requisição: {ex.Message}"); }
+        }
+
+        public async Task<List<CategoryDataItem>> GetCategoryDataAsync()
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/estatisticas/chamados-categoria";
+                Console.WriteLine($"DEBUG: Buscando categorias: {url}");
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonConvert.DeserializeObject<CategoryDataResponse>(responseBody, _jsonSettings);
+                    return apiResponse?.data ?? new List<CategoryDataItem>();
+                }
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                throw new Exception($"Erro ao buscar categorias: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException) { throw; }
+            catch (Exception ex) { throw new Exception($"Erro na requisição: {ex.Message}"); }
+        }
+
+        public async Task<List<YearlyDataItem>> GetYearlyDataAsync()
+        {
+            try
+            {
+                var url = $"{_baseUrl}/api/estatisticas/chamados-anuais";
+                Console.WriteLine($"DEBUG: Buscando dados anuais: {url}");
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonConvert.DeserializeObject<YearlyDataResponse>(responseBody, _jsonSettings);
+                    return apiResponse?.data ?? new List<YearlyDataItem>();
+                }
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                throw new Exception($"Erro ao buscar dados anuais: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException) { throw; }
+            catch (Exception ex) { throw new Exception($"Erro na requisição: {ex.Message}"); }
+        }
+
+        public async Task<List<AnalystDataItem>> GetAnalystDataAsync()
+        {
+            try
+            {
+                var url = _baseUrl + "/api/estatisticas/chamados-analistas"; // Altere se for diferente
+                Console.WriteLine($"DEBUG: Buscando chamados por analista: {url}");
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = JsonConvert.DeserializeObject<AnalystDataResponse>(responseBody, _jsonSettings);
+                    return apiResponse?.data ?? new List<AnalystDataItem>();
+                }
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                throw new Exception($"Erro ao buscar analistas: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException) { throw; }
+            catch (Exception ex) { throw new Exception($"Erro na requisição: {ex.Message}"); }
+        }
+
+        #endregion
 
         public bool IsAuthenticated()
         {

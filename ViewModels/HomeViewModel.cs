@@ -1,11 +1,12 @@
 ﻿using sistecDesktop.Commands;
-using sistecDesktop.Views.Pages;
 using sistecDesktop.Services;
+using sistecDesktop.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -115,7 +116,9 @@ namespace sistecDesktop.ViewModels
                     CurrentContent = homePage;
                     break;
                 case "Dashboard":
-                    CurrentContent = new Dashboard();
+                    var dashboardViewModel = new DashboardViewModel(_apiClient);
+                    var dashboardPage = new Dashboard { DataContext = dashboardViewModel};
+                    CurrentContent = dashboardPage;
                     break;
                 case "Chamados":
                     var ticketsPage = new Tickets { ViewModel = _ticketsViewModel };
@@ -139,6 +142,12 @@ namespace sistecDesktop.ViewModels
 
         public async void ExecutarLogout()
         {
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja sair?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
             try
             {
                 // Fazer logout na API

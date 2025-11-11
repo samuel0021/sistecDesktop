@@ -470,6 +470,72 @@ namespace sistecDesktop.Models
 
     #endregion
 
+    #region Dashboard
+
+    public class AnalystDataItem
+    {
+        public string nome { get; set; }
+        public int chamados { get; set; }
+    }
+
+    public class AnalystDataResponse
+    {
+        public List<AnalystDataItem> data { get; set; }
+    }
+
+    public class DashboardStatsResponse
+    {
+        public int status { get; set; }
+        public string message { get; set; }
+        public DashboardStats data { get; set; }
+    }
+    public class DashboardStats
+    {
+        public int abertos { get; set; }
+        public int aprovados { get; set; }
+        public int rejeitados { get; set; }
+        public int triagem_ia { get; set; }
+        public int aguardando_resposta { get; set; }
+        public int com_analista { get; set; }
+        public int resolvidos { get; set; }
+        public int fechados { get; set; }
+        public int escalados { get; set; }
+        public int total { get; set; }
+    }
+
+    public class MonthlyDataItem
+    {
+        public string month { get; set; }
+        public int value { get; set; }
+    }
+    public class MonthlyDataResponse
+    {
+        public List<MonthlyDataItem> data { get; set; }
+    }
+
+    public class CategoryDataItem
+    {
+        public string name { get; set; }
+        public int value { get; set; }
+    }
+    public class CategoryDataResponse
+    {
+        public List<CategoryDataItem> data { get; set; }
+    }
+
+    public class YearlyDataItem
+    {
+        public string month { get; set; }
+        public int abertos { get; set; }
+        public int resolvidos { get; set; }
+    }
+    public class YearlyDataResponse
+    {
+        public List<YearlyDataItem> data { get; set; }
+    }
+
+    #endregion
+
     public class LoginRequest
     {
         [JsonProperty("email")]

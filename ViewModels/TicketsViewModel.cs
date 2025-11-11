@@ -20,6 +20,7 @@ namespace sistecDesktop.ViewModels
         private bool _isLoading;
         private string _errorMessage;
         private Chamado _selectedTicket;
+        private readonly IDialogService _dialogService;
 
 
         #region Encapsulamentos
@@ -69,16 +70,23 @@ namespace sistecDesktop.ViewModels
         public ICommand ScaleTicketCommand { get; }
         public ICommand ResolveTicketCommand { get; }
 
+        public ICommand ViewScaledTicketsCommand { get; }
 
-        public TicketsViewModel(ApiClient apiClient)
+
+
+        public TicketsViewModel(ApiClient apiClient, IDialogService dialogService = null)
         {
             _apiClient = apiClient;
+            _dialogService = dialogService ?? new DialogService(); // Se não passar, usa uma nova
 
             Tickets = new ObservableCollection<Chamado>(); 
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
             ScaleTicketCommand = new AsyncRelayCommand(ScaleTicket);
             ResolveTicketCommand = new AsyncRelayCommandWithParameter<Chamado>(ResolveTicketAsync);
+
+            ViewScaledTicketsCommand = new RelayCommand(OpenScaledTicketsPopup);
+
 
             _ = LoadTickets();
         }
@@ -232,6 +240,12 @@ namespace sistecDesktop.ViewModels
             }
 
             await LoadTickets();
+        }
+
+        private void OpenScaledTicketsPopup()
+        {
+            var escalaVm = new TicketsScaleViewModel(_apiClient);
+            _dialogService.ShowDialog(escalaVm);
         }
 
         // Instanciando a MotivoInputWindow

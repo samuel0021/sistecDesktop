@@ -4,12 +4,159 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views.Pages"
+             xmlns:liveCharts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Dashboard" FontSize="32" FontWeight="Bold"/>
-            <TextBlock Text="Conteúdo do Dashboard aqui" FontSize="16" Margin="0 10 0 0"/>
-        </StackPanel>
-    </Grid>
+             d:DesignHeight="1450" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <Grid>
+
+            <!--#region Definições do grid-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--#endregion-->
+
+            <TextBlock Text="Dashboard" Grid.Row="0"
+                   FontFamily="{StaticResource MontserratBold}" 
+                   FontSize="24" Margin="20"/>
+
+            <!--#region Quantidade Chamados-->
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+
+                <!--Abertos-->
+                <Border Margin="10" Padding="10"
+                    Background="{StaticResource brush-lavenderWeb}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ChamadosAbertos}"
+                               FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Chamados Abertos" FontSize="18"
+                               FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+                </Border>
+
+                <!--Em andamento-->
+                <Border Margin="10" Padding="10"
+                    Background="{StaticResource brush-lavenderWeb}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ChamadosEmAndamento}"
+                               FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Chamados Em Andamento" FontSize="18"
+                               FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+                </Border>
+                <!--Resolvidos-->
+                <Border Margin="10" Padding="10"
+                    Background="{StaticResource brush-lavenderWeb}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ChamadosResolvidos}"
+                               FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Chamados Resolvidos" FontSize="18"
+                               FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+                </Border>
+                <!--Rejeitados-->
+                <Border Margin="10" Padding="10"
+                    Background="{StaticResource brush-lavenderWeb}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ChamadosRejeitados}"
+                               FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Chamados Rejeitados" FontSize="18"
+                               FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Total Chamados-->
+            <Border Margin="10" Padding="10" Grid.Row="2"
+                    Background="{StaticResource brush-lavenderWeb}">
+                <Grid>
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Chamados Total Geral" FontSize="18"
+                           FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Todos os chamados do sistema" FontSize="18"
+                           FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Right" Margin="10">
+                        <TextBlock Text="{Binding ChamadosTotal}" 
+                               HorizontalAlignment="Right" FontSize="18"
+                           FontFamily="{StaticResource MontserratBold}"/>
+                        <TextBlock Text="Atualizado agora" FontSize="18"
+                           FontFamily="{StaticResource MontserratRegular}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <!--#endregion-->
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16" Grid.Row="3">
+                <!-- Gráfico Pizza: Por Categoria -->
+                <GroupBox Header="Chamados por categoria" Margin="0,12,22,0" Width="420">
+                    <liveCharts:PieChart
+            Series="{Binding PieSeries}"
+            LegendLocation="Right"
+            Height="320"
+            Margin="18"/>
+                </GroupBox>
+                <!-- Gráfico Linha: Abertos/Resolvidos -->
+                <GroupBox Header="Abertos x Resolvidos por mês" Margin="0,12,0,0" Width="650">
+                    <liveCharts:CartesianChart
+            Series="{Binding LineSeries}"
+            Height="320"
+            Margin="18">
+                        <liveCharts:CartesianChart.AxisX>
+                            <liveCharts:Axis Labels="{Binding AnosLabels}" Title="Mês"/>
+                        </liveCharts:CartesianChart.AxisX>
+                        <liveCharts:CartesianChart.AxisY>
+                            <liveCharts:Axis Title="Qtd. Chamados"/>
+                        </liveCharts:CartesianChart.AxisY>
+                    </liveCharts:CartesianChart>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- Gráfico Barras: Chamados por mês -->
+            <GroupBox Header="Chamados por mês" Margin="0,0,0,16" Grid.Row="4">
+                <liveCharts:CartesianChart Series="{Binding BarSeries}" Height="250">
+                    <liveCharts:CartesianChart.AxisX>
+                        <liveCharts:Axis Labels="{Binding MesesLabels}" Title="Mês"/>
+                    </liveCharts:CartesianChart.AxisX>
+                    <liveCharts:CartesianChart.AxisY>
+                        <liveCharts:Axis Title="Qtd. Chamados"/>
+                    </liveCharts:CartesianChart.AxisY>
+                </liveCharts:CartesianChart>
+            </GroupBox>
+
+            
+
+            <!-- Gráfico Analistas: Barra Horizontal --><!--
+            <GroupBox Header="Chamados por analistas" Margin="0,0,0,16" Grid.Row="5">
+                <StackPanel>
+                    <liveCharts:CartesianChart Series="{Binding AnalystSeries}" Height="220" Margin="16">
+                        <liveCharts:CartesianChart.AxisY>
+                            <liveCharts:Axis Labels="{Binding AnalystLabels}" Title="Analista"/>
+                        </liveCharts:CartesianChart.AxisY>
+                        <liveCharts:CartesianChart.AxisX>
+                            <liveCharts:Axis Title="Chamados"/>
+                        </liveCharts:CartesianChart.AxisX>
+                    </liveCharts:CartesianChart>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
+                        <TextBlock Text="Total de chamados: "/>
+                        <TextBlock Text="{Binding AnalystTotal}" FontWeight="Bold"/>
+                        <TextBlock Text="     Média por analista: " Margin="15,0,0,0"/>
+                        <TextBlock Text="{Binding AnalystMedia}" FontWeight="Bold"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>-->
+
+        </Grid>
+    </ScrollViewer>
 </UserControl>
