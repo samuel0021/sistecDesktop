@@ -19,43 +19,37 @@ namespace sistecDesktop.ViewModels
         private bool _isLoading;
         private string _errorMessage;
 
-        // Campos do formulário
+        private int? _idUsuario;
+
+        #region Campos do formulário
         private string _nome;
         private string _sobrenome;
         private string _email;
+        private string _senha;
         private string _telefone;
         private string _ramal;
         private string _cargo;
         private string _setor;
         private PerfilUsuario _perfilSelecionado;
-        private string _senha;
+        private int _matriculaAprovador;
+        #endregion
 
         public bool ModoEdicao { get; }
 
-        private int? _idUsuario;
+        public ObservableCollection<PerfilUsuario> PerfisAcesso { get; set; } = new ObservableCollection<PerfilUsuario>();
 
-        private int _matriculaAprovador;
+        #region Encapsulamentos
+        public string Nome
+        {
+            get => _nome;
+            set { _nome = value; OnPropertyChanged(nameof(Nome)); AtualizarEmailSenha(); }
+        }
         public int MatriculaAprovador
         {
             get => _matriculaAprovador;
             set { _matriculaAprovador = value; OnPropertyChanged(nameof(MatriculaAprovador)); }
         }
 
-        public ObservableCollection<PerfilUsuario> PerfisAcesso { get; set; } = new ObservableCollection<PerfilUsuario>();
-
-        private async Task CarregarPerfisAsync()
-        {
-            var perfis = await _apiClient.GetPerfisAcessoAsync();
-            PerfisAcesso.Clear();
-            foreach (var perfil in perfis)
-                PerfisAcesso.Add(perfil);
-        }
-
-        public string Nome
-        {
-            get => _nome;
-            set { _nome = value; OnPropertyChanged(nameof(Nome)); AtualizarEmailSenha(); }
-        }
         public string Sobrenome
         {
             get => _sobrenome;
@@ -106,6 +100,7 @@ namespace sistecDesktop.ViewModels
             get => _isLoading;
             set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
         }
+        #endregion
 
         public string TituloForm => ModoEdicao ? "Editar Usuário" : "Cadastrar Usuário";
         public string TextoBotaoSalvar => ModoEdicao ? "Salvar" : "Cadastrar";
@@ -114,7 +109,7 @@ namespace sistecDesktop.ViewModels
         public ICommand EditUserCommand { get; }
         public ICommand CancelCommand { get; }
 
-        // Construtor já detecta modo
+        #region Construtor
         public UserProfileViewModel(ApiClient apiClient, User usuarioExistente = null)
         {
             _apiClient = apiClient;
@@ -133,8 +128,7 @@ namespace sistecDesktop.ViewModels
             {
                 ModoEdicao = true;
                 _idUsuario = usuarioExistente.Id;
-                // Split nome/sobrenome do nome_usuario
-                var split = (usuarioExistente.NomeUsuario ?? "").Split(' ');
+                var split = (usuarioExistente.NomeUsuario ?? "").Split(' '); // Separa nome/sobrenome do nome_usuario
                 Nome = split.FirstOrDefault() ?? "";
                 Sobrenome = string.Join(" ", split.Skip(1));
                 Email = usuarioExistente.Email;
@@ -156,6 +150,7 @@ namespace sistecDesktop.ViewModels
             EditUserCommand = new AsyncRelayCommand(ExecutarSalvarAsync);
             CancelCommand = new RelayCommand(ExecutarCancelar);
         }
+        #endregion
 
         private void AtualizarEmailSenha()
         {
@@ -166,6 +161,7 @@ namespace sistecDesktop.ViewModels
             }
         }
 
+        #region Geradores
         private string GerarEmail(string nome, string sobrenome)
         {
             string RemoverAcentos(string s) =>
@@ -193,6 +189,7 @@ namespace sistecDesktop.ViewModels
                 return "";
             return $"{primeiroNome}{ultimos4}";
         }
+        #endregion
 
         private async Task ExecutarSalvarAsync()
         {
@@ -200,7 +197,7 @@ namespace sistecDesktop.ViewModels
             IsLoading = true;
             try
             {
-                // Validações
+                #region Validações
                 if (string.IsNullOrWhiteSpace(Nome))
                 {
                     ErrorMessage = "Nome é obrigatório.";
@@ -241,6 +238,8 @@ namespace sistecDesktop.ViewModels
                     ErrorMessage = "Senha deve ter pelo menos 6 caracteres.";
                     return;
                 }
+                #endregion
+
                 var user = new UserDatabase
                 {
                     Name = $"{Nome} {Sobrenome}".Trim(),
@@ -259,7 +258,7 @@ namespace sistecDesktop.ViewModels
                 
                 if (ModoEdicao && _idUsuario != null)
                 {
-                    // --- Edição (PUT) ---
+                    // Edição (PUT) 
                     var editResponse = await _apiClient.UpdateUserAsync(_idUsuario.Value, user);
                     if (editResponse != null && editResponse.Success)
                         OnDialogClose?.Invoke(true);
@@ -268,7 +267,7 @@ namespace sistecDesktop.ViewModels
                 }
                 else
                 {
-                    // --- Cadastro (POST) ---
+                    // Cadastro (POST) 
                     var createdUser = await _apiClient.CreateUserAsync(user);
                     if (createdUser != null && createdUser.PerfilId > 0)
                         OnDialogClose?.Invoke(true);
@@ -292,13 +291,11 @@ namespace sistecDesktop.ViewModels
         {
             if (App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 5)
             {
-                // Se logado é admin, mostra todos
-                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso);
+                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso);  // Mostra todas as opções se o usuário logado for um admin
             }
             else
             {
-                // Senão, oculta o perfil de Administrador
-                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso.Where(p => p.NivelAcesso < 5));
+                PerfisVisiveis = new ObservableCollection<PerfilUsuario>(PerfisAcesso.Where(p => p.NivelAcesso < 5));  // Oculta a opção "Administrador"
             }
             OnPropertyChanged(nameof(PerfisVisiveis));
         }

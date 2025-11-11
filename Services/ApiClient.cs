@@ -455,18 +455,13 @@ namespace sistecDesktop.Services
 
         #endregion
 
+
+        #region Chamados
+
         public async Task<List<Chamado>> GetChamadosAsync()
         {
             try
             {
-                /*var chamadosUrl = $"{_baseUrl}/api/chamados";
-                Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
-
-                var response = await _httpClient.GetAsync(chamadosUrl);
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine($"Chamados Status: {response.StatusCode}");
-                Console.WriteLine($"DEBUG: Resposta chamados (primeiros 300 chars): {responseBody.Substring(0, Math.Min(responseBody.Length, 300))}...");*/
 
                 var chamadosUrl = $"{_baseUrl}/api/chamados";
                 Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
@@ -719,36 +714,55 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        #region Escalonamento de Chamados
 
-        public async Task<bool> UpdateChamadoAsync(int id, Chamado chamado)
+        public async Task EscalarChamadoAsync(int idChamado, string motivo)
         {
-            try
+            var content = new StringContent(JsonConvert.SerializeObject(new { motivo }), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/escalar", content);
+            if (!response.IsSuccessStatusCode)
             {
-                var json = JsonConvert.SerializeObject(chamado, _jsonSettings);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var chamadoUrl = $"{_baseUrl}/api/chamados/{id}";
-                var response = await _httpClient.PutAsync(chamadoUrl, content);
-
-                Console.WriteLine($"Atualizando chamado {id}: {json}");
-                Console.WriteLine($"Status: {response.StatusCode}");
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
-
-                return response.IsSuccessStatusCode;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
+                var msg = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao escalar chamado: {msg}");
             }
         }
+
+        public async Task<List<ChamadoEscalado>> GetChamadosEscaladosAsync()
+        {
+            var response = await _httpClient.GetAsync($"{_baseUrl}/api/chamados/escalados");
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ChamadosEscaladosResponse>(json);
+            return result?.Data ?? new List<ChamadoEscalado>();
+        }
+        #endregion
+
+        #region Resolução de Chamados
+
+        // Resolve chamados comuns (analista)
+        public async Task ResolverChamadoAsync(int idChamado)
+        {
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver", null);
+            if (!response.IsSuccessStatusCode)
+            {
+                var msg = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao resolver chamado: {msg}");
+            }
+        }
+
+        // Resolve chamados escalados (gestor/gerente)
+        public async Task ResolverChamadoEscaladoAsync(int idChamado)
+        {
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver-escalado", null);
+            if (!response.IsSuccessStatusCode)
+            {
+                var msg = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao resolver chamado escalado: {msg}");
+            }
+        }
+        #endregion
+
+        #endregion
+
 
         public async Task<bool> DeleteChamadoAsync(int id)
         {

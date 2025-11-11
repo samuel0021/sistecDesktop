@@ -21,6 +21,7 @@ namespace sistecDesktop.ViewModels
         private string _errorMessage;
         private Chamado _selectedTicket;
 
+
         #region Encapsulamentos
         public ObservableCollection<Chamado> Tickets
         {
@@ -65,13 +66,19 @@ namespace sistecDesktop.ViewModels
 
         public ICommand LoadTicketsCommand { get; }
         public ICommand ViewTicketCommand { get; }
+        public ICommand ScaleTicketCommand { get; }
+        public ICommand ResolveTicketCommand { get; }
+
 
         public TicketsViewModel(ApiClient apiClient)
         {
             _apiClient = apiClient;
+
             Tickets = new ObservableCollection<Chamado>(); 
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
+            ScaleTicketCommand = new AsyncRelayCommand(ScaleTicket);
+            ResolveTicketCommand = new AsyncRelayCommandWithParameter<Chamado>(ResolveTicketAsync);
 
             _ = LoadTickets();
         }
@@ -112,7 +119,6 @@ namespace sistecDesktop.ViewModels
         {
             if (parameter is Chamado ticket)
             {
-
                 try
                 {
                     // Busca o chamado atualizado pelo ID
@@ -146,6 +152,94 @@ namespace sistecDesktop.ViewModels
                     MessageBox.Show($"Erro ao carregar detalhes do chamado: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private async Task ScaleTicket()
+        {
+            if (SelectedTicket == null)
+            {
+                MessageBox.Show("Nenhum chamado selecionado!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja escalar o chamado?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            // Input do motivo
+            string motivo = PromptForMotivo();
+            if (string.IsNullOrWhiteSpace(motivo))
+            {
+                MessageBox.Show("Motivo obrigatório para escalar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(motivo) || motivo.Length < 10)
+            {
+                MessageBox.Show("Informe um motivo válido (mínimo 10 caracteres).", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            IsLoading = true;
+            try
+            {
+                await _apiClient.EscalarChamadoAsync(SelectedTicket.Id, motivo);
+                MessageBox.Show("Chamado escalado para a gerência com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                await LoadTickets();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Sessão expirada. Faça login novamente.", "Erro de Autenticação", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao escalar chamado: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        // Método recebe o chamado e faz a lógica de decisão
+        private async Task ResolveTicketAsync(Chamado chamado)
+        {
+            if (chamado == null)
+                return;
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja resolver o chamado?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            if (chamado.Status == "Com Analista" && App.LoggedUser.IdPerfilUsuario.Id >= 2)
+            {
+                await _apiClient.ResolverChamadoAsync(chamado.Id);
+                MessageBox.Show("Chamado resolvido com sucesso!");
+            }
+            else if (chamado.Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4)
+            {
+                await _apiClient.ResolverChamadoEscaladoAsync(chamado.Id);
+                MessageBox.Show("Chamado resolvido com sucesso!");
+            }
+            else
+            {
+                MessageBox.Show("Você não tem permissão para resolver esse chamado.");
+                return;
+            }
+
+            await LoadTickets();
+        }
+
+        // Instanciando a MotivoInputWindow
+        private string PromptForMotivo()
+        {
+            var window = new MotivoInputWindow();
+            bool? result = window.ShowDialog();
+            return result == true ? window.Motivo : null;
         }
 
     }

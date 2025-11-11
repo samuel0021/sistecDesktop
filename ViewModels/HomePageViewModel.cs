@@ -18,6 +18,8 @@ namespace sistecDesktop.ViewModels
         private readonly IDialogService _dialogService;
 
         public bool canApprove => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.NivelAcesso >= 4;
+        public bool CanOpenScaledTickets => App.LoggedUser.IdPerfilUsuario.Id >= 4;
+
 
         public TicketsViewModel TicketsViewModel { get; }
 
@@ -57,12 +59,14 @@ namespace sistecDesktop.ViewModels
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
-#endregion
+        #endregion
 
         public ICommand LoadTicketsCommand { get; }
         public ICommand OpenTicketCommand { get; }
         public ICommand MyTicketsCommand { get; }
         public ICommand ApproveTicketsCommand { get; }
+        public ICommand ViewScaledTicketsCommand { get; }
+
 
         public HomePageViewModel(ApiClient apiClient, TicketsViewModel ticketsViewModel)
         {
@@ -75,7 +79,9 @@ namespace sistecDesktop.ViewModels
             OpenTicketCommand = new RelayCommand(OpenTicket);
             MyTicketsCommand = new AsyncRelayCommand(MyTickets);
             ApproveTicketsCommand = new RelayCommand(OpenApproveTickets);
-  
+
+            ViewScaledTicketsCommand = new RelayCommand(ViewScaledTickets);
+
             _ = LoadTickets();
 
             Console.WriteLine($"UserId: {App.LoggedUser?.Id}");
@@ -146,6 +152,13 @@ namespace sistecDesktop.ViewModels
             }
 
             var vm = new ApproveTicketsViewModel(_apiClient);
+            _dialogService.ShowDialog(vm);
+        }
+
+        // Método pra abrir o popup dos chamados escalados
+        private void ViewScaledTickets()
+        {
+            var vm = new TicketsScaleViewModel(_apiClient);
             _dialogService.ShowDialog(vm);
         }
     }

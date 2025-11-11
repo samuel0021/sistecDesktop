@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="sistecDesktop.Views.Popups.TicketsScaleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
+             xmlns:viewModels="clr-namespace:sistecDesktop.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Border Background="#A020F0" CornerRadius="10,10,0,0" Padding="16">
+            <StackPanel>
+                <TextBlock Text="📈 Chamados Escalados" Foreground="White" FontWeight="Bold" FontSize="22"/>
+                <TextBlock Text="Chamados escalados pelos analistas que precisam de resolução gerencial"
+                       Foreground="White" FontSize="14" Margin="0,4,0,0"/>
+            </StackPanel>
+        </Border>
+        <Border Margin="0,70,0,0" Background="White" CornerRadius="0,0,10,10" Padding="10">
+
+            <DataGrid ItemsSource="{Binding ChamadosEscalados}"
+                      SelectedItem="{Binding SelectedEscalado}"
+                      AutoGenerateColumns="False"
+                      Style="{StaticResource MyDataGrid}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding IdChamado}" Width="80"/>
+                    <DataGridTextColumn Header="Título" Binding="{Binding TituloChamado}" Width="170"/>
+                    <DataGridTextColumn Header="Categoria" Binding="{Binding DescricaoCategoriaChamado}" Width="100"/>
+                    <DataGridTextColumn Header="Solicitante" Binding="{Binding UsuarioAbertura}" Width="110"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding DescricaoStatusChamado}" Width="110"/>
+                    <DataGridTextColumn Header="Data" Binding="{Binding DataAbertura, StringFormat='dd/MM/yyyy HH:mm:ss'}" Width="145"/>
+
+                    <DataGridTemplateColumn Header="Ações" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Resolver"
+        Command="{Binding DataContext.ResolveScaledTicketCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -14,11 +14,6 @@ namespace sistecDesktop
     /// </summary>
     public partial class App : Application
     {
-        public static User LoggedUser { get; set; }
-
-
-        //public static List<PerfilUsuario> PerfisAcesso { get; set; }
-
-
+        public static User LoggedUser { get; set; } // variável estática pra guardar o usuário logado
     }
 }

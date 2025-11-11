@@ -5,10 +5,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views.Pages" 
+             xmlns:converters="clr-namespace:sistecDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
-        
+
         <Border Grid.Row="1" Margin="10 10 10 10" Padding="10"
             BorderBrush="{DynamicResource brush-frenchGray}"
             BorderThickness="1"
@@ -35,16 +41,27 @@
                    VerticalAlignment="Center"
                    FontFamily="{StaticResource MontserratBold}"/>
 
-                <Button Content="Atualizar" Grid.Column="1" 
-                    Style="{StaticResource HomeButtons}" 
-                    Foreground="{StaticResource brush-peachOrange}"
-                    FontSize="14"
-                    Width="100"
-                    Background="Transparent"
-                    HorizontalAlignment="Right"
-                    Height="50"
-                    Command="{Binding LoadTicketsCommand}"
-                    Margin="20"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+
+                    <Button Content="Ver Escalados"
+                            Style="{StaticResource HomeButtons}"
+                            Foreground="{StaticResource brush-vibrantViolet}"
+                            Background="Transparent"
+                            Command="{Binding ViewScaledTicketsCommand}"
+                            Visibility="{Binding CanOpenScaledTickets,
+Converter={StaticResource BoolToVisibilityConverter}}"
+                            FontSize="14" Width="120" Height="50"/>
+
+
+                    <Button Content="Atualizar"
+                            Style="{StaticResource HomeButtons}" 
+                            Foreground="{StaticResource brush-peachOrange}"
+                            Background="Transparent"
+                            FontSize="14" Width="100" Height="50"
+                            Command="{Binding LoadTicketsCommand}"
+                            Margin="10"/>
+
+                </StackPanel>
 
                 <!--#region Mensagem de erro-->
                 <TextBlock Grid.Row="1" Margin="0,0,0,10" FontSize="12" 
@@ -53,12 +70,12 @@
                    TextWrapping="Wrap"/>
                 <!--#endregion-->
 
-                
+
                 <!-- DataGrid -->
-                
-                    <DataGrid Grid.Row="1" Grid.ColumnSpan="2" 
+
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="2" 
                         MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
-ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
+            ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
                         Style="{StaticResource MyDataGrid}">
 
@@ -92,20 +109,33 @@ ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
 
+                                    <StackPanel Orientation="Horizontal">
 
-                                    <Button Style="{StaticResource ViewButton}"                                    
+                                        <Button Style="{StaticResource ViewButton}"                                    
                                             Command="{Binding ViewModel.ViewTicketCommand, 
-                                                     ElementName=TicketsControl}"
+                                                      ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"/>
 
+                                        <Button Content="Resolver"
+                                            Command="{Binding ViewModel.ResolveTicketCommand, 
+                                                      ElementName=TicketsControl}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanResolve, 
+                                        Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                        <Button Content="Escalar"
+                                            Command="{Binding ViewModel.ScaleTicketCommand, 
+                                                      ElementName=TicketsControl}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanScale,
+                                        Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
-
                         </DataGridTemplateColumn>
-
                     </DataGrid.Columns>
                 </DataGrid>
-          
             </Grid>
         </Border>
     </Grid>

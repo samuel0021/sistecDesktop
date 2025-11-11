@@ -41,6 +41,11 @@
         <DataTemplate DataType="{x:Type viewModels:UsersViewModel}">
             <viewsPopups:UserProfileView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:TicketsScaleViewModel}">
+            <viewsPopups:TicketsScaleView/>
+        </DataTemplate>
+        
     </Window.Resources>
 
     <Grid Background="White">

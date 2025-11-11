@@ -291,6 +291,8 @@ namespace sistecDesktop.Models
     // Modelo para chamados do banco
     public class ChamadoDatabase
     {
+        public bool CanScale => Status == "Com Analista";
+
         [JsonProperty("id_chamado")]
         public int Id { get; set; }
 
@@ -341,6 +343,13 @@ namespace sistecDesktop.Models
     // Modelo unificado para exibição
     public class Chamado
     {
+        public bool CanScale => Status == "Com Analista";
+
+        public bool TicketScaled => Status == "Escalado";
+
+        public bool CanResolve => (Status == "Com Analista" && App.LoggedUser.IdPerfilUsuario.Id >= 2)
+                                  || (Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4);
+
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -374,6 +383,44 @@ namespace sistecDesktop.Models
             DataResolucao = db.DataResolucao;
         }
     }
+
+    #region Escalonamento de chamados
+
+    public class ChamadoEscalado
+    {
+        [JsonProperty("id_chamado")]
+        public int IdChamado { get; set; }
+
+        [JsonProperty("descricao_categoria_chamado")]
+        public string DescricaoCategoriaChamado { get; set; }
+
+        [JsonProperty("descricao_problema_chamado")]
+        public string DescricaoProblemaChamado { get; set; }
+
+        [JsonProperty("descricao_status_chamado")]
+        public string DescricaoStatusChamado { get; set; }
+
+        [JsonProperty("prioridade_chamado")]
+        public int PrioridadeChamado { get; set; }
+
+        [JsonProperty("titulo_chamado")]
+        public string TituloChamado { get; set; }
+
+        [JsonProperty("data_abertura")]
+        public DateTime DataAbertura { get; set; }
+
+        [JsonProperty("usuario_abertura")]
+        public string UsuarioAbertura { get; set; }
+    }
+
+    public class ChamadosEscaladosResponse
+    {
+        public int Status { get; set; }
+        public string Message { get; set; }
+        public List<ChamadoEscalado> Data { get; set; }
+    }
+
+    #endregion
 
     // carregar listas de categorias e problemas
 

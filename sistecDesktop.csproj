@@ -73,6 +73,7 @@
     <Compile Include="Converters\EnableRestoreConverter.cs" />
     <Compile Include="Converters\InverseBoolToEnableConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
@@ -98,6 +99,7 @@
     <Compile Include="ViewModels\MyTicketsViewModel.cs" />
     <Compile Include="ViewModels\OpenTicketViewModel.cs" />
     <Compile Include="ViewModels\RestoreUsersViewModel.cs" />
+    <Compile Include="ViewModels\TicketsScaleViewModel.cs" />
     <Compile Include="ViewModels\TicketsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
@@ -133,6 +135,9 @@
     </Compile>
     <Compile Include="Views\Popups\OpenTicketView.xaml.cs">
       <DependentUpon>OpenTicketView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Popups\TicketsScaleView.xaml.cs">
+      <DependentUpon>TicketsScaleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Popups\UserCreateView.xaml.cs">
       <DependentUpon>UserCreateView.xaml</DependentUpon>
@@ -209,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Popups\OpenTicketView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\TicketsScaleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

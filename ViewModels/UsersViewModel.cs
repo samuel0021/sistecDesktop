@@ -25,11 +25,6 @@ namespace sistecDesktop.ViewModels
         private UserDatabase _selectedUser;
         private readonly IDialogService _dialogService;
 
-        // Verificador de acesso
-        
-
-
-
         #region Encapsulamentos
 
         public ObservableCollection<UserDatabase> Users
@@ -185,7 +180,7 @@ namespace sistecDesktop.ViewModels
 
             var confirm = MessageBox.Show(
                 $"Tem certeza que deseja deletar o usuário \"{userDB.Name}\"?",
-                "Confirmar Deleção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (confirm != MessageBoxResult.Yes) return;
 
