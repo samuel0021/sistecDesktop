@@ -1,12 +1,14 @@
 ﻿using sistecDesktop.Commands;
 using sistecDesktop.Models;
 using sistecDesktop.Services;
+using sistecDesktop.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
@@ -66,7 +68,7 @@ namespace sistecDesktop.ViewModels
             Error = null;
             try
             {
-                var backups = await _apiClient.GetDeletedUsersAsync(); // Implemente este método pegando da API
+                var backups = await _apiClient.GetDeletedUsersAsync();
                 _usuariosDeletados = new ObservableCollection<DeletedUserBackup>(backups);
                 FiltrarUsuarios(SearchTerm);
             }
@@ -100,17 +102,23 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        public async Task RestaurarUsuario(DeletedUserBackup selected)
+        public async Task RestaurarUsuario(DeletedUserBackup selectedUser)
         {
-            if (selected == null || selected.StatusBackup != "ATIVO") return;
-            // Confirmação MessageBox.Show...
+            if (selectedUser == null || selectedUser.StatusBackup != "ATIVO") return;
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja restaurar o usuário \"{selectedUser.Name}\"?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
             try
             {
                 IsLoading = true;
-                var sucesso = await _apiClient.RestoreUserAsync(selected.BackupId); // Implemente este método na ApiClient
+                var sucesso = await _apiClient.RestoreUserAsync(selectedUser.BackupId);
                 if (sucesso)
                 {
-                    // Sucesso, recarrega lista!
+                    // Recarrega a lista
                     await FetchUsuariosDeletados();
                 }
                 else

@@ -185,11 +185,6 @@ namespace sistecDesktop.ViewModels
 
             // Sugestão de InputBox para motivo
             string motivo = PromptForMotivo();
-            if (string.IsNullOrWhiteSpace(motivo))
-            {
-                MessageBox.Show("Motivo obrigatório para deletar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
 
             try
             {

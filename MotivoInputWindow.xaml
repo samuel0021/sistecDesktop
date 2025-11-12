@@ -6,11 +6,14 @@
         xmlns:local="clr-namespace:sistecDesktop"
         mc:Ignorable="d"
         Title="Motivo" Height="170" Width="350"
-        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     
     <StackPanel Margin="12">
         <TextBlock Text="Digite o motivo:" Margin="0,0,0,8"/>
         <TextBox x:Name="InputBox" MinWidth="240" Margin="0,0,0,8" TextChanged="InputBox_TextChanged"/>
+        <TextBlock Text="Mínimo 10 caracteres."
+                   FontFamily="{StaticResource MontserratRegular}"
+                   FontSize="12" Foreground="Red"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="OkButton" Content="OK" Width="80" Margin="0,0,8,0" IsDefault="True" Click="Ok_Click"/>
             <Button Content="Cancelar" Width="80" IsCancel="True"/>
