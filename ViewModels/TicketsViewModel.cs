@@ -132,6 +132,8 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var list = await _apiClient.GetChamadosAsync();
+                _allTickets = list.Select(MapChamadoToChamadoDatabase).ToList(); // Convert Chamado to ChamadoDatabase
+                FiltrarChamados(SearchTerm);
                 Tickets.Clear();
                 foreach (var ticket in list)
                 {
@@ -360,5 +362,25 @@ namespace sistecDesktop.ViewModels
             };
         }
 
+        private ChamadoDatabase MapChamadoToChamadoDatabase(Chamado chamado)
+        {
+            if (chamado == null) return null;
+            return new ChamadoDatabase
+            {
+                Id = chamado.Id,
+                Title = chamado.Title,
+                Description = chamado.Description,
+                Status = chamado.Status,
+                Prioridade = chamado.Prioridade,
+                Categoria = chamado.Categoria,
+                Problema = chamado.Problema,
+                UsuarioAbertura = chamado.UsuarioAbertura,
+                EmailUsuario = chamado.EmailUsuario,
+                UsuarioResolucao = chamado.UsuarioResolucao,
+                UserId = chamado.UserId,
+                CreatedAt = chamado.CreatedAt,
+                DataResolucao = chamado.DataResolucao
+            };
+        }
     }
 }
