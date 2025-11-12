@@ -84,6 +84,9 @@ namespace sistecDesktop.ViewModels
 
             _ = LoadTickets();
 
+            Console.WriteLine($"TicketsViewModel: {ticketsViewModel?.GetType().Name}");
+
+
             Console.WriteLine($"UserId: {App.LoggedUser?.Id}");
         }
 

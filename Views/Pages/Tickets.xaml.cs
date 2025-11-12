@@ -24,8 +24,6 @@ namespace sistecDesktop.Views.Pages
         public Tickets()
         {
             InitializeComponent();
-
-            
         }
         public TicketsViewModel ViewModel
         {
@@ -39,5 +37,14 @@ namespace sistecDesktop.Views.Pages
                 typeof(TicketsViewModel),
                 typeof(Tickets),
                 new PropertyMetadata(null));
+
+        private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Sempre que alguém faz: tickets.ViewModel = meuVm;
+            // Isso garante que o DataContext do UserControl sempre acompanha o ViewModel.
+            if (d is Tickets uc)
+                uc.DataContext = e.NewValue;
+        }
+
     }
 }

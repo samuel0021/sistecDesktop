@@ -54,6 +54,7 @@ namespace sistecDesktop.ViewModels
         protected override void OnCancel()
         {
             OnClose?.Invoke(false, null);
+            OnDialogClose(true);
         }
     }
 }

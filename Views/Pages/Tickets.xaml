@@ -31,8 +31,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -50,33 +52,46 @@
                             Style="{StaticResource HomeButtons}"
                             Foreground="{StaticResource brush-vibrantViolet}"
                             Background="Transparent"
-                            Command="{Binding ViewScaledTicketsCommand}"
+                            Command="{Binding ViewModel.ViewScaledTicketsCommand, 
+                        ElementName=TicketsControl}"
                             Visibility="{Binding CanOpenScaledTickets,
 Converter={StaticResource BoolToVisibilityConverter}}"
                             FontSize="14" Width="120" Height="50"/>
-
 
                     <Button Content="Atualizar"
                             Style="{StaticResource HomeButtons}" 
                             Foreground="{StaticResource brush-peachOrange}"
                             Background="Transparent"
                             FontSize="14" Width="100" Height="50"
-                            Command="{Binding LoadTicketsCommand}"
+                            Command="{Binding ViewModel.LoadTicketsCommand, 
+                        ElementName=TicketsControl}"
                             Margin="10"/>
 
                 </StackPanel>
 
+                <!--Bloco de pesquisa-->
+                <StackPanel Orientation="Horizontal" Grid.Row="1"
+            HorizontalAlignment="Left">
+
+                    <TextBlock Text="Pesquisar: " Margin="0"
+               FontFamily="{StaticResource MontserratRegular}"/>
+
+                    <TextBox Text="{Binding ViewModel.SearchTerm, ElementName=TicketsControl, UpdateSourceTrigger=PropertyChanged}"
+             Width="300" Margin="0"
+             VerticalAlignment="Center"/>
+
+                </StackPanel>
+
                 <!--#region Mensagem de erro-->
-                <TextBlock Grid.Row="1" Margin="0,0,0,10" FontSize="12" 
+                <TextBlock Grid.Row="2" Margin="0,0,0,0" FontSize="12" 
                    Text="{Binding ErrorMessage}"
                    Foreground="Red"
                    TextWrapping="Wrap"/>
                 <!--#endregion-->
 
-
                 <!-- DataGrid -->
 
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="2" 
+                <DataGrid Grid.Row="3" Grid.ColumnSpan="2" 
                         MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
             ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              

@@ -52,9 +52,11 @@ namespace sistecDesktop.ViewModels
             if (chamado == null)
                 return;
 
-            var confirm = MessageBox.Show(
-                $"Tem certeza que deseja resolver o chamado?",
-                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var confirm = await Task.Run(() =>
+                MessageBox.Show(
+                    $"Tem certeza que deseja resolver o chamado?",
+                    "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+            );
 
             if (confirm != MessageBoxResult.Yes) return;
 

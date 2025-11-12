@@ -123,7 +123,7 @@ namespace sistecDesktop.ViewModels
 
         // Comandos
         public ICommand EditUserCommand { get; }
-        public ICommand CancelCommand { get; }
+        public new ICommand CancelCommand { get; }
 
         //Construtor
         #region Construtor

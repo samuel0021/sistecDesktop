@@ -164,7 +164,7 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_perfil_usuario")]
         public string PerfilDescricao { get; set; }
 
-        [JsonProperty("senha")]
+        [JsonProperty("password")]
         public string Senha { get; set; }
 
 

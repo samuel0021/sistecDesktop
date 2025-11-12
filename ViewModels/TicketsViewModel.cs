@@ -17,16 +17,29 @@ namespace sistecDesktop.ViewModels
     public class TicketsViewModel : BasePopupViewModel
     {
         protected readonly ApiClient _apiClient;
+        private List<ChamadoDatabase> _allTickets;
         private ObservableCollection<Chamado> _tickets;
+
         private bool _isLoading;
         private string _errorMessage;
         private Chamado _selectedTicket;
         protected readonly IDialogService _dialogService;
 
-        #region Encapsulamentos
+        private string _searchTerm;
+
+        public List<ChamadoDatabase> AllTickets
+        {
+            get => _allTickets;
+            set
+            {
+                _allTickets = value;
+                FiltrarChamados(_searchTerm); // Atualiza filtro ao receber nova lista
+            }
+        }
+
         public ObservableCollection<Chamado> Tickets
         {
-            get { return _tickets; }
+            get => _tickets;
             set
             {
                 _tickets = value;
@@ -34,6 +47,21 @@ namespace sistecDesktop.ViewModels
             }
         }
 
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                if (_searchTerm != value)
+                {
+                    _searchTerm = value;
+                    OnPropertyChanged(nameof(SearchTerm));
+                    FiltrarChamados(_searchTerm);
+                }
+            }
+        }
+
+        #region Encapsulamentos
         public Chamado SelectedTicket
         {
             get { return _selectedTicket; }
@@ -72,6 +100,9 @@ namespace sistecDesktop.ViewModels
         public ICommand ViewScaledTicketsCommand { get; }
         public ICommand OpenMotivoCommand { get; }
 
+        public bool CanOpenScaledTickets => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.Id >= 4;
+
+
 
         public TicketsViewModel(ApiClient apiClient, IDialogService dialogService = null)
         {
@@ -82,7 +113,7 @@ namespace sistecDesktop.ViewModels
             PopupWidth = 800;
             PopupHeight = 450;
 
-            Tickets = new ObservableCollection<Chamado>(); 
+            Tickets = new ObservableCollection<Chamado>();
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
             ScaleTicketCommand = new AsyncRelayCommand(ScaleTicket);
@@ -145,7 +176,7 @@ namespace sistecDesktop.ViewModels
                     MessageBox.Show(
                         $"ID: {updatedTicket.Id}\n" +
                         $"Título: {updatedTicket.Title}\n" +
-                        $"Descrição: {descricaoSomente}\n" + 
+                        $"Descrição: {descricaoSomente}\n" +
                         $"Status: {updatedTicket.Status}\n" +
                         $"Usuário: {updatedTicket.UsuarioAbertura}\n" +
                         $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",
@@ -278,5 +309,56 @@ namespace sistecDesktop.ViewModels
             };
             _dialogService.ShowDialog(vmMotivo);
         }
+
+        private void FiltrarChamados(string termo)
+        {
+            if (_allTickets == null)
+            {
+                Tickets = new ObservableCollection<Chamado>();
+                return;
+            }
+
+            IEnumerable<ChamadoDatabase> baseQuery;
+
+            if (string.IsNullOrWhiteSpace(termo))
+            {
+                baseQuery = _allTickets;
+            }
+            else
+            {
+                var lower = termo.ToLowerInvariant();
+                baseQuery = _allTickets
+                    .Where(c =>
+                        c.Id.ToString().Contains(lower) ||
+                        (c.Title?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (c.Categoria?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (c.UsuarioAbertura?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (c.Status?.ToLowerInvariant().Contains(lower) ?? false) ||
+                        (c.CreatedAt.ToString("dd/MM/yyyy HH:mm").Contains(lower))
+                    );
+            }
+
+            Tickets = new ObservableCollection<Chamado>(baseQuery.Select(MapDbToChamado));
+        }
+
+        private Chamado MapDbToChamado(ChamadoDatabase db)
+        {
+            if (db == null) return null;
+            return new Chamado
+            {
+                Id = db.Id,
+                Title = db.Title,
+                Categoria = db.Categoria,
+                UsuarioAbertura = db.UsuarioAbertura,
+                Status = db.Status,
+                CreatedAt = db.CreatedAt,
+                Problema = db.Problema,
+                Prioridade = db.Prioridade,
+                EmailUsuario = db.EmailUsuario,
+                Description = db.Description
+                // Preencha mais campos conforme sua necessidade
+            };
+        }
+
     }
 }
