@@ -146,10 +146,6 @@ namespace sistecDesktop.Models
         [JsonProperty("tel_usuarios")]
         public string Telefone { get; set; }
 
-        //[JsonProperty("id_aprovador_usuario")]
-        //public int? IdAprovador { get; set; }
-
-
         [JsonProperty("id_perfil_usuario")]
         public int PerfilId { get; set; }
 

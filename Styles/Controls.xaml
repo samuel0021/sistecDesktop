@@ -228,7 +228,6 @@
     
     <!--#endregion-->
 
-
     <!--#region TextBox / PasswordBox-->
     <!-- Estilo base pra usar nos dois -->
     <Style x:Key="BaseInputStyle" TargetType="Control">
@@ -298,8 +297,7 @@
         </Setter>
     </Style>
     <!--#endregion TextBox-->
-
-    
+   
     <!--#region TextBlock ForgotPass -->
     <Style x:Key="ForgotPassText" TargetType="TextBlock">
         <Setter Property="Text" Value="Por favor, entre em contato com o gestor do seu setor para que ele possa solicitar a redefinição de senha ao suporte técnico."/>
@@ -311,7 +309,6 @@
         <Setter Property="Padding" Value="10"/>
     </Style>
     <!--#endregion-->
-
     
     <!--#region Border ForgotPass -->
     <Style x:Key="ForgotPass" TargetType="Border">
@@ -321,7 +318,6 @@
         <Setter Property="BorderThickness" Value="3"/>
     </Style>
     <!--#endregion-->
-
     
     <!-- #region Hyperlink ForgotPass-->
     <Style x:Key="MyHyperlink" TargetType="Hyperlink">
@@ -337,8 +333,7 @@
         </Style.Triggers>
     </Style>
     <!--#endregion-->
-    
-    
+        
     <!--#region DataGrid -->
 
         <!-- Make the border and grid lines a little less imposing -->
@@ -417,7 +412,6 @@
         </Setter>
     </Style>
     
-    <!--#endregion-->
-    
+    <!--#endregion-->    
 
 </ResourceDictionary>

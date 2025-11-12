@@ -13,16 +13,19 @@ namespace sistecDesktop.Services
 {
     public class ApiClient : IDisposable
     {
-        private readonly HttpClient _httpClient;
-        private readonly CookieContainer _cookieContainer;
-        private readonly string _baseUrl = "http://localhost:3001";
+        private readonly HttpClient _httpClient;        // objeto para fazer as requisições HTTP
+        private readonly CookieContainer _cookieContainer;      // gerencia os cookies para autenticar automaticamente
+        private readonly string _baseUrl = "http://localhost:3001";     // URL base da API
 
+        // Configurações para serialização/deserialização JSON (ignora nulos, datas no formato ISO)
         private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
             DateFormatHandling = DateFormatHandling.IsoDateFormat
         };
 
+        // Inicializa a instância da classe
+        #region Construtor
         public ApiClient()
         {
             _cookieContainer = new CookieContainer();
@@ -33,14 +36,18 @@ namespace sistecDesktop.Services
                 UseCookies = true
             };
 
-            _httpClient = new HttpClient(handler);
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient = new HttpClient(handler);      // Associa esse handler ao HttpClient principal                                                
+            _httpClient.DefaultRequestHeaders.Accept.Clear();        // Limpa configurações de Accept
             _httpClient.DefaultRequestHeaders.Accept.Add(
-                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));       // Define apenas respostas no formato JSON
 
+            // Define timeout padrão das requisições pra 30 segundos
             _httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
+        #endregion
 
+        // Método pra testar conexão, caso necessário
+        #region Teste de Conexão
         public async Task<ApiResponse> TestConnection()
         {
             try
@@ -68,21 +75,25 @@ namespace sistecDesktop.Services
                 };
             }
         }
+        #endregion
 
+        // Métodos e Tasks
         #region Login e Logout
-
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
             try
             {
+                // Serializa o objeto loginRequest pra JSON
                 var json = JsonConvert.SerializeObject(loginRequest, _jsonSettings);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                // Monta a URL do endpoint de login
                 var loginUrl = $"{_baseUrl}/api/auth/login";
 
                 Console.WriteLine($"DEBUG: Fazendo login para: {loginUrl}");
                 Console.WriteLine($"Dados: {json}");
 
+                // Envia a requisição POST para o endpoint de login com o JSON
                 var response = await _httpClient.PostAsync(loginUrl, content);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -91,9 +102,9 @@ namespace sistecDesktop.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Se a resposta for 2xx, deserializa para LoginResponse
                     Console.WriteLine("JSON recebido:");
                     Console.WriteLine(responseBody);
-
                     var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseBody, _jsonSettings);
 
                     Console.WriteLine($"DEBUG: User ID deserializado: {loginResponse.Data?.User?.IdPerfilUsuario.Id}");
@@ -102,19 +113,20 @@ namespace sistecDesktop.Services
 
                     if (loginResponse.Success)
                     {
+                        // Se o login foi aceito, mostra quantos cookies foram recebidos
                         Console.WriteLine($"Cookies recebidos: {_cookieContainer.Count}");
-
                         var uri = new Uri(_baseUrl);
                         foreach (Cookie cookie in _cookieContainer.GetCookies(uri))
                         {
+                            // Mostra nome e início do valor de cada cookie guardado
                             Console.WriteLine($"   Cookie: {cookie.Name} = {cookie.Value.Substring(0, Math.Min(cookie.Value.Length, 20))}...");
                         }
                     }
-
                     return loginResponse;
                 }
                 else
                 {
+                    // Erro HTTP: retorna um LoginResponse indicando falha e mostra a mensagem de erro
                     return new LoginResponse
                     {
                         Success = false,
@@ -124,6 +136,7 @@ namespace sistecDesktop.Services
             }
             catch (Exception ex)
             {
+                // Captura e retorna qualquer exceção como falha no login
                 Console.WriteLine($"EXCECAO no login: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return new LoginResponse
@@ -138,9 +151,11 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Monta a URL do endpoint de logout
                 var logoutUrl = $"{_baseUrl}/api/auth/logout";
                 Console.WriteLine($"DEBUG: Fazendo logout: {logoutUrl}");
 
+                // Envia a requisição POST para o logout
                 var response = await _httpClient.PostAsync(logoutUrl, null);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -148,10 +163,12 @@ namespace sistecDesktop.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Se for sucesso, tenta deserializar para ApiResponse
                     var logoutResponse = JsonConvert.DeserializeObject<ApiResponse>(responseBody, _jsonSettings);
                     return logoutResponse;
                 }
 
+                // Retorna objeto de resposta indicando falha
                 return new ApiResponse
                 {
                     Success = false,
@@ -160,6 +177,7 @@ namespace sistecDesktop.Services
             }
             catch (Exception ex)
             {
+                // Qualquer exceção, retorna resposta de erro
                 return new ApiResponse
                 {
                     Success = false,
@@ -173,24 +191,26 @@ namespace sistecDesktop.Services
             var uri = new Uri(_baseUrl);
             foreach (Cookie cookie in _cookieContainer.GetCookies(uri))
             {
-                cookie.Expired = true;
+                cookie.Expired = true;  // Marca todos cookies dessa URL como expirados (faz logout local)
             }
-
             Console.WriteLine("Cookies locais removidos");
         }
 
         #endregion
 
-        #region User
+        // Métodos e Tasks do Usuário
+        #region Usuário
         public async Task<UserDatabase> CreateUserAsync(UserDatabase user)
         {
             try
             {
-                // Não envie o Id no cadastro!
+                // Serializa o objeto user para JSON
                 var json = JsonConvert.SerializeObject(user, _jsonSettings);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                // Endpoint para criar usuário novo na API
                 var usersUrl = $"{_baseUrl}/api/users";
+                // Envia POST para a rota '/api/users' com JSON no corpo
                 var response = await _httpClient.PostAsync(usersUrl, content);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -199,8 +219,8 @@ namespace sistecDesktop.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Se sucesso, deserializa resposta para UserResponse e retorna o usuário criado.
                     var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
-                    // Retorna UserDatabase já com o id_usuario preenchido (do backend)
                     return apiResponse.Data;
                 }
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -216,13 +236,14 @@ namespace sistecDesktop.Services
         }
 
         public async Task<List<PerfilUsuario>> GetPerfisAcessoAsync()
-{
-    // Chame seu endpoint /api/perfis (ou similar)
-    var response = await _httpClient.GetAsync($"{_baseUrl}/api/perfis");
-    var json = await response.Content.ReadAsStringAsync();
-    var perfis = JsonConvert.DeserializeObject<PerfisApiResponse>(json);
-    return perfis.Data;
-}
+        {
+            // Consulta endpoint de perfis de acesso
+            var response = await _httpClient.GetAsync($"{_baseUrl}/api/perfis");
+            var json = await response.Content.ReadAsStringAsync();
+            // Desserializa resultado para objeto de resposta
+            var perfis = JsonConvert.DeserializeObject<PerfisApiResponse>(json);
+            return perfis.Data;
+        }
 
 
         public async Task<List<UserDatabase>> GetUsersAsync()
@@ -242,11 +263,11 @@ namespace sistecDesktop.Services
                 {
                     try
                     {
+                        // Desserializa resposta para lista de usuários
                         var apiResponse = JsonConvert.DeserializeObject<UsersResponse>(responseBody, _jsonSettings);
                         if (apiResponse?.Data != null)
                         {
                             Console.WriteLine($"DEBUG: Deserializado {apiResponse.Data.Count} usuários do banco");
-                            // Aqui retorna direto UserDatabase, sem mapear para User!
                             return apiResponse.Data;
                         }
                     }
@@ -275,6 +296,7 @@ namespace sistecDesktop.Services
 
         public async Task<ApiResponse> UpdateUserAsync(int id, UserDatabase user)
         {
+            // Monta a URL do usuário a ser atualizado pelo id
             var url = $"{_baseUrl}/api/users/{id}";
             var json = JsonConvert.SerializeObject(user, _jsonSettings);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -283,70 +305,17 @@ namespace sistecDesktop.Services
 
             return new ApiResponse
             {
+                // Retorna se foi sucesso ou não
                 Success = response.IsSuccessStatusCode,
                 Message = responseBody
             };
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
-        {
-            try
-            {
-                var userUrl = $"{_baseUrl}/api/users/{id}";
-                Console.WriteLine($"DEBUG: Buscando usuário: {userUrl}");
-
-                var response = await _httpClient.GetAsync(userUrl);
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine($"DEBUG: User by ID response: {responseBody}");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<UserResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            return new User
-                            {
-                                IdPerfilUsuario = new PerfilUsuario { Id = apiResponse.Data.PerfilId, Nome = apiResponse.Data.Name, NivelAcesso = apiResponse.Data.NivelAcesso, Descricao = apiResponse.Data.PerfilDescricao },
-                                Matricula = apiResponse.Data.Matricula,
-                                NomeUsuario = apiResponse.Data.Name,
-                                Email = apiResponse.Data.Email,
-                                Telefone = apiResponse.Data.Telefone,
-                                Setor = apiResponse.Data.Setor,
-                                Cargo = apiResponse.Data.Cargo
-                            };
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar user: {ex.Message}");
-                    }
-                }
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
-
-                throw new Exception($"Erro ao buscar usuário: {response.StatusCode}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
-        }
-
-
         public async Task<bool> DeleteUserAsync(int idUsuario, string motivo)
         {
             try
             {
+                // Constrói URL de deletar e prepara corpo com motivo
                 var url = $"{_baseUrl}/api/users/{idUsuario}";
                 Console.WriteLine($"DEBUG: Deletando usuário: {url}");
 
@@ -357,7 +326,7 @@ namespace sistecDesktop.Services
                 var json = JsonConvert.SerializeObject(body);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                // O HttpClient padrão do .NET não possui DeleteAsync(url, content), então é necessário criar o request manual:
+                // Cria request manual (HttpClient não tem DeleteAsync(url, content))
                 var request = new HttpRequestMessage(HttpMethod.Delete, url)
                 {
                     Content = content
@@ -384,7 +353,6 @@ namespace sistecDesktop.Services
             }
         }
 
-
         public class DeletedUsersResponse : ApiResponse
         {
             public List<DeletedUserBackup> Data { get; set; }
@@ -403,11 +371,9 @@ namespace sistecDesktop.Services
                 Console.WriteLine($"GetDeletedUsersAsync Status: {response.StatusCode}");
 
                 if (response.IsSuccessStatusCode)
-                {                    
+                {
                     var apiResponse = JsonConvert.DeserializeObject<DeletedUsersResponse>(responseBody);
-                    // Para compatibilidade com seu pattern de resposta:
-                    // Caso use o padrão ApiResponse { bool Success, string Message, List<Data> }
-                    // else, ajuste conforme ChamadosResponse, etc.
+
                     if (apiResponse?.Data != null)
                         return apiResponse.Data;
                 }
@@ -437,6 +403,7 @@ namespace sistecDesktop.Services
                 var url = $"{_baseUrl}/api/users/restore/{backupId}";
                 Console.WriteLine($"DEBUG: Restaurando usuário do backup: {url}");
 
+                // Envia POST sem body para o endpoint de restauração
                 var response = await _httpClient.PostAsync(url, null); // Sem body necessário nesse caso
 
                 Console.WriteLine($"RestoreUserAsync Status: {response.StatusCode}");
@@ -460,13 +427,14 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        // Métodos e Tasks dos Chamados
         #region Chamados
 
         public async Task<List<Chamado>> GetChamadosAsync()
         {
             try
             {
-
+                // Monta URL de busca
                 var chamadosUrl = $"{_baseUrl}/api/chamados";
                 Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
 
@@ -475,7 +443,6 @@ namespace sistecDesktop.Services
 
                 Console.WriteLine($"Chamados Status: {response.StatusCode}");
 
-                // MUDAR ESTA LINHA - Ver JSON COMPLETO
                 Console.WriteLine($"=== JSON COMPLETO DOS CHAMADOS ===");
                 Console.WriteLine(responseBody);
                 Console.WriteLine($"==================================");
@@ -523,6 +490,7 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Monta URL de busca por ID
                 var chamadoUrl = $"{_baseUrl}/api/chamados/{id}";
                 var response = await _httpClient.GetAsync(chamadoUrl);
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -566,15 +534,17 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Serializa o objeto chamado para JSON
                 var json = JsonConvert.SerializeObject(chamado, _jsonSettings);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                // Monta URL de POST do chamado
                 var chamadosUrl = $"{_baseUrl}/api/chamados";
                 var response = await _httpClient.PostAsync(chamadosUrl, content);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"Criando chamado: {json}");
-                Console.WriteLine($"Status: {response.StatusCode}");
+                Console.WriteLine($"DEBUG: Criando chamado: {json}");
+                Console.WriteLine($"DEBUG: Status: {response.StatusCode}");
                 Console.WriteLine($"DEBUG: Create chamado response: {responseBody}");
 
                 if (response.IsSuccessStatusCode)
@@ -742,7 +712,7 @@ namespace sistecDesktop.Services
 
         #region Resolução de Chamados
 
-        // Resolve chamados comuns (analista)
+        // Resolve chamados comuns
         public async Task ResolverChamadoAsync(int idChamado, string motivoResolucao)
         {
             var body = new
@@ -760,6 +730,7 @@ namespace sistecDesktop.Services
             }
         }
 
+        // Resolve chamados escalados
         public async Task ResolverChamadoEscaladoAsync(int idChamado, string motivoResolucao)
         {
             var body = new
@@ -780,12 +751,14 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        // Métodos e Tasks do Dashboard
         #region Dashboard
 
         public async Task<DashboardStats> GetDashboardStatsAsync()
         {
             try
             {
+                // Monta URL de estatísticas
                 var url = $"{_baseUrl}/api/estatisticas/dashboard-stats";
                 Console.WriteLine($"DEBUG: Buscando dashboard stats: {url}");
                 var response = await _httpClient.GetAsync(url);
@@ -811,6 +784,7 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Busca chamados mensais
                 var url = $"{_baseUrl}/api/estatisticas/chamados-mensais";
                 Console.WriteLine($"DEBUG: Buscando dados mensais: {url}");
                 var response = await _httpClient.GetAsync(url);
@@ -833,6 +807,7 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Busca chamados por categoria
                 var url = $"{_baseUrl}/api/estatisticas/chamados-categoria";
                 Console.WriteLine($"DEBUG: Buscando categorias: {url}");
                 var response = await _httpClient.GetAsync(url);
@@ -855,6 +830,7 @@ namespace sistecDesktop.Services
         {
             try
             {
+                // Busca chamados anuais
                 var url = $"{_baseUrl}/api/estatisticas/chamados-anuais";
                 Console.WriteLine($"DEBUG: Buscando dados anuais: {url}");
                 var response = await _httpClient.GetAsync(url);
@@ -877,7 +853,8 @@ namespace sistecDesktop.Services
         {
             try
             {
-                var url = $"{_baseUrl}/api/estatisticas/chamados-analistas"; 
+                // Busca chamados com analistas
+                var url = $"{_baseUrl}/api/estatisticas/chamados-analistas";
                 Console.WriteLine($"DEBUG: Buscando chamados por analista: {url}");
                 var response = await _httpClient.GetAsync(url);
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -897,6 +874,8 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        // Métodos não referenciados para debug, caso necessário
+        #region Debug
         public bool IsAuthenticated()
         {
             var uri = new Uri(_baseUrl);
@@ -931,5 +910,6 @@ namespace sistecDesktop.Services
         {
             _httpClient?.Dispose();
         }
+        #endregion
     }
 }

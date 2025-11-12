@@ -37,7 +37,7 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        public List<UserDatabase> AllUsers // Se quiser acessar do filtro, etc
+        public List<UserDatabase> AllUsers
         {
             get => _allUsers;
             set { _allUsers = value; }

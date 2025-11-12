@@ -165,7 +165,7 @@
 
             <!-- Gráfico Analistas: Barra Horizontal -->
 
-            <GroupBox Header="Chamados por analistas" Margin="0,0,0,16" Grid.Row="5">
+            <!--<GroupBox Header="Chamados por analistas" Margin="0,0,0,16" Grid.Row="5">
                 <StackPanel>
                     <liveCharts:CartesianChart Series="{Binding AnalystSeries}" Height="220" Margin="16">
                         <liveCharts:CartesianChart.AxisY>
@@ -182,7 +182,7 @@
                         <TextBlock Text="{Binding AnalystMedia}" FontWeight="Bold"/>
                     </StackPanel>
                 </StackPanel>
-            </GroupBox>
+            </GroupBox>-->
 
         </Grid>
     </ScrollViewer>
