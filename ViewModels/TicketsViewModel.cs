@@ -2,6 +2,7 @@
 using sistecDesktop.Models;
 using sistecDesktop.Services;
 using sistecDesktop.Views.Pages;
+using sistecDesktop.Views.Popups;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,8 +21,7 @@ namespace sistecDesktop.ViewModels
         private bool _isLoading;
         private string _errorMessage;
         private Chamado _selectedTicket;
-        private readonly IDialogService _dialogService;
-
+        protected readonly IDialogService _dialogService;
 
         #region Encapsulamentos
         public ObservableCollection<Chamado> Tickets
@@ -69,9 +69,8 @@ namespace sistecDesktop.ViewModels
         public ICommand ViewTicketCommand { get; }
         public ICommand ScaleTicketCommand { get; }
         public ICommand ResolveTicketCommand { get; }
-
         public ICommand ViewScaledTicketsCommand { get; }
-
+        public ICommand OpenMotivoCommand { get; }
 
 
         public TicketsViewModel(ApiClient apiClient, IDialogService dialogService = null)
@@ -79,14 +78,17 @@ namespace sistecDesktop.ViewModels
             _apiClient = apiClient;
             _dialogService = dialogService ?? new DialogService(); // Se não passar, usa uma nova
 
+            PopupTitle = "";
+            PopupWidth = 800;
+            PopupHeight = 450;
+
             Tickets = new ObservableCollection<Chamado>(); 
             LoadTicketsCommand = new AsyncRelayCommand(LoadTickets);
             ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
             ScaleTicketCommand = new AsyncRelayCommand(ScaleTicket);
-            ResolveTicketCommand = new AsyncRelayCommandWithParameter<Chamado>(ResolveTicketAsync);
+            ResolveTicketCommand = new RelayCommandWithParameter(AbrirPopupMotivo);
 
             ViewScaledTicketsCommand = new RelayCommand(OpenScaledTicketsPopup);
-
 
             _ = LoadTickets();
         }
@@ -212,10 +214,16 @@ namespace sistecDesktop.ViewModels
         }
 
         // Método recebe o chamado e faz a lógica de decisão
-        private async Task ResolveTicketAsync(Chamado chamado)
+        private async Task ResolveTicketAsync(Chamado chamado, string motivoResolucao)
         {
             if (chamado == null)
                 return;
+
+            if (string.IsNullOrWhiteSpace(motivoResolucao) || motivoResolucao.Length < 20)
+            {
+                MessageBox.Show("O motivo da resolução deve ter pelo menos 20 caracteres.");
+                return;
+            }
 
             var confirm = MessageBox.Show(
                 $"Tem certeza que deseja resolver o chamado?",
@@ -223,14 +231,16 @@ namespace sistecDesktop.ViewModels
 
             if (confirm != MessageBoxResult.Yes) return;
 
+            IsLoading = true;
+
             if (chamado.Status == "Com Analista" && App.LoggedUser.IdPerfilUsuario.Id >= 2)
             {
-                await _apiClient.ResolverChamadoAsync(chamado.Id);
+                await _apiClient.ResolverChamadoAsync(chamado.Id, motivoResolucao);
                 MessageBox.Show("Chamado resolvido com sucesso!");
             }
             else if (chamado.Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4)
             {
-                await _apiClient.ResolverChamadoEscaladoAsync(chamado.Id);
+                await _apiClient.ResolverChamadoEscaladoAsync(chamado.Id, motivoResolucao);
                 MessageBox.Show("Chamado resolvido com sucesso!");
             }
             else
@@ -256,5 +266,17 @@ namespace sistecDesktop.ViewModels
             return result == true ? window.Motivo : null;
         }
 
+        public void AbrirPopupMotivo(object param)
+        {
+            var chamado = param as Chamado ?? SelectedTicket;
+            if (chamado == null) return;
+            var vmMotivo = new MotivoResolucaoViewModel(chamado.Id, chamado.Categoria, chamado.Problema);
+            vmMotivo.OnClose = async (salvou, motivo) =>
+            {
+                if (salvou && !string.IsNullOrWhiteSpace(motivo) && motivo.Length >= 20)
+                    await ResolveTicketAsync(chamado, motivo);
+            };
+            _dialogService.ShowDialog(vmMotivo);
+        }
     }
 }

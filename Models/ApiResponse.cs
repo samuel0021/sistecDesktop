@@ -291,8 +291,6 @@ namespace sistecDesktop.Models
     // Modelo para chamados do banco
     public class ChamadoDatabase
     {
-        public bool CanScale => Status == "Com Analista";
-
         [JsonProperty("id_chamado")]
         public int Id { get; set; }
 
@@ -334,11 +332,8 @@ namespace sistecDesktop.Models
         public DateTime CreatedAt { get; set; }
 
         [JsonProperty("data_resolucao")]
-        public DateTime? DataResolucao { get; set; }
-
-        
+        public DateTime? DataResolucao { get; set; }        
     }
-
 
     // Modelo unificado para exibição
     public class Chamado
@@ -349,6 +344,8 @@ namespace sistecDesktop.Models
 
         public bool CanResolve => (Status == "Com Analista" && App.LoggedUser.IdPerfilUsuario.Id >= 2)
                                   || (Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4);
+
+        public bool CanView => (App.LoggedUser.IdPerfilUsuario.Id >= 2) || (App.LoggedUser.Id == UserId);
 
         public int Id { get; set; }
         public string Title { get; set; }

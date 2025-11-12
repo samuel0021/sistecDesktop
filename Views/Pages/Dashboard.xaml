@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:sistecDesktop.Views.Pages"
              xmlns:liveCharts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="1450" d:DesignWidth="900">
+             d:DesignHeight="1450" d:DesignWidth="1200">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
         <Grid>
@@ -30,10 +30,18 @@
                    FontSize="24" Margin="20"/>
 
             <!--#region Quantidade Chamados-->
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Grid Grid.Row="1">
+                <!--#region Definições do grid-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--#endregion-->
 
-                <!--Abertos-->
-                <Border Margin="10" Padding="10"
+                <!--#region Abertos-->
+                <Border Margin="10" Padding="10" Grid.Column="0"
                     Background="{StaticResource brush-lavenderWeb}">
                     <StackPanel>
                         <TextBlock Text="{Binding ChamadosAbertos}"
@@ -42,9 +50,10 @@
                                FontFamily="{StaticResource MontserratRegular}"/>
                     </StackPanel>
                 </Border>
+                <!--#endregion-->
 
-                <!--Em andamento-->
-                <Border Margin="10" Padding="10"
+                <!--#region Em andamento-->
+                <Border Margin="10" Padding="10" Grid.Column="1"
                     Background="{StaticResource brush-lavenderWeb}">
                     <StackPanel>
                         <TextBlock Text="{Binding ChamadosEmAndamento}"
@@ -53,8 +62,10 @@
                                FontFamily="{StaticResource MontserratRegular}"/>
                     </StackPanel>
                 </Border>
-                <!--Resolvidos-->
-                <Border Margin="10" Padding="10"
+                <!--#endregion-->
+
+                <!--#region Resolvidos-->
+                <Border Margin="10" Padding="10" Grid.Column="2"
                     Background="{StaticResource brush-lavenderWeb}">
                     <StackPanel>
                         <TextBlock Text="{Binding ChamadosResolvidos}"
@@ -63,8 +74,10 @@
                                FontFamily="{StaticResource MontserratRegular}"/>
                     </StackPanel>
                 </Border>
-                <!--Rejeitados-->
-                <Border Margin="10" Padding="10"
+                <!--#endregion-->
+
+                <!--#region Rejeitados-->
+                <Border Margin="10" Padding="10" Grid.Column="3"
                     Background="{StaticResource brush-lavenderWeb}">
                     <StackPanel>
                         <TextBlock Text="{Binding ChamadosRejeitados}"
@@ -73,7 +86,8 @@
                                FontFamily="{StaticResource MontserratRegular}"/>
                     </StackPanel>
                 </Border>
-            </StackPanel>
+                <!--#endregion-->
+            </Grid>
             <!--#endregion-->
 
             <!--#region Total Chamados-->
@@ -98,21 +112,31 @@
             </Border>
             <!--#endregion-->
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,16" Grid.Row="3">
-                <!-- Gráfico Pizza: Por Categoria -->
-                <GroupBox Header="Chamados por categoria" Margin="0,12,22,0" Width="420">
+            <!--#region Pizza e Linha-->
+            <Grid Margin="10" Grid.Row="3">
+                <!--#region Definições do grid-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--#endregion-->
+
+                <!--#region Gráfico Pizza: Por Categoria -->
+                <GroupBox Grid.Column="0" Header="Chamados por categoria">
                     <liveCharts:PieChart
-            Series="{Binding PieSeries}"
-            LegendLocation="Right"
-            Height="320"
-            Margin="18"/>
+                        Series="{Binding PieSeries}"
+                        LegendLocation="Right"
+                        Height="320"
+                        Margin="18"/>
                 </GroupBox>
-                <!-- Gráfico Linha: Abertos/Resolvidos -->
-                <GroupBox Header="Abertos x Resolvidos por mês" Margin="0,12,0,0" Width="650">
-                    <liveCharts:CartesianChart
-            Series="{Binding LineSeries}"
-            Height="320"
-            Margin="18">
+                <!--#endregion-->
+
+                <!--#region Gráfico Linha: Abertos/Resolvidos -->
+                <GroupBox Grid.Column="1" Header="Abertos x Resolvidos por mês"
+                          Margin="10">
+                    <liveCharts:CartesianChart Series="{Binding LineSeries}"
+                        Height="320">
+
                         <liveCharts:CartesianChart.AxisX>
                             <liveCharts:Axis Labels="{Binding AnosLabels}" Title="Mês"/>
                         </liveCharts:CartesianChart.AxisX>
@@ -121,10 +145,12 @@
                         </liveCharts:CartesianChart.AxisY>
                     </liveCharts:CartesianChart>
                 </GroupBox>
-            </StackPanel>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
 
-            <!-- Gráfico Barras: Chamados por mês -->
-            <GroupBox Header="Chamados por mês" Margin="0,0,0,16" Grid.Row="4">
+            <!--#region Gráfico Barras: Chamados por mês -->
+            <GroupBox Header="Chamados por mês" Margin="10" Grid.Row="4">
                 <liveCharts:CartesianChart Series="{Binding BarSeries}" Height="250">
                     <liveCharts:CartesianChart.AxisX>
                         <liveCharts:Axis Labels="{Binding MesesLabels}" Title="Mês"/>
@@ -134,10 +160,11 @@
                     </liveCharts:CartesianChart.AxisY>
                 </liveCharts:CartesianChart>
             </GroupBox>
+            <!--#endregion-->
 
-            
 
-            <!-- Gráfico Analistas: Barra Horizontal --><!--
+            <!-- Gráfico Analistas: Barra Horizontal -->
+
             <GroupBox Header="Chamados por analistas" Margin="0,0,0,16" Grid.Row="5">
                 <StackPanel>
                     <liveCharts:CartesianChart Series="{Binding AnalystSeries}" Height="220" Margin="16">
@@ -155,7 +182,7 @@
                         <TextBlock Text="{Binding AnalystMedia}" FontWeight="Bold"/>
                     </StackPanel>
                 </StackPanel>
-            </GroupBox>-->
+            </GroupBox>
 
         </Grid>
     </ScrollViewer>

@@ -28,22 +28,28 @@ namespace sistecDesktop.ViewModels
             set { _motivoRejeicao = value; OnPropertyChanged(nameof(MotivoRejeicao)); }
         }
 
+        // Comandos
         public ICommand ApproveCommand { get; }
         public ICommand OpenRejectModalCommand { get; }
         public ICommand RejectCommand { get; }
         public ICommand CancelRejectCommand { get; }
 
+        // Construtor
         public ApproveTicketsViewModel(ApiClient apiClient) : base(apiClient)
         {
+            PopupTitle = "Aprovar Chamados";
+            PopupWidth = 1000;
+            PopupHeight = 450;
+
             ApproveCommand = new RelayCommandWithParameter(async (param) => await ApproveTicket(param));
             OpenRejectModalCommand = new RelayCommandWithParameter(OpenRejectModal);
             RejectCommand = new AsyncRelayCommand(RejectTicket);
             CancelRejectCommand = new RelayCommand(CancelReject);
 
-            _ = LoadTickets(); // Isso carrega a sobrescrita abaixo!
+            _ = LoadTickets();
         }
 
-        // Aqui você sobrescreve o método para trazer só os chamados a aprovar
+        // Sobrescrita pra trazer só os chamados pendentes
         public override async Task LoadTickets()
         {
             IsLoading = true;
@@ -51,7 +57,7 @@ namespace sistecDesktop.ViewModels
 
             try
             {
-                var lista = await _apiClient.GetPendingTickets(); // Use seu endpoint de aprovação aqui!
+                var lista = await _apiClient.GetPendingTickets();
                 Tickets.Clear();
                 foreach (var chamado in lista)
                     Tickets.Add(chamado);
@@ -104,6 +110,7 @@ namespace sistecDesktop.ViewModels
             }
         }
 
+        // Abre a tela de motivo da rejeição
         private void OpenRejectModal(object parameter)
         {
             if (parameter is Chamado chamado)
@@ -117,11 +124,13 @@ namespace sistecDesktop.ViewModels
         private async Task RejectTicket()
         {
             if (SelectedTicket == null) return;
+
             if (string.IsNullOrWhiteSpace(MotivoRejeicao) || MotivoRejeicao.Trim().Length < 10)
             {
                 MessageBox.Show("Motivo da rejeição deve ter pelo menos 10 caracteres.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
             try
             {
                 IsLoading = true;

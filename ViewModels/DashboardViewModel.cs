@@ -123,6 +123,10 @@ namespace sistecDesktop.ViewModels
             _apiClient = apiClient;
             _analystData = new List<AnalystDataItem>();
             LoadDashboardCommand = new AsyncRelayCommand(LoadDashboardAsync);
+
+            AnalystSeries = new SeriesCollection();
+            AnalystLabels = new string[0];
+
             _ = LoadDashboardAsync();
         }
 
@@ -132,9 +136,10 @@ namespace sistecDesktop.ViewModels
             ErrorMessage = string.Empty;
             try
             {
-                // --- Cards do topo
+                // Cards do topo
                 Stats = await _apiClient.GetDashboardStatsAsync() ?? new DashboardStats();
-                // --- Barras por mês
+
+                // Barras por mês
                 var mensais = await _apiClient.GetMonthlyDataAsync();
                 MesesLabels = mensais.Select(m => m.month).ToArray();
                 BarSeries = new SeriesCollection {
@@ -144,7 +149,7 @@ namespace sistecDesktop.ViewModels
                     }
                 };
 
-                // --- Pizza por categoria
+                // Pizza por categoria
                 var cores = new[] { Brushes.MediumPurple, Brushes.Orange, Brushes.Gray, Brushes.DeepSkyBlue, Brushes.Green, Brushes.Red, Brushes.CadetBlue };
                 var categorias = await _apiClient.GetCategoryDataAsync();
                 PieSeries = new SeriesCollection();
@@ -159,7 +164,7 @@ namespace sistecDesktop.ViewModels
                     });
                 }
 
-                // --- Linha anual
+                // Linha anual
                 var anuais = await _apiClient.GetYearlyDataAsync();
                 AnosLabels = anuais.Select(y => y.month).ToArray();
                 LineSeries = new SeriesCollection {
@@ -181,16 +186,16 @@ namespace sistecDesktop.ViewModels
 
                 var analysts = await _apiClient.GetAnalystDataAsync();
                 _analystData = analysts; // Inicialize em algum lugar do construtor como new List<AnalystDataItem>();
-                AnalystLabels = analysts.Select(a => a.nome).ToArray();
                 AnalystSeries = new SeriesCollection
                 {
-                new RowSeries
-                {
-                    Title = "Chamados",
-                    Values = new ChartValues<int>(analysts.Select(a => a.chamados)),
-                    DataLabels = true
-                }
+                    new RowSeries
+                    {
+                        Title = "Chamados",
+                        Values = new ChartValues<int>(analysts.Select(a => a.chamados)),
+                        DataLabels = true
+                    }
                 };
+                AnalystLabels = analysts.Select(a => a.nome).ToArray();
                 OnPropertyChanged(nameof(AnalystTotal));
                 OnPropertyChanged(nameof(AnalystCount));
                 OnPropertyChanged(nameof(AnalystMedia));

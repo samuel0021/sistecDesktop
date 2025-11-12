@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace sistecDesktop.ViewModels
@@ -34,7 +35,22 @@ namespace sistecDesktop.ViewModels
         private int _matriculaAprovador;
         #endregion
 
-        public bool ModoEdicao { get; }
+        private bool _modoEdicao;
+        public bool ModoEdicao
+        {
+            get => _modoEdicao;
+            set
+            {
+                if (_modoEdicao != value)
+                {
+                    _modoEdicao = value;
+                    OnPropertyChanged(nameof(ModoEdicao));
+                    OnPropertyChanged(nameof(IsSenhaReadOnly));
+                }
+            }
+        }
+        public bool IsSenhaReadOnly => !ModoEdicao;
+
 
         public ObservableCollection<PerfilUsuario> PerfisAcesso { get; set; } = new ObservableCollection<PerfilUsuario>();
 
@@ -109,17 +125,23 @@ namespace sistecDesktop.ViewModels
         public ICommand EditUserCommand { get; }
         public ICommand CancelCommand { get; }
 
+        //Construtor
         #region Construtor
         public UserProfileViewModel(ApiClient apiClient, User usuarioExistente = null)
         {
             _apiClient = apiClient;
+
+            PopupTitle = TituloForm;
+            PopupWidth = 800;
+            PopupHeight = 550;
+
             PerfisAcesso = new ObservableCollection<PerfilUsuario>
             {
                 new PerfilUsuario { Id = 1, Nome = "Usuário", NivelAcesso = 1 },
                 new PerfilUsuario { Id = 2, Nome = "Analista de Suporte", NivelAcesso = 2 },
-                new PerfilUsuario { Id = 3, Nome = "Gestor de Chamados", NivelAcesso = 3 },
-                new PerfilUsuario { Id = 4, Nome = "Gerente de Suporte", NivelAcesso = 4 },
-                new PerfilUsuario { Id = 5, Nome = "Administrador", NivelAcesso = 5 }
+                new PerfilUsuario { Id = 5, Nome = "Gestor de Chamados", NivelAcesso = 3 },
+                new PerfilUsuario { Id = 3, Nome = "Gerente de Suporte", NivelAcesso = 4 },
+                new PerfilUsuario { Id = 4, Nome = "Administrador", NivelAcesso = 5 }
             };
 
             AtualizarPerfisVisiveis();
@@ -137,7 +159,7 @@ namespace sistecDesktop.ViewModels
                 Cargo = usuarioExistente.Cargo;
                 Setor = usuarioExistente.Setor;
                 PerfilSelecionado = PerfisAcesso.FirstOrDefault(p => p.Id == usuarioExistente.IdPerfilUsuario.NivelAcesso);
-                Senha = "";
+                Senha = usuarioExistente.Senha;
             }
             else
             {
@@ -194,6 +216,13 @@ namespace sistecDesktop.ViewModels
         private async Task ExecutarSalvarAsync()
         {
             ErrorMessage = "";
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja salvar as informações?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
             IsLoading = true;
             try
             {

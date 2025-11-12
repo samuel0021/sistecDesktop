@@ -5,43 +5,49 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="600">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border Background="{StaticResource brush-lavenderMist}">
+        <Grid>
+            <!--#region Definições do grid-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
 
-        <!-- Título do Popup -->
-        <TextBlock Grid.Row="0" 
-                   Text="Novo Chamado" 
-                   FontSize="24" 
-                   FontWeight="Bold"
-                   Margin="0,0,0,20"/>
+            <!--#region Título da Página-->
+            <Border Background="{StaticResource brush-midnightNavy}" 
+                    Grid.Row="0" Padding="10">
 
-        <!-- Campo Título -->
-        <StackPanel Grid.Row="1" Margin="0,0,0,10">
-            <TextBlock Text="Título:" FontWeight="Bold" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
-                     Height="30"/>
-        </StackPanel>
+                <TextBlock Text="Abrir Novo Chamado"
+                   Style="{StaticResource MyTextblock}"
+                   Foreground="{StaticResource brush-White}"
+                   FontSize="24" Margin="10"/>
+            </Border>
+            <!--#endregion-->
 
-        <!-- Grid com Prioridade e Categoria lado a lado -->
-        <Grid Grid.Row="2" Margin="0,0,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <!--#region Título -->
+            <StackPanel Grid.Row="1" Margin="10">
+                <TextBlock Text="Título do Chamado:"
+                           Style="{StaticResource MyTextblock}"/>
+                <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MyTextBox}"
+                         Height="30"/>
+            </StackPanel>
+            <!--#endregion-->
 
-            <!-- Prioridade -->
-            <StackPanel Grid.Column="0">
-                <TextBlock Text="Prioridade:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <!--#region Prioridade -->
+            <StackPanel Grid.Row="2" Margin="10">
+                <TextBlock Text="Prioridade:" 
+                               Style="{StaticResource MyTextblock}"/>
+
                 <ComboBox SelectedValue="{Binding Priority}"
                           SelectedValuePath="Tag"
                           Height="30">
@@ -51,10 +57,13 @@
                     <ComboBoxItem Content="Urgente" Tag="4"/>
                 </ComboBox>
             </StackPanel>
+            <!--#endregion-->
 
-            <!-- Categoria -->
-            <StackPanel Grid.Column="2">
-                <TextBlock Text="Categoria:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <!--#region Categoria -->
+            <StackPanel Grid.Row="3" Margin="10">
+                <TextBlock Text="Categoria:" 
+                               Style="{StaticResource MyTextblock}"/>
+
                 <ComboBox SelectedValue="{Binding CategoriaSelecionada, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
            SelectedValuePath="Tag"
            IsSynchronizedWithCurrentItem="True"
@@ -67,11 +76,12 @@
                     <ComboBoxItem Content="Outros" Tag="outros"/>
                 </ComboBox>
             </StackPanel>
+            <!--#endregion-->
 
-        </Grid>
-        <!-- Problema - atualiza automaticamente -->
-        <StackPanel Grid.Row="3">
-                <TextBlock Text="Problema:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <!--#region Problema-->
+            <StackPanel Grid.Row="4" Margin="10">
+                <TextBlock Text="Problema:"
+                           Style="{StaticResource MyTextblock}"/>
                 <ComboBox ItemsSource="{Binding ProblemasDisponiveis}"
               SelectedValue="{Binding ProblemaSelecionado}"
               DisplayMemberPath="Label"
@@ -79,27 +89,33 @@
               Height="30">
                 </ComboBox>
             </StackPanel>
+            <!--#endregion-->
 
-            <!-- Campo Descrição -->
-            <StackPanel Grid.Row="4" Margin="0,0,0,10">
-                <TextBlock Text="Descrição:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <!--#region Descrição -->
+            <StackPanel Grid.Row="5" Margin="10">
+                <TextBlock Text="Descrição:"
+                           Style="{StaticResource MyTextblock}"/>
+
                 <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto"/>
+                         Style="{StaticResource MyTextBox}"
+                         TextWrapping="Wrap" Height="100"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"/>
             </StackPanel>
+            <!--#endregion-->
 
-            <!-- Mensagem de erro -->
-            <TextBlock Grid.Row="4"
+            <!--#region Mensagem de erro -->
+            <TextBlock Grid.Row="6"
                    Text="{Binding ErrorMessage}"
+                   Style="{StaticResource MyTextblock}"
                    Foreground="Red"
                    TextWrapping="Wrap"
-                   Margin="0,0,0,10"/>
+                   Margin="10"/>
+            <!--#endregion-->
 
-            <!-- Botões -->
-            <StackPanel Grid.Row="5" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right">
+            <!--#region Botões -->
+            <StackPanel Grid.Row="7" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="10">
                 <Button Content="Cancelar" 
                     Width="100" 
                     Height="35"
@@ -112,5 +128,7 @@
                     Foreground="White"
                     Command="{Binding CreateTicketCommand}"/>
             </StackPanel>
+            <!--#endregion-->
         </Grid>
+    </Border>
 </UserControl>

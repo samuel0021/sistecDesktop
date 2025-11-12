@@ -121,7 +121,9 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                                         <Button Style="{StaticResource ViewButton}"                                    
                                             Command="{Binding ViewModel.ViewTicketCommand, 
                                                       ElementName=TicketsControl}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanView, 
+                            Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Resolver"
                                             Command="{Binding ViewModel.ResolveTicketCommand, 

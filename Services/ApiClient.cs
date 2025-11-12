@@ -743,9 +743,16 @@ namespace sistecDesktop.Services
         #region Resolução de Chamados
 
         // Resolve chamados comuns (analista)
-        public async Task ResolverChamadoAsync(int idChamado)
+        public async Task ResolverChamadoAsync(int idChamado, string motivoResolucao)
         {
-            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver", null);
+            var body = new
+            {
+                id_chamado = idChamado,
+                relatorio_resposta = motivoResolucao
+            };
+            var json = JsonConvert.SerializeObject(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/resolver-com-relatorio", content);
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
@@ -753,10 +760,16 @@ namespace sistecDesktop.Services
             }
         }
 
-        // Resolve chamados escalados (gestor/gerente)
-        public async Task ResolverChamadoEscaladoAsync(int idChamado)
+        public async Task ResolverChamadoEscaladoAsync(int idChamado, string motivoResolucao)
         {
-            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver-escalado", null);
+            var body = new
+            {
+                id_chamado = idChamado,
+                relatorio_resposta = motivoResolucao
+            };
+            var json = JsonConvert.SerializeObject(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver-escalado", content);
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
@@ -864,7 +877,7 @@ namespace sistecDesktop.Services
         {
             try
             {
-                var url = _baseUrl + "/api/estatisticas/chamados-analistas"; // Altere se for diferente
+                var url = $"{_baseUrl}/api/estatisticas/chamados-analistas"; 
                 Console.WriteLine($"DEBUG: Buscando chamados por analista: {url}");
                 var response = await _httpClient.GetAsync(url);
                 var responseBody = await response.Content.ReadAsStringAsync();

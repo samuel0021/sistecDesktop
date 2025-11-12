@@ -15,7 +15,9 @@ namespace sistecDesktop.ViewModels
 
         public MyTicketsViewModel(ApiClient apiClient) : base(apiClient)
         {
-            
+            PopupTitle = "Meus Chamados";
+            PopupWidth = 1150;
+            PopupHeight = 500;
         }
 
         //sobrescrita pra mostrar só os chamados do usuário logado

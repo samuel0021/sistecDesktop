@@ -177,11 +177,9 @@
                     <!--#endregion-->
 
                     <!--#region Senha-->
-                    <!-- Só aparece se NÃO estiver em modo edição -->
-                    <StackPanel Grid.Row="4" Grid.Column="1"
-    Visibility="{Binding ModoEdicao, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                    <StackPanel Grid.Row="4" Grid.Column="1">
                         <TextBlock Text="Senha inicial:" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding Senha}" IsReadOnly="True" Height="32"/>
+                        <TextBox Text="{Binding Senha, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsSenhaReadOnly}" Height="32"/>
                         <TextBlock FontSize="11" Margin="0,2,0,0" Foreground="Gray"
         Text="Senha = primeiro nome + últimos 4 dígitos do telefone"/>
                     </StackPanel>

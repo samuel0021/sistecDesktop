@@ -8,10 +8,11 @@
         xmlns:viewModels="clr-namespace:sistecDesktop.ViewModels"
         xmlns:converters="clr-namespace:sistecDesktop.Converters"
         mc:Ignorable="d"
-        Title="PopupWindow"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResize"
-        Height="800" Width="800">
+        ResizeMode="NoResize"
+        Title="{Binding PopupTitle}"
+        Height="{Binding PopupHeight}" 
+        Width="{Binding PopupWidth}">
 
     <Window.Resources>
 
@@ -44,6 +45,10 @@
 
         <DataTemplate DataType="{x:Type viewModels:TicketsScaleViewModel}">
             <viewsPopups:TicketsScaleView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:MotivoResolucaoViewModel}">
+            <viewsPopups:MotivoResolucao/>
         </DataTemplate>
         
     </Window.Resources>

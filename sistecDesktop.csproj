@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MotivoResolucaoViewModel.cs" />
     <Compile Include="ViewModels\MyTicketsViewModel.cs" />
     <Compile Include="ViewModels\OpenTicketViewModel.cs" />
     <Compile Include="ViewModels\RestoreUsersViewModel.cs" />
@@ -137,6 +138,9 @@
     </Compile>
     <Compile Include="Views\Popups\ApproveTicketsView.xaml.cs">
       <DependentUpon>ApproveTicketsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Popups\MotivoResolucao.xaml.cs">
+      <DependentUpon>MotivoResolucao.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Popups\MyTicketsView.xaml.cs">
       <DependentUpon>MyTicketsView.xaml</DependentUpon>
@@ -214,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Popups\ApproveTicketsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\MotivoResolucao.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

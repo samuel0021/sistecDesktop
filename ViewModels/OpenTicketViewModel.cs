@@ -15,15 +15,18 @@ namespace sistecDesktop.ViewModels
     public class OpenTicketViewModel : BasePopupViewModel
     {
         private readonly ApiClient _apiClient;
+
+        // Propriedades da tela
         private string _title;
         private string _description;
         private string _errorMessage;
         private bool _isLoading;
         private int _priority;
         private string _category;
-
         private string _problemaSelecionado;
         private ObservableCollection<ProblemaItem> _problemasDisponiveis;
+
+        #region Encapsulamentos
 
         public string ProblemaSelecionado
         {
@@ -44,9 +47,6 @@ namespace sistecDesktop.ViewModels
                 OnPropertyChanged(nameof(ProblemasDisponiveis));
             }
         }
-
-
-        #region Encapsulamentos
 
         public string Title
         {
@@ -117,91 +117,23 @@ namespace sistecDesktop.ViewModels
                 }
             }
         }
-
         #endregion
 
+        // Comandos
         public ICommand CreateTicketCommand { get; }
 
+        // Construtor
         public OpenTicketViewModel(ApiClient apiClient)
         {
             _apiClient = apiClient;
 
+            PopupTitle = "Abrir Chamado";
+            PopupWidth = 500;
+            PopupHeight = 700;
+
             ProblemasDisponiveis = new ObservableCollection<ProblemaItem>();
-
             CreateTicketCommand = new AsyncRelayCommand(CreateTicket);
-
         }
-
-        //private async Task CreateTicket()
-        //{
-        //    ErrorMessage = string.Empty;
-
-        //    if (string.IsNullOrWhiteSpace(Title))
-        //    {
-        //        ErrorMessage = "Por favor, informe o título.";
-        //        return;
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(Description))
-        //    {
-        //        ErrorMessage = "Por favor, informe a descrição.";
-        //        return;
-        //    }
-
-        //    if (Priority == 0)
-        //    {
-        //        ErrorMessage = "Por favor, selecione a prioridade.";
-        //        return;
-        //    }
-
-        //    if (string.IsNullOrEmpty(Category))
-        //    {
-        //        ErrorMessage = "Por favor, selecione a categoria.";
-        //        return;
-        //    }
-
-        //    IsLoading = true;
-
-        //    try
-        //    {
-        //        Category = Category?.ToLower();
-
-        //        var request = new CreateChamadoRequest
-        //        {
-        //            Title = Title,
-        //            Description = Description,
-        //            UserId = App.LoggedUser?.IdPerfilUsuario ?? 1,
-        //            Priority = Priority,
-        //            Category = Category
-        //        };
-
-
-        //        var chamado = await _apiClient.CreateChamadoAsync(request);
-
-        //        MessageBox.Show(
-        //            $"Chamado #{chamado.IdPerfilUsuario} criado com sucesso!",
-        //            "Sucesso",
-        //            MessageBoxButton.OK,
-        //            MessageBoxImage.Information);
-
-        //        OnDialogClose?.Invoke(true);
-        //    }
-        //    catch (UnauthorizedAccessException)
-        //    {
-        //        ErrorMessage = "Sessão expirada. Faça login novamente.";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorMessage = $"Erro ao criar chamado: {ex.Message}";
-        //    }
-        //    finally
-        //    {
-        //        IsLoading = false;
-        //    }
-        //}
-
-
-        // Mapa de categorias e problemas
 
         public Action OnChamadoCriado { get; set; }
 
@@ -238,6 +170,12 @@ namespace sistecDesktop.ViewModels
                 ErrorMessage = "Por favor, selecione o problema.";
                 return;
             }
+
+            var confirm = MessageBox.Show(
+                $"Tem certeza que deseja abrir o chamado?",
+                "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
 
             IsLoading = true;
 

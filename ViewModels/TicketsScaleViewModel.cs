@@ -28,8 +28,13 @@ namespace sistecDesktop.ViewModels
         public ObservableCollection<ChamadoEscalado> ChamadosEscalados { get; } = new ObservableCollection<ChamadoEscalado>();
         public ICommand ResolveScaledTicketCommand { get; }
 
+        // Construtor
         public TicketsScaleViewModel(ApiClient apiClient) : base(apiClient)
         {
+            PopupTitle = "Chamados Escalados";
+            PopupWidth = 1010;
+            
+
             ResolveScaledTicketCommand = new AsyncRelayCommandWithParameter<ChamadoEscalado>(ResolverChamadoEscalado);
 
             _ = CarregarChamadosEscalados();
@@ -53,9 +58,24 @@ namespace sistecDesktop.ViewModels
 
             if (confirm != MessageBoxResult.Yes) return;
 
-            await _apiClient.ResolverChamadoEscaladoAsync(chamado.IdChamado);
-            MessageBox.Show("Chamado resolvido com sucesso!");
-            await CarregarChamadosEscalados();
+            var vmMotivo = new MotivoResolucaoViewModel(chamado.IdChamado, chamado.DescricaoCategoriaChamado, chamado.DescricaoProblemaChamado);
+            vmMotivo.OnClose = async (salvou, motivo) =>
+            {
+                if (salvou && !string.IsNullOrWhiteSpace(motivo) && motivo.Length >= 20)
+                {
+                    try
+                    {
+                        await _apiClient.ResolverChamadoEscaladoAsync(chamado.IdChamado, motivo);
+                        MessageBox.Show("Chamado resolvido com sucesso!");
+                        await CarregarChamadosEscalados();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao resolver chamado escalado: {ex.Message}");
+                    }
+                }
+            };
+            _dialogService.ShowDialog(vmMotivo);
         }
     }
 }

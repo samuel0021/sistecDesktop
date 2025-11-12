@@ -85,8 +85,7 @@ namespace sistecDesktop.ViewModels
         }
         #endregion
 
-        public ICommand LoadUsersCommand { get; }
-        
+        public ICommand LoadUsersCommand { get; }        
         public ICommand DeleteUserCommand { get; }
         public ICommand OpenCreateUserCommand { get; }
         public ICommand OpenEditUserCommand { get; }

@@ -49,7 +49,8 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <!-- Modal de Rejeição (simples). Mostra acima do grid se ShowRejectModal for true -->
+            <!-- Modal de Rejeição
+            Mostra por cima da tela se ShowRejectModal for true -->
             <Border Background="#CC000000" Visibility="{Binding ShowRejectModal, Converter={StaticResource BoolToVisibilityConverter}}"
                     CornerRadius="8"
                     HorizontalAlignment="Stretch"
@@ -76,12 +77,8 @@
             </Border>
         </Grid>
 
-        <!-- Loading Overlay opcional -->
+        <!-- Loading Overlay -->
         <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
-                CornerRadius="8" Panel.ZIndex="5">
-            <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Aguarde..." Foreground="White" FontSize="28" />
-            </Viewbox>
-        </Border>
+                CornerRadius="8" Panel.ZIndex="5"/>
     </Grid>
 </UserControl>
