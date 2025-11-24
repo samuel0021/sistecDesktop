@@ -167,9 +167,13 @@ namespace sistecDesktop.ViewModels
                     // Busca o chamado atualizado pelo ID
                     var updatedTicket = await _apiClient.GetChamadoByIdAsync(ticket.Id);
 
-                    string descricaoSomente = updatedTicket.Description ?? updatedTicket.Description ?? "";
+                    var detalhesVm = new TicketDetailsViewModel(updatedTicket);
+                    _dialogService.ShowDialog(detalhesVm);
+
+                    /*string descricaoSomente = updatedTicket.Description ?? updatedTicket.Description ?? "";
                     var marker = "Descrição:";
                     int index = descricaoSomente.IndexOf(marker);
+
                     if (index >= 0)
                     {
                         descricaoSomente = descricaoSomente.Substring(index + marker.Length).Trim();
@@ -184,7 +188,7 @@ namespace sistecDesktop.ViewModels
                         $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",
                         "Detalhes do Chamado",
                         MessageBoxButton.OK,
-                        MessageBoxImage.Information);
+                        MessageBoxImage.Information);*/
                 }
                 catch (UnauthorizedAccessException)
                 {

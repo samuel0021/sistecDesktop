@@ -87,7 +87,7 @@
 
                 <!-- DataGrid -->
                 <DataGrid ItemsSource="{Binding UsuariosDeletados}" AutoGenerateColumns="False" 
-                          Grid.Row="2" Grid.ColumnSpan="2"
+                          Grid.Row="2" Grid.ColumnSpan="2" RowHeight="50"
                           Margin="10,10,10,0"
                           Style="{StaticResource MyDataGrid}"
                           SelectedItem="{Binding SelectedBackup}"
@@ -96,18 +96,24 @@
                           RowHeaderWidth="0">
 
                     <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding UsuarioOriginalId}"/>
                         <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="180"/>
                         <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="180"/>
                         <DataGridTextColumn Header="Motivo Deleção" Binding="{Binding MotivoDelecao}" Width="200"/>
                         <DataGridTextColumn Header="Deletado por" Binding="{Binding UsuarioQueDeletou}" Width="150"/>
                         <DataGridTextColumn Header="Data" Binding="{Binding DataDelecao, StringFormat=dd/MM/yyyy HH:mm}" Width="120"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding StatusBackup}" Width="90"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusBackup}" Width="110"/>
                         <DataGridTemplateColumn Header="Restauração" Width="120">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Content="Restaurar"
+                                            Tag="/images/restore-icon.png"
+                                            BorderBrush="#22C55E"
+                                            Style="{StaticResource TicketButtons}"
                                     Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
+                                                Visibility="{Binding CanRestore,
+                            Converter={StaticResource BoolToVisibilityConverter}}"
                                     IsEnabled="{Binding StatusBackup, Converter={StaticResource EnableRestoreConverter}}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

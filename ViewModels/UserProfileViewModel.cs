@@ -19,6 +19,7 @@ namespace sistecDesktop.ViewModels
         private readonly ApiClient _apiClient;
         private bool _isLoading;
         private string _errorMessage;
+        private bool _modoEdicao;
 
         private int? _idUsuario;
 
@@ -35,7 +36,8 @@ namespace sistecDesktop.ViewModels
         private int _matriculaAprovador;
         #endregion
 
-        private bool _modoEdicao;
+
+        #region Encapsulamentos
         public bool ModoEdicao
         {
             get => _modoEdicao;
@@ -54,7 +56,6 @@ namespace sistecDesktop.ViewModels
 
         public ObservableCollection<PerfilUsuario> PerfisAcesso { get; set; } = new ObservableCollection<PerfilUsuario>();
 
-        #region Encapsulamentos
         public string Nome
         {
             get => _nome;

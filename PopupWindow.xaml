@@ -51,6 +51,10 @@
             <viewsPopups:MotivoResolucao/>
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type viewModels:TicketDetailsViewModel}">
+            <viewsPopups:TicketDetails/>
+        </DataTemplate>
+        
     </Window.Resources>
 
     <Grid Background="White">

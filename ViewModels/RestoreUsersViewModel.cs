@@ -93,6 +93,7 @@ namespace sistecDesktop.ViewModels
                 var lower = termo.ToLowerInvariant();
                 var filtrados = _usuariosDeletados
                     .Where(u =>
+                        u.UsuarioOriginalId.ToString().Contains(lower) ||
                         (u.Name?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.Email?.ToLowerInvariant().Contains(lower) ?? false) ||
                         (u.MotivoDelecao?.ToLowerInvariant().Contains(lower) ?? false) ||

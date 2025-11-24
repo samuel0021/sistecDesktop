@@ -201,6 +201,8 @@ namespace sistecDesktop.Models
 
     public class DeletedUserBackup
     {
+        public bool CanRestore => StatusBackup == "ATIVO";
+
         [JsonProperty("id_backup")]
         public int BackupId { get; set; }
 

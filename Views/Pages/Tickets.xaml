@@ -92,7 +92,7 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                 <!-- DataGrid -->
 
                 <DataGrid Grid.Row="3" Grid.ColumnSpan="2" 
-                          RowHeight="50" MaxHeight="400" 
+                          RowHeight="50" 
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
             ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
