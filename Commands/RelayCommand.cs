@@ -16,9 +16,7 @@ namespace sistecDesktop.Commands
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
-        }
-
-        
+        }        
 
         public event EventHandler CanExecuteChanged
         {

@@ -13,16 +13,16 @@
         </Setter>
     </Style>
     <!--#endregion-->
-    
+
     <!--#region Textblock -->
     <Style x:Key="MyTextblock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource MontserratBold}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="0 0 0 5"/>
     </Style>
-    
+
     <!--#endregion-->
-    
+
     <!-- #region Button -->
     <!-- Botão padrão -->
     <Style x:Key="MyButton" TargetType="Button">
@@ -89,7 +89,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <!--Botões Chamados-->
 
     <Style x:Key="HomeButtons" TargetType="Button">
@@ -114,7 +114,7 @@
                             Background="{TemplateBinding Background}"
                             BorderThickness="1"
                             BorderBrush="{DynamicResource brush-frenchGray}">
-                        
+
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
@@ -175,11 +175,11 @@
                             Background="{TemplateBinding Background}"
                             BorderThickness="0" 
                             BorderBrush="{TemplateBinding Foreground}">
-                        
+
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Margin="{TemplateBinding Padding}"/>
-                        
+
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -200,19 +200,23 @@
     </Style>
 
     <!--ViewTicketButton-->
-    
+
     <Style x:Key="ViewButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource brush-peachOrange}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="5 0 0 0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="borderTicketButton" CornerRadius="2" Background="{TemplateBinding Background}"
                             BorderThickness="1" BorderBrush="{DynamicResource brush-frenchGray}"
-                            Width="30" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBlock Text="👁" FontSize="20"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            Width="35" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                        <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20"/>
+                        
+
+
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -223,9 +227,38 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
     </Style>
-    
+
+    <Style x:Key="TicketButtons" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{Binding}"/>
+        <Setter Property="BorderBrush" Value="{Binding}"/>
+        <Setter Property="Margin" Value="5 0 0 0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="borderTicketButton" CornerRadius="5" Background="{TemplateBinding Background}"
+                            BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Height="35" Width="100">
+
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Margin="5"/>
+                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center" VerticalAlignment="Center"
+                                       FontFamily="{DynamicResource MontserratBold}" Foreground="{TemplateBinding BorderBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <!--#endregion-->
 
     <!--#region TextBox / PasswordBox-->
@@ -297,7 +330,7 @@
         </Setter>
     </Style>
     <!--#endregion TextBox-->
-   
+
     <!--#region TextBlock ForgotPass -->
     <Style x:Key="ForgotPassText" TargetType="TextBlock">
         <Setter Property="Text" Value="Por favor, entre em contato com o gestor do seu setor para que ele possa solicitar a redefinição de senha ao suporte técnico."/>
@@ -309,7 +342,7 @@
         <Setter Property="Padding" Value="10"/>
     </Style>
     <!--#endregion-->
-    
+
     <!--#region Border ForgotPass -->
     <Style x:Key="ForgotPass" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource brush-lavenderMist}"/>
@@ -318,7 +351,7 @@
         <Setter Property="BorderThickness" Value="3"/>
     </Style>
     <!--#endregion-->
-    
+
     <!-- #region Hyperlink ForgotPass-->
     <Style x:Key="MyHyperlink" TargetType="Hyperlink">
         <Setter Property="Foreground" Value="{DynamicResource brush-vibrantViolet}"/>
@@ -333,10 +366,10 @@
         </Style.Triggers>
     </Style>
     <!--#endregion-->
-        
+
     <!--#region DataGrid -->
 
-        <!-- Make the border and grid lines a little less imposing -->
+    <!-- Make the border and grid lines a little less imposing -->
     <Style x:Key="MyDataGrid" TargetType="DataGrid">
         <Setter Property="BorderBrush" Value="{DynamicResource brush-frenchGray}" />
         <Setter Property="BorderThickness" Value="1"/>
@@ -411,7 +444,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!--#endregion-->    
+
+    <!--#endregion-->
 
 </ResourceDictionary>

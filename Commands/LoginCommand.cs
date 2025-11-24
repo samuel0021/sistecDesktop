@@ -21,8 +21,6 @@ namespace sistecDesktop.Commands
 
         public bool CanExecute(object parameter)
         {
-            // Aqui você pode adicionar validações
-            // Por exemplo: retornar true só se email e senha estiverem preenchidos
             return true;
         }
 
@@ -31,7 +29,6 @@ namespace sistecDesktop.Commands
             _viewModel.ExecutarLogin();
         }
 
-        // Método para notificar que CanExecute mudou
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

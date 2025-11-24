@@ -92,7 +92,8 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                 <!-- DataGrid -->
 
                 <DataGrid Grid.Row="3" Grid.ColumnSpan="2" 
-                        MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          RowHeight="50" MaxHeight="400" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
             ItemsSource="{Binding ViewModel.Tickets, ElementName=TicketsControl}"
                         SelectedItem="{Binding ViewModel.SelectedTicket, ElementName=TicketsControl}"              
                         Style="{StaticResource MyDataGrid}">
@@ -106,11 +107,11 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                         <DataGridTextColumn Header="Categoria" 
                             Binding="{Binding Categoria}" 
                             Width="120"/>
-                        
+
                         <DataGridTextColumn Header="Usuário" 
                             Binding="{Binding UsuarioAbertura}" 
                             Width="150"/>
-                        
+
                         <DataGridTextColumn Header="Título" 
                             Binding="{Binding Title}" 
                             Width="250"/>
@@ -127,13 +128,14 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                             Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy HH:mm'}" 
                             Width="130"/>
 
-                        <DataGridTemplateColumn Header="Ações" Width="150">
+                        <DataGridTemplateColumn Header="Ações" Width="400">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
 
                                     <StackPanel Orientation="Horizontal">
 
-                                        <Button Style="{StaticResource ViewButton}"                                    
+                                        <Button Style="{StaticResource ViewButton}"
+                                                Tag="/images/eye.png"
                                             Command="{Binding ViewModel.ViewTicketCommand, 
                                                       ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"
@@ -141,13 +143,21 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                             Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Resolver"
-                                            Command="{Binding ViewModel.ResolveTicketCommand, 
-                                                      ElementName=TicketsControl}"
+                                                Background="#22C55E"
+                                                Tag="/images/circle-check.png"
+                                                BorderBrush="{StaticResource brush-White}"
+                                                Style="{StaticResource TicketButtons}"
+                                                Command="{Binding ViewModel.ResolveTicketCommand, 
+                                                          ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"
                                             Visibility="{Binding CanResolve, 
                                         Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Escalar"
+                                                Tag="/images/triangle-alert.png"
+                                                BorderBrush="{StaticResource brush-peachOrange}"
+                                                Foreground="{StaticResource brush-peachOrange}"
+                                                Style="{StaticResource TicketButtons}"
                                             Command="{Binding ViewModel.ScaleTicketCommand, 
                                                       ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"

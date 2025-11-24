@@ -103,6 +103,7 @@
 
                 <!--#region DataGrid-->
                 <DataGrid Grid.Row="2" Grid.ColumnSpan="2"
+                          RowHeight="50"
                           Margin="10,15,10,0"
                           ItemsSource="{Binding Users}"
                           SelectedItem="{Binding SelectedUser}"
@@ -144,13 +145,14 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button Content="👁"
-                                                Style="{StaticResource ViewButton}"
+                                        <Button Style="{StaticResource ViewButton}"
+                                                Tag="/images/edit-button.png"
                                                 Visibility="{Binding canEdit , Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding DataContext.OpenEditUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"/>
 
-                                        <Button Content="Excluir" 
+                                        <Button Style="{StaticResource ViewButton}"
+                                                Tag="/images/delete-button.png"
                                                 Visibility="{Binding canDelete , Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}" />

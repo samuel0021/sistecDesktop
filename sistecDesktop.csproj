@@ -294,7 +294,10 @@
     <Resource Include="images\sistec-purple.png" />
     <Resource Include="images\sistec-white.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\edit-button.png" />
+    <Resource Include="images\delete-button.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="images\circle-question-mark.png" />
     <Resource Include="images\house.png" />
@@ -309,6 +312,13 @@
     <Resource Include="images\check.png" />
     <Resource Include="images\plus.png" />
     <Resource Include="images\user-orange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\circle-check.png" />
+    <Resource Include="images\triangle-alert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
