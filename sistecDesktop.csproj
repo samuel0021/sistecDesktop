@@ -109,6 +109,7 @@
     <Compile Include="ViewModels\OpenTicketViewModel.cs" />
     <Compile Include="ViewModels\RestoreUsersViewModel.cs" />
     <Compile Include="ViewModels\TicketDetailsViewModel.cs" />
+    <Compile Include="ViewModels\TicketIaSolutionViewModel.cs" />
     <Compile Include="ViewModels\TicketsScaleViewModel.cs" />
     <Compile Include="ViewModels\TicketsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
@@ -151,6 +152,9 @@
     </Compile>
     <Compile Include="Views\Popups\TicketDetails.xaml.cs">
       <DependentUpon>TicketDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Popups\TicketIaSolutionView.xaml.cs">
+      <DependentUpon>TicketIaSolutionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Popups\TicketsScaleView.xaml.cs">
       <DependentUpon>TicketsScaleView.xaml</DependentUpon>
@@ -238,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Popups\TicketDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\TicketIaSolutionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -330,6 +338,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\restore-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\circle-check-green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

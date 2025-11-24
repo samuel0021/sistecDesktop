@@ -751,6 +751,36 @@ namespace sistecDesktop.Services
 
         #endregion
 
+        // Solução IA
+        #region SoluçãoIA
+        public async Task<RespostaIA> GetSolucaoIaAsync(int idChamado)
+        {
+            var url = $"{_baseUrl}/api/chamados/{idChamado}/solucao-ia";
+            var response = await _httpClient.GetAsync(url);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Erro ao buscar solução IA: {response.StatusCode} - {responseBody}");
+
+            var apiResponse = JsonConvert.DeserializeObject<RespostaIaApiResponse>(responseBody, _jsonSettings);
+            return apiResponse?.Data;
+        }
+
+        public async Task EnviarFeedbackIaAsync(int idChamado, string feedback)
+        {
+            var url = $"{_baseUrl}/api/chamados/{idChamado}/feedback-ia";
+            var body = new { feedback }; // "DEU_CERTO" ou "DEU_ERRADO"
+            var json = JsonConvert.SerializeObject(body, _jsonSettings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Erro ao enviar feedback IA: {response.StatusCode} - {responseBody}");
+        }
+        #endregion
+
         // Métodos e Tasks do Dashboard
         #region Dashboard
 

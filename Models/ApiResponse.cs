@@ -462,7 +462,42 @@ namespace sistecDesktop.Models
         [JsonProperty("descricao_problema")]
         public string Problem { get; set; } 
     }
+    #endregion
 
+    #region Solução IA
+    public class RespostaIA
+    {
+
+        [JsonProperty("id_resposta_ia")]
+        public int IdRespostaIa { get; set; }
+
+        [JsonProperty("fk_chamados_id_chamado")]
+        public int ChamadoId { get; set; }
+
+        [JsonProperty("tipo_resposta")]
+        public string TipoResposta { get; set; }
+
+        [JsonProperty("analise_triagem")]
+        public object AnaliseTriagem { get; set; } // pode criar modelo forte depois
+
+        [JsonProperty("solucao_ia")]
+        public string SolucaoIa { get; set; }
+
+        [JsonProperty("feedback_usuario")]
+        public string FeedbackUsuario { get; set; }
+
+        [JsonProperty("data_resposta")]
+        public DateTime DataResposta { get; set; }
+
+        [JsonProperty("data_feedback")]
+        public DateTime? DataFeedback { get; set; }
+    }
+
+    public class RespostaIaApiResponse : ApiResponse
+    {
+        [JsonProperty("data")]
+        public RespostaIA Data { get; set; }
+    }
     #endregion
 
     #region Dashboard

@@ -164,6 +164,25 @@ Converter={StaticResource BoolToVisibilityConverter}}"
                                             Visibility="{Binding CanScale,
                                         Converter={StaticResource BoolToVisibilityConverter}}"/>
 
+                                        <Button Content="🤖 Ver Solução IA"
+                        Command="{Binding ViewModel.ViewIaSolutionCommand, ElementName=TicketsControl}"
+                        CommandParameter="{Binding}"
+                        Margin="5,0,0,0"
+                                                Background="Transparent"
+                                                BorderBrush="{StaticResource brush-vibrantViolet}"
+                                                Foreground="{StaticResource brush-vibrantViolet}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Aguardando Resposta">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

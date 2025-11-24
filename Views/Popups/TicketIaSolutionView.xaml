@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="sistecDesktop.Views.Popups.TicketIaSolutionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sistecDesktop.Views.Popups"
+             xmlns:converters="clr-namespace:sistecDesktop.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <!--#region Converters-->
+    <UserControl.Resources>
+        <converters:InverseBoolToEnableConverter x:Key="InverseBoolToEnableConverter"/>
+    </UserControl.Resources>
+    <!--#endregion-->
+
+
+    <Border Background="{StaticResource brush-lavenderMist}" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Cabeçalho -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding PopupTitle}"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <!-- Conteúdo -->
+            <Grid Grid.Row="1" Margin="0,0,0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Solução sugerida pela IA:"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,5"/>
+
+                <Border Grid.Row="1"
+                        Background="White"
+                        BorderBrush="{StaticResource brush-frenchGray}"
+                        BorderThickness="1"
+                        Padding="8">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBlock Text="{Binding Solucao.SolucaoIa}"
+                                   TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+            <!-- Rodapé -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Content="✔ Deu Certo"
+                        Width="130" Height="40" Margin="5,0"
+                        Background="Transparent"
+                        Foreground="Green"
+                        BorderBrush="Green"
+                        IsEnabled="{Binding CanFeedback}"
+                        Command="{Binding FeedbackOkCommand}"/>
+
+                <Button Content="✖ Não Funcionou"
+                        Width="130" Height="40" Margin="5,0"
+                        Background="Transparent"
+                        Foreground="Red"
+                        BorderBrush="Red"
+                        IsEnabled="{Binding CanFeedback}"
+                        Command="{Binding FeedbackErrorCommand}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="3" Foreground="Red" HorizontalAlignment="Center"
+                       Margin="10"
+                       Text="Apenas o usuário que abriu o chamado pode enviar feedback para a IA"/>
+        </Grid>
+    </Border>
+</UserControl>

@@ -55,6 +55,10 @@
             <viewsPopups:TicketDetails/>
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type viewModels:TicketIaSolutionViewModel}">
+            <viewsPopups:TicketIaSolutionView/>
+        </DataTemplate>
+        
     </Window.Resources>
 
     <Grid Background="White">

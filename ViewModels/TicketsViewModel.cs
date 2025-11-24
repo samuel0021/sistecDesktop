@@ -27,6 +27,7 @@ namespace sistecDesktop.ViewModels
 
         private string _searchTerm;
 
+        #region Encapsulamentos
         public List<ChamadoDatabase> AllTickets
         {
             get => _allTickets;
@@ -61,7 +62,6 @@ namespace sistecDesktop.ViewModels
             }
         }
 
-        #region Encapsulamentos
         public Chamado SelectedTicket
         {
             get { return _selectedTicket; }
@@ -99,6 +99,8 @@ namespace sistecDesktop.ViewModels
         public ICommand ResolveTicketCommand { get; }
         public ICommand ViewScaledTicketsCommand { get; }
         public ICommand OpenMotivoCommand { get; }
+        public ICommand ViewIaSolutionCommand { get; }
+
 
         public bool CanOpenScaledTickets => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.Id >= 4;
 
@@ -118,10 +120,29 @@ namespace sistecDesktop.ViewModels
             ViewTicketCommand = new RelayCommandWithParameter(ViewTicket);
             ScaleTicketCommand = new AsyncRelayCommand(ScaleTicket);
             ResolveTicketCommand = new RelayCommandWithParameter(AbrirPopupMotivo);
+            ViewIaSolutionCommand = new RelayCommandWithParameter(ViewIaSolution);
+
 
             ViewScaledTicketsCommand = new RelayCommand(OpenScaledTicketsPopup);
 
             _ = LoadTickets();
+        }
+
+        private void ViewIaSolution(object parameter)
+        {
+            var chamado = parameter as Chamado ?? SelectedTicket;
+            if (chamado == null) return;
+
+            // Opcional: restringir estados (como no site: "Aguardando Resposta")
+            if (!string.Equals(chamado.Status, "Aguardando Resposta", StringComparison.InvariantCultureIgnoreCase))
+            {
+                MessageBox.Show("A solução da IA está disponível apenas quando o chamado está em 'Aguardando Resposta'.",
+                    "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var vmIa = new TicketIaSolutionViewModel(_apiClient, chamado);
+            _dialogService.ShowDialog(vmIa);
         }
 
         //virtual pra poder alterar na MyTickets

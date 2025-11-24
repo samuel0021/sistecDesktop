@@ -15,7 +15,7 @@
     <Grid>
         <Grid>
             <!-- DataGrid de Chamados para Aprovação -->
-            <DataGrid ItemsSource="{Binding Tickets}"
+            <DataGrid ItemsSource="{Binding Tickets}" RowHeight="50"
                       SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                       Style="{StaticResource MyDataGrid}"
                       AutoGenerateColumns="False"
@@ -31,14 +31,20 @@
                     <DataGridTextColumn Header="Abertura" Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy HH:mm'}" Width="130"/>
 
                     <!-- Coluna de Ações: Aprovar/Rejeitar -->
-                    <DataGridTemplateColumn Header="Ações" Width="200">
+                    <DataGridTemplateColumn Header="Ações" Width="250">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="Aprovar"
+                                            BorderBrush="#22C55E"
+                                            Tag="/images/circle-check-green.png"
+                                            Style="{StaticResource TicketButtons}"
                                             Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}" Margin="0,0,10,0"/>
                                     <Button Content="Rejeitar"
+                                            BorderBrush="#fa0000"
+                                            Tag="/images/x.png"
+                                            Style="{StaticResource TicketButtons}"
                                             Command="{Binding DataContext.OpenRejectModalCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}"/>
                                 </StackPanel>

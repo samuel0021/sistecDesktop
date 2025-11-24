@@ -199,7 +199,7 @@
         </Setter>
     </Style>
 
-    <!--ViewTicketButton-->
+    <!--ViewButton-->
 
     <Style x:Key="ViewButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -240,7 +240,7 @@
                     <Border x:Name="borderTicketButton" CornerRadius="5" Background="{TemplateBinding Background}"
                             BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Height="35" Width="100">
+                            Height="35" Width="100" MaxWidth="200">
 
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Margin="5"/>
