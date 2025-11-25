@@ -14,24 +14,26 @@
     </UserControl.Resources>
     <!--#endregion-->
 
-
     <Border Background="{StaticResource brush-lavenderMist}" Padding="10">
         <Grid>
+            <!--#region Definições de linhas-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <!--#endregion-->
 
-            <!-- Cabeçalho -->
+            <!--#region Cabeçalho -->
             <TextBlock Grid.Row="0"
                        Text="{Binding PopupTitle}"
                        FontSize="20"
                        FontWeight="Bold"
                        Margin="0,0,0,10"/>
+            <!--#endregion-->
 
-            <!-- Conteúdo -->
+            <!--#region Conteúdo -->
             <Grid Grid.Row="1" Margin="0,0,0,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -54,8 +56,9 @@
                     </ScrollViewer>
                 </Border>
             </Grid>
+            <!--#endregion-->
 
-            <!-- Rodapé -->
+            <!--#region Rodapé -->
             <StackPanel Grid.Row="2" Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Content="✔ Deu Certo"
@@ -78,6 +81,7 @@
             <TextBlock Grid.Row="3" Foreground="Red" HorizontalAlignment="Center"
                        Margin="10"
                        Text="Apenas o usuário que abriu o chamado pode enviar feedback para a IA"/>
+            <!--#endregion-->
         </Grid>
     </Border>
 </UserControl>

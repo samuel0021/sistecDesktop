@@ -16,6 +16,7 @@
 
     <Border Background="{StaticResource brush-lavenderMist}">
         <Grid>
+            <!--#region Definições de linhas-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -26,6 +27,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <!--#endregion-->
 
             <!--#region Cabeçalho -->
             <Border Background="{StaticResource brush-midnightNavy}"

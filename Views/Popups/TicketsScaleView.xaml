@@ -42,8 +42,13 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Resolver"
-        Command="{Binding DataContext.ResolveScaledTicketCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-        CommandParameter="{Binding}"/>
+                                    Background="#22C55E"
+                                    Tag="/images/circle-check.png"
+                                    BorderBrush="{StaticResource brush-White}"
+                                    Style="{StaticResource TicketButtons}"
+                                    Command="{Binding DataContext.ResolveScaledTicketCommand, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

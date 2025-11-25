@@ -9,7 +9,7 @@
 
         <ResourceDictionary>
             
-            <ResourceDictionary.MergedDictionaries> <!--Sincroniza os dicionário da Controsl.xaml e App.xaml-->
+            <ResourceDictionary.MergedDictionaries> <!--Sincroniza os dicionários da Controsl.xaml e App.xaml-->
                 <ResourceDictionary Source="pack://application:,,,/sistecDesktop;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -28,7 +28,6 @@
             </DataTemplate>
             <!--#endregion-->
 
-
             <!--#region FONTS -->
             <!-- Montserrat Regular/Bold -->
             <FontFamily x:Key="MontserratRegular">pack://application:,,,/fonts/#Montserrat</FontFamily>
@@ -39,7 +38,6 @@
             <FontFamily x:Key="BrandonGrotesqueBold">pack://application:,,,/fonts/#HvDTrial Brandon Grotesque Bold</FontFamily>
             <!--#endregion-->
 
-
             <!--#region COLORS-->
             <Color x:Key="color-lavenderWeb">#EFEBFF</Color>
             <Color x:Key="color-periwinkle">#DCD3FF</Color>
@@ -47,7 +45,6 @@
             <Color x:Key="color-vibrantViolet">#8564FF</Color>
             <Color x:Key="color-midnightNavy">#000033</Color>
             <!--#endregion-->
-
 
             <!--#region BRUSHES -->
             <SolidColorBrush x:Key="brush-midnightNavy" Color="#000033"/>
@@ -71,14 +68,12 @@
             <SolidColorBrush x:Key="brush-White" Color="#FFFFF0"/>
             <!--#endregion-->
 
-
             <!--#region GRADIENTS-->
             <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource color-lavenderWeb}" Offset="0"/>
                 <GradientStop Color="{StaticResource color-periwinkle}" Offset="1"/>
             </LinearGradientBrush>
             <!--#endregion-->
-
 
             <!--#region STYLES -->
             <!--#region Window -->

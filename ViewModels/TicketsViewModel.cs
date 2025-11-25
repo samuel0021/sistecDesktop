@@ -25,6 +25,7 @@ namespace sistecDesktop.ViewModels
         private Chamado _selectedTicket;
         protected readonly IDialogService _dialogService;
 
+        // Variável pra filtro de busca
         private string _searchTerm;
 
         #region Encapsulamentos
@@ -93,18 +94,17 @@ namespace sistecDesktop.ViewModels
         }
         #endregion
 
+        // Comandos
+        #region Comandos
         public ICommand LoadTicketsCommand { get; }
         public ICommand ViewTicketCommand { get; }
         public ICommand ScaleTicketCommand { get; }
         public ICommand ResolveTicketCommand { get; }
         public ICommand ViewScaledTicketsCommand { get; }
-        public ICommand OpenMotivoCommand { get; }
         public ICommand ViewIaSolutionCommand { get; }
-
+        #endregion
 
         public bool CanOpenScaledTickets => App.LoggedUser != null && App.LoggedUser.IdPerfilUsuario.Id >= 4;
-
-
 
         public TicketsViewModel(ApiClient apiClient, IDialogService dialogService = null)
         {
@@ -133,7 +133,7 @@ namespace sistecDesktop.ViewModels
             var chamado = parameter as Chamado ?? SelectedTicket;
             if (chamado == null) return;
 
-            // Opcional: restringir estados (como no site: "Aguardando Resposta")
+            // Restrição opcional
             if (!string.Equals(chamado.Status, "Aguardando Resposta", StringComparison.InvariantCultureIgnoreCase))
             {
                 MessageBox.Show("A solução da IA está disponível apenas quando o chamado está em 'Aguardando Resposta'.",
@@ -153,12 +153,12 @@ namespace sistecDesktop.ViewModels
             try
             {
                 var list = await _apiClient.GetChamadosAsync();
-                _allTickets = list.Select(MapChamadoToChamadoDatabase).ToList(); // Convert Chamado to ChamadoDatabase
+                _allTickets = list.Select(MapChamadoToChamadoDatabase).ToList(); // Converte Chamado pra ChamadoDatabase
                 FiltrarChamados(SearchTerm);
                 Tickets.Clear();
                 foreach (var ticket in list)
                 {
-                    // LOG para depuração:
+                    // LOG pra depuração
                     Console.WriteLine($"Chamado: {ticket.Id} Status: {ticket.Status}");
                     Tickets.Add(ticket);
                 }
@@ -189,27 +189,7 @@ namespace sistecDesktop.ViewModels
                     var updatedTicket = await _apiClient.GetChamadoByIdAsync(ticket.Id);
 
                     var detalhesVm = new TicketDetailsViewModel(updatedTicket);
-                    _dialogService.ShowDialog(detalhesVm);
-
-                    /*string descricaoSomente = updatedTicket.Description ?? updatedTicket.Description ?? "";
-                    var marker = "Descrição:";
-                    int index = descricaoSomente.IndexOf(marker);
-
-                    if (index >= 0)
-                    {
-                        descricaoSomente = descricaoSomente.Substring(index + marker.Length).Trim();
-                    }
-
-                    MessageBox.Show(
-                        $"ID: {updatedTicket.Id}\n" +
-                        $"Título: {updatedTicket.Title}\n" +
-                        $"Descrição: {descricaoSomente}\n" +
-                        $"Status: {updatedTicket.Status}\n" +
-                        $"Usuário: {updatedTicket.UsuarioAbertura}\n" +
-                        $"Abertura: {updatedTicket.CreatedAt:dd/MM/yyyy HH:mm}",
-                        "Detalhes do Chamado",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);*/
+                    _dialogService.ShowDialog(detalhesVm);                    
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -310,6 +290,7 @@ namespace sistecDesktop.ViewModels
             await LoadTickets();
         }
 
+        // Abre a tela de chamados escalados
         private void OpenScaledTicketsPopup()
         {
             var escalaVm = new TicketsScaleViewModel(_apiClient);
@@ -328,6 +309,7 @@ namespace sistecDesktop.ViewModels
         {
             var chamado = param as Chamado ?? SelectedTicket;
             if (chamado == null) return;
+
             var vmMotivo = new MotivoResolucaoViewModel(chamado.Id, chamado.Categoria, chamado.Problema);
             vmMotivo.OnClose = async (salvou, motivo) =>
             {
@@ -337,6 +319,7 @@ namespace sistecDesktop.ViewModels
             _dialogService.ShowDialog(vmMotivo);
         }
 
+        // Filtro de busca
         private void FiltrarChamados(string termo)
         {
             if (_allTickets == null)
@@ -364,7 +347,6 @@ namespace sistecDesktop.ViewModels
                         (c.CreatedAt.ToString("dd/MM/yyyy HH:mm").Contains(lower))
                     );
             }
-
             Tickets = new ObservableCollection<Chamado>(baseQuery.Select(MapDbToChamado));
         }
 
@@ -383,7 +365,6 @@ namespace sistecDesktop.ViewModels
                 Prioridade = db.Prioridade,
                 EmailUsuario = db.EmailUsuario,
                 Description = db.Description
-                // Preencha mais campos conforme sua necessidade
             };
         }
 

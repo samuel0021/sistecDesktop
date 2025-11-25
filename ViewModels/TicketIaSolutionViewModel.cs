@@ -17,6 +17,8 @@ namespace sistecDesktop.ViewModels
         private readonly Chamado _chamado;
 
         private RespostaIA _solucao;
+        private bool _isLoading;
+        private bool _isSendingFeedback;
 
         #region Encapsulamentos
         public RespostaIA Solucao
@@ -25,14 +27,12 @@ namespace sistecDesktop.ViewModels
             set { _solucao = value; OnPropertyChanged(nameof(Solucao)); }
         }
 
-        private bool _isLoading;
         public bool IsLoading
         {
             get => _isLoading;
             set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
         }
 
-        private bool _isSendingFeedback;
         public bool IsSendingFeedback
         {
             get => _isSendingFeedback;
